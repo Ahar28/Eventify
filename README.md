@@ -1,6 +1,6 @@
 # csci-5709_Grp-10
 
-
+Aharnish Solanki (B00933563) ah910744@dal.ca
 
 ## Getting started
 
