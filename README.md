@@ -1,7 +1,7 @@
 # csci-5709_Grp-10
 
 
-
+Bhavisha Oza (B00935827) bh327148@dal.ca
 ## Getting started
 
 To make it easy for you to get started with GitLab, here's a list of recommended next steps.
