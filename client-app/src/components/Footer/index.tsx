@@ -13,7 +13,7 @@ const companyLinks: LinkData[] = [
     { name: 'Events', to: '/about-us' },
     { name: 'About Us', to: '/about-us' },
     { name: 'Contact Us', to: '/contact' },
-    { name: 'FAQs', to: '/contact' },
+    { name: 'FAQs', to: '/faqs' },
     { name: 'Terms and Conditions', to: '/terms' },
     { name: 'Privacy Policy', to: '/privacy' },
     { name: 'Careers', to: '/careers' },

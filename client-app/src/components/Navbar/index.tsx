@@ -10,10 +10,10 @@ interface NavLinkData {
 
 const navLinks: NavLinkData[] = [
   { name: 'Home', to: '/' },
-  { name: 'Events', to: '/' },
-  { name: 'News', to: '/' },
-  { name: 'FAQs', to: '/' },
-  { name: 'Contact Us', to: '/' },
+  { name: 'Events', to: '/events' },
+  { name: 'News', to: '/news' },
+  { name: 'FAQs', to: '/faqs' },
+  { name: 'Contact Us', to: '/contact' },
 ];
 
 const Navbar: React.FC = () => {
@@ -36,7 +36,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <Link to="/" className="hidden md:block hover:bg-button-primary px-4 py-1 rounded-md text-sm">
+          <Link to="/" className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm">
             Log In
           </Link>
           <button
