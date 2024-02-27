@@ -24,7 +24,9 @@ const Navbar: React.FC = () => {
       <Container>
         <div className="flex items-center justify-between h-16">
           <div className="flex gap-4 items-center">
-            <img className="h-[40px] w-[140px]" src={logo} alt="Workflow" />
+            <Link to="/">
+              <img className="h-[40px] w-[140px]" src={logo} alt="Workflow" />
+            </Link>
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {navLinks.map((link) => (
@@ -36,7 +38,7 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <Link to="/" className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm">
+          <Link to="/login" className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm">
             Log In / Signup
           </Link>
           <button
@@ -62,7 +64,7 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
               <Link
-                to="/profile/neo"
+                to="/login"
                 className="bg-button-primary text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Log In / Signup
