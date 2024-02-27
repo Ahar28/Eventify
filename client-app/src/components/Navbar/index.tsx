@@ -37,7 +37,7 @@ const Navbar: React.FC = () => {
           </div>
 
           <Link to="/" className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm">
-            Log In
+            Log In / Signup
           </Link>
           <button
             onClick={() => setIsOpen(!isOpen)}
@@ -65,7 +65,7 @@ const Navbar: React.FC = () => {
                 to="/profile/neo"
                 className="bg-button-primary text-white block px-3 py-2 rounded-md text-base font-medium"
               >
-                Log In
+                Log In / Signup
               </Link>
             </div>
           </div>
