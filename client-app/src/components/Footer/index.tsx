@@ -1,5 +1,5 @@
 /* eslint-disable jsx-a11y/anchor-is-valid */
-import React from 'react';
+import React, { useState } from 'react';
 import Container from '../Container';
 import { logo_2 } from '../../assets/home';
 import { Link } from 'react-router-dom';
@@ -28,6 +28,23 @@ const connectLinks: LinkData[] = [
 ];
 
 const Footer: React.FC = () => {
+    const [email, setEmail] = useState('');
+    const [error, setError] = useState('');
+
+    const validateEmail = (email: string) => {
+        return /\S+@\S+\.\S+/.test(email);
+    };
+
+    const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+        e.preventDefault();
+        if (validateEmail(email)) {
+            console.log('Email is valid:', email);
+            setError('');
+        } else {
+            setError('Please enter a valid email address.');
+        }
+    };
+
     return (
         <footer className="bg-[#212121] py-14 text-white">
             <Container>
@@ -51,14 +68,20 @@ const Footer: React.FC = () => {
                     </div>
                     <div>
                         <h1 className="font-bold capitalize sm:pt-0 pt-8 pb-4">Subscribe to our newsletter</h1>
-                        <form className="flex flex-col gap-4">
+                        <form className="flex flex-col gap-4" onSubmit={(e) => e.preventDefault()}>
                             <input
                                 type="email"
-                                placeholder="Your Email"
-                                className="p-2 rounded"
+                                name="email"
+                                id="email"
+                                value={email}
+                                onChange={(e) => setEmail(e.target.value)}
+                                className="border border-black-300 text-sm text-black focus:border-black-100 block w-full p-2.5 mt-2"
+                                placeholder="keyur.khant@example.com"
                             />
+                            {error && <p className="text-red-500 text-xs mt-1">{error}</p>}
                             <button
-                                type="submit"
+                                type="button"
+                                onClick={handleSubmit}
                                 className="bg-button-primary hover:bg-button-primary-hover text-white font-bold py-2 px-4 rounded"
                             >
                                 Subscribe
