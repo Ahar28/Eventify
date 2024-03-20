@@ -2,7 +2,6 @@ import mongoose, { Document, Schema } from "mongoose";
 
 interface IEvent extends Document {
   eventName: string;
-  description: string;
   organizer: mongoose.Schema.Types.ObjectId;
   titlePicture: string;
   pictures?: string[];
@@ -11,8 +10,13 @@ interface IEvent extends Document {
   eventStartDateTime: Date;
   eventEndDateTime: Date;
   isActive: boolean;
-  createdAt: Date;
-  updatedAt: Date;
+  isPaidEvent: boolean;
+  price?: number;
+  details: {
+    description: string;
+    venue: string;
+    additionalInfo?: string;
+  };
 }
 
 const eventSchema: Schema = new Schema(
@@ -21,14 +25,16 @@ const eventSchema: Schema = new Schema(
       type: String,
       required: true,
     },
-    description: {
-      type: String,
-      required: true,
-    },
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
       ref: "User",
       required: true,
+    },
+    details: {
+      description: { type: String, required: true },
+      venue: { type: String },
+      link: { type: String },
+      additionalInfo: { type: String },
     },
     titlePicture: {
       type: String,
@@ -54,6 +60,14 @@ const eventSchema: Schema = new Schema(
     isActive: {
       type: Boolean,
       default: true,
+    },
+    isPaidEvent: {
+      type: Boolean,
+      required: true,
+      default: false,
+    },
+    price: {
+      type: Number,
     },
   },
   { timestamps: true }
