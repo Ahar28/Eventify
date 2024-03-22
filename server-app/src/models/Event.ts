@@ -27,7 +27,7 @@ const eventSchema: Schema = new Schema(
     },
     organizer: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "User",
+      ref: "users",
       required: true,
     },
     details: {
@@ -73,6 +73,6 @@ const eventSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const Event = mongoose.model<IEvent>("Event", eventSchema);
+const Event = mongoose.model<IEvent>("events", eventSchema);
 
 export default Event;
