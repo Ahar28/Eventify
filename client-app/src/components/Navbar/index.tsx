@@ -10,6 +10,7 @@ interface NavLinkData {
 
 const navLinks: NavLinkData[] = [
   { name: 'Home', to: '/' },
+  { name: 'Dashboard', to: '/dashboard' },
   { name: 'Events', to: '/events' },
   { name: 'News', to: '/news' },
   { name: 'FAQs', to: '/faqs' },
