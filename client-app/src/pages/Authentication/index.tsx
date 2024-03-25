@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import loginImage from "../../assets/home/front_world.jpg";
+import loginImage from "../../assets/auth-background.jpg";
 import Container from "../../components/Container";
 import LoginForm from "../../components/Login";
 import SignUpForm from "../../components/SignUp";
@@ -27,15 +27,15 @@ const Authentication: React.FC = () => {
   return (
     <Container>
       <div className="flex justify-center items-center h-screen min-h-screen mb-5">
-        <div className="w-full lg:w-2/5 flex justify-center items-center min-h-screen">
-          {renderComponents(location)}
-        </div>
         <div className="hidden lg:block lg:w-3/5">
           <img
             src={loginImage}
             alt="Login"
             className="h-screen w-full object-cover rounded-3xl"
           />
+        </div>
+        <div className="w-full lg:w-2/5 flex justify-center items-center min-h-screen">
+          {renderComponents(location)}
         </div>
       </div>
     </Container>
