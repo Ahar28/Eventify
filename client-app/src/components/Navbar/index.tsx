@@ -1,7 +1,7 @@
-import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
-import Container from '../Container';
-import { logo } from '../../assets/home';
+import React, { useState } from "react";
+import { Link } from "react-router-dom";
+import Container from "../Container";
+import { logo } from "../../assets/home";
 
 interface NavLinkData {
   name: string;
@@ -9,12 +9,12 @@ interface NavLinkData {
 }
 
 const navLinks: NavLinkData[] = [
-  { name: 'Home', to: '/' },
-  { name: 'Dashboard', to: '/dashboard' },
-  { name: 'Events', to: '/events' },
-  { name: 'News', to: '/news' },
-  { name: 'FAQs', to: '/faqs' },
-  { name: 'Contact Us', to: '/contact' },
+  { name: "Home", to: "/" },
+  { name: "Dashboard", to: "/dashboard" },
+  { name: "Events", to: "/events" },
+  { name: "News", to: "/news" },
+  { name: "FAQs", to: "/faqs" },
+  { name: "Contact Us", to: "/contact" },
 ];
 
 const Navbar: React.FC = () => {
@@ -31,7 +31,11 @@ const Navbar: React.FC = () => {
             <div className="hidden md:block">
               <div className="ml-10 flex items-baseline space-x-4">
                 {navLinks.map((link) => (
-                  <Link key={link.name} className="hover:bg-button-primary hover:text-white px-3 py-2 rounded-md text-sm font-medium" to={link.to}>
+                  <Link
+                    key={link.name}
+                    className="hover:bg-button-primary hover:text-white px-3 py-2 rounded-md text-sm font-medium"
+                    to={link.to}
+                  >
                     {link.name}
                   </Link>
                 ))}
@@ -39,7 +43,10 @@ const Navbar: React.FC = () => {
             </div>
           </div>
 
-          <Link to="/login" className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm">
+          <Link
+            to="/auth/login"
+            className="hidden md:block hover:bg-button-primary hover:text-white px-4 py-1 rounded-md text-sm"
+          >
             Log In / Signup
           </Link>
           <button
@@ -65,7 +72,7 @@ const Navbar: React.FC = () => {
                 </Link>
               ))}
               <Link
-                to="/login"
+                to="/auth/login"
                 className="bg-button-primary text-white block px-3 py-2 rounded-md text-base font-medium"
               >
                 Log In / Signup
@@ -76,6 +83,6 @@ const Navbar: React.FC = () => {
       </Container>
     </nav>
   );
-}
+};
 
 export default Navbar;
