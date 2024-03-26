@@ -15,6 +15,8 @@ const navLinks: NavLinkData[] = [
   { name: "News", to: "/news" },
   { name: "FAQs", to: "/faqs" },
   { name: "Contact Us", to: "/contact" },
+  { name: "Calendar", to: "/calendar" },
+  { name: "Wishlist", to: "/wishlist" },
 ];
 
 const Navbar: React.FC = () => {
