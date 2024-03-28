@@ -35,14 +35,10 @@ interface TicketOption {
   }) => {
     const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([
       { type: ' Adult ', price: 11.87, quantity: 0 },
-      { type: ' Children (above 10 yrs age)', price: 16.77, quantity: 1 },
-      { type: ' Children (below 10 yrs age)', price: 13.77, quantity: 1 },
+      { type: ' Children (above 10 yrs age)', price: 16.77, quantity: 0 },
+      { type: ' Children (below 10 yrs age)', price: 13.77, quantity: 0 },
       
     ]);
-  
-    const calculateTotal = () => {
-      return ticketOptions.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0).toFixed(2);
-    };
   
     // Function to update the quantity of tickets
     const updateQuantity = (index: number, delta: number) => {
@@ -52,23 +48,38 @@ interface TicketOption {
         )
       );
     };
+
+     // Function to calculate subtotal
+  const calculateSubtotal = () => {
+    return ticketOptions.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0);
+  };
+
+  // Function to calculate fees (assuming fees are included in the ticket price)
+  const calculateFees = () => {
+    const fees = ticketOptions.reduce((fees, ticket) => fees + ticket.price * ticket.quantity * 0.15, 0);
+    return fees;
+  };
+
+  // Function to calculate total
+  const calculateTotal = () => {
+    return calculateSubtotal() + calculateFees();
+  };
   
     if (!isOpen) return null;
   
     return (
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto z-50 flex justify-center items-start pt-10 pb-10">
-        <div className="relative bg-white rounded-lg shadow-xl m-auto my-0 w-4/5 h-4/5 max-h-4/5 overflow-auto">
+        <div className="relative bg-white rounded-lg shadow-xl m-auto my-0 sm:w-4/5 lg:w-3/4 xl:w-1/2  h-4/5 max-h-4/5 overflow-auto">
         {/* Close Button */}
         <button 
           onClick={onClose} 
           className="absolute top-0 right-0 m-4" // to Position it absolutely to the top-right of its relative parent
         >
-        <FaTimes size={15} />
+        <FaTimes size={18} />
         </button>
-
-          <div className="flex h-full">
+          <div className="flex flex-col lg:flex-row h-full">
             {/* Ticket selection area (2/3 width) */}
-            <div className="w-2/3 border-r p-8 overflow-auto ">
+            <div className="w-full lg:w-2/3 border-r p-8 overflow-auto">
               <h1 className="text-xl font-bold text-gray-900 mb-4">{event.name}</h1>
               {ticketOptions.map((ticket, index) => (
                 <div key={index} className="mb-4">
@@ -88,7 +99,7 @@ interface TicketOption {
             </div>
   
             {/* Order summary area (1/3 width) */}
-            <div className="w-1/3 p-8 overflow-auto bg-gray-100">
+            <div className="w-full lg:w-1/3 p-8 overflow-auto bg-gray-100">
               <div className="mb-4">
               <img src={event.images[0]} alt={event.name} className="w-full h-32 mb-4 object-cover rounded-lg" />
                 <h2 className="text-xl font-semibold mb-4">Order summary</h2>
@@ -111,17 +122,17 @@ interface TicketOption {
                 <p>Subtotal: CA${calculateTotal()}</p> */}
                      <div className="flex justify-between mb-2">
                 <span>Subtotal</span>
-                <span>CA$XX.XX</span>
+                <span>CA${calculateSubtotal().toFixed(2)}</span>
               </div>
                 {/* Assume fees are included in the ticket price
                 <p>Total: CA${calculateTotal()}</p> */}
                 <div className="flex justify-between mb-2">
                 <span>Fees</span>
-                <span>CA$XX.XX</span>
+                <span>CA${calculateFees().toFixed(2)}</span>
               </div>
               <div className="flex justify-between mb-2 font-semibold">
                 <span>Total</span>
-                <span>CA$XX.XX</span>
+                <span>CA${calculateTotal().toFixed(2)}</span>
               </div>
               </div>
               <Button 

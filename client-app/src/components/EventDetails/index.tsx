@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState,useEffect } from 'react';
 import ImageCarousel from '../ImageCarousel';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
 import { faUser,faHeart as farHeart } from '@fortawesome/free-regular-svg-icons';
@@ -52,10 +52,20 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
         setTicketCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1));
     };
 
+    useEffect(() => {
+        if (showTicketModal) {
+          document.body.style.overflow = 'hidden';
+        } else {
+          document.body.style.overflow = '';
+        }
+          // Clean up function to reset overflow when component unmounts or modal closes
+    return () => {
+        document.body.style.overflow = '';
+      };
+    }, [showTicketModal]);
+
      // Function to handle the checkout process
      const handleCheckout = () => {
-        //temporarily loggin to console
-        console.log('Proceeding to checkout...');
         navigate(`/faqs`);
         setShowTicketModal(false);
     };
@@ -66,22 +76,21 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
     <div className="relative bg-white shadow-lg rounded-lg p-8 my-5 mx-auto max-w-7xl">     
             <ImageCarousel images={event.images} />
             
-            <div className="flex flex-wrap -mx-4 mt-4">
-                
+            <div className="flex flex-col lg:flex-row -mx-4 mt-4">
                 <div className="w-full lg:w-2/3 px-4">
                     <div className="flex justify-between items-start">
-                        <h1 className="text-5xl font-bold text-gray-900 mb-3">{event.name}</h1>
+                        <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-3">{event.name}</h1>
                         <div className="flex items-center space-x-2">
                             <button 
                                 onClick={toggleWishlist}
-                                className={`text-3xl ${isWishlisted ? 'text-red-500' : 'text-gray-400'} hover:text-red-700 transition-colors`}
+                                className={`text-2xl lg:text-3xl ${isWishlisted ? 'text-red-500' : 'text-gray-400'} hover:text-red-700 transition-colors`}
                                 aria-label="Add to Wishlist"
                             >
                                 <FontAwesomeIcon icon={isWishlisted ? fasHeart : farHeart} />
                             </button>
                             <Button 
                                  onClick={() => setShowShareModal(true)}
-                                className="text-blue-500 hover:text-blue-700 text-3xl"
+                                className="text-blue-500 hover:text-blue-700 text-2xl lg:text-3xl"
                                 aria-label="Share Event"
                             >
                                 <FontAwesomeIcon icon={faShareAlt} />
@@ -109,16 +118,16 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                         <p className="text-gray-900 font-semibold ml-2">{event.location}</p>
                     </div>
 
-                    <h2 className="text-2xl font-bold text-gray-900 mb-2">About the Event</h2>
+                    <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">About the Event</h2>
                     <p className="text-gray-700 mb-3">{event.description}</p>
 
                 </div>
 
      {/* Ticket Purchase Section */}
-     <div className="w-full md:w-1/3 p-4 border-t md:border-t-0 md:border-l">
+     <div className="w-full lg:w-1/3 px-4 mt-4 lg:mt-0">
                     <div className="border p-4 rounded-md">
-                        <h3 className="text-lg font-bold mb-4">Get tickets</h3>
-                        <div className="flex items-center mb-4">
+                        <h3 className="text-xl lg:text-lg font-bold mb-4 text-center">Get tickets</h3>
+                        {/* <div className="flex items-center mb-4">
                             <Button onClick={decrementTicketCount} className="px-3 py-1 border rounded-l-md">
                                 <FontAwesomeIcon icon={faMinus} />
                             </Button>
@@ -131,9 +140,9 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                             <Button onClick={incrementTicketCount} className="px-3 py-1 border rounded-r-md">
                                 <FontAwesomeIcon icon={faPlus} />
                             </Button>
-                        </div>
-                        <div className="mb-4">
-                            <span className="text-lg">Price: </span>
+                        </div> */}
+                        <div className="mb-4 text-center">
+                            <span className="text-lg ">Price: </span>
                             <span className="text-lg">CA${(ticketCount * ticketPrice).toFixed(2)}</span>
                         </div>
                         <Button onClick={() => setShowTicketModal(true)} className="bg-red-500 text-white px-4 py-2 rounded-md w-full" color="error">Register</Button>
