@@ -14,7 +14,8 @@ interface IEvent extends Document {
   price?: number;
   details: {
     description: string;
-    venue: string;
+    venue?: string;
+    link?: string;
     additionalInfo?: string;
   };
 }
