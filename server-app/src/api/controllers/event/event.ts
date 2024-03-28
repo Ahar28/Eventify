@@ -74,7 +74,7 @@ export const createEvent = async (req: Request, res: Response) => {
 
     await newEvent.save();
 
-    return sendResponse(res, 201, {
+    return sendResponse(res, 200, {
       success: true,
       message: "Event created successfully",
       data: newEvent,
