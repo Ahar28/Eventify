@@ -14,7 +14,7 @@ interface Event {
     date: string;
     location: string;
     description: string;
-    images: string[]; //image carousel property
+    image: string; //image carousel property
 }
 
 interface EventDetailsProps {
@@ -74,7 +74,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
     
     // <div className="bg-white shadow-lg rounded-lg p-8 my-5 mx-auto max-w-7xl">
     <div className="relative bg-white shadow-lg rounded-lg p-8 my-5 mx-auto max-w-7xl">     
-            <ImageCarousel images={event.images} />
+            <ImageCarousel images={event.image} />
             
             <div className="flex flex-col lg:flex-row -mx-4 mt-4">
                 <div className="w-full lg:w-2/3 px-4">

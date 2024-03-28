@@ -5,12 +5,12 @@ import Button from '../UI/Button';
 // have to declare it somewhere and import it  
 // not modular approach
 interface Event {
-    name: string;
-    organizer: string;
-    date: string;
-    location: string;
-    description: string;
-    images: string[]; //image carousel property
+  name: string;
+  organizer: string;
+  date: string;
+  location: string;
+  description: string;
+  image: string; //image carousel property
 }
 
 
@@ -101,7 +101,7 @@ interface TicketOption {
             {/* Order summary area (1/3 width) */}
             <div className="w-full lg:w-1/3 p-8 overflow-auto bg-gray-100">
               <div className="mb-4">
-              <img src={event.images[0]} alt={event.name} className="w-full h-32 mb-4 object-cover rounded-lg" />
+              <img src={event.image} alt={event.name} className="w-full h-32 mb-4 object-cover rounded-lg" />
                 <h2 className="text-xl font-semibold mb-4">Order summary</h2>
                 <div className="border-b border-gray-300 mb-4">
                 {/* {ticketOptions.map((ticket, index) => (

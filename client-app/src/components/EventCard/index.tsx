@@ -24,7 +24,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const isWishlisted = wishlist.some(e => e.id === event.id);
 
   const handleClick = () => {
-    navigate(`/event/${event.id}`);
+    navigate(`/events/${event.id}`,{ state: { event } });
   };
 
   const toggleWishlist = (e: React.MouseEvent) => {
