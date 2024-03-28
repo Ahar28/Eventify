@@ -72,7 +72,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                              <ShareModal url={urlToShare} isOpen={showShareModal} onClose={() => setShowShareModal(false)} />
                         </div>
                     </div>
-
+                    {/* Organizd by */}
                     <div className="mb-3 flex items-center">
                         <FontAwesomeIcon icon={faUser} className="text-gray-700 mr-2" />
                         <span className="text-lg text-gray-700 font-bold">Organized by:</span>
@@ -118,7 +118,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                             <span className="text-lg">Price: </span>
                             <span className="text-lg">CA${(ticketCount * ticketPrice).toFixed(2)}</span>
                         </div>
-                        <button className="bg-red-500 text-white px-4 py-2 rounded-md w-full">Get tickets</button>
+                        <Button className="bg-red-500 text-white px-4 py-2 rounded-md w-full" color="error">Register</Button>
                     </div>
                 </div>
             </div>
