@@ -5,6 +5,8 @@ import { faUser,faHeart as farHeart } from '@fortawesome/free-regular-svg-icons'
 import {faShareAlt, faMinus, faPlus, faCalendarAlt, faMapMarkerAlt, faHeart as fasHeart } from '@fortawesome/free-solid-svg-icons';
 import Button from '../UI/Button';
 import ShareModal from '../ShareModal';
+import TicketPurchaseModal from '../TicketPurchaseModal';
+import { useNavigate } from "react-router-dom";
 
 interface Event {
     name: string;
@@ -21,7 +23,22 @@ interface EventDetailsProps {
 
 const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
 
+    const navigate = useNavigate();
+    
     const [isWishlisted, setIsWishlisted] = useState(false);
+
+    const [showTicketModal, setShowTicketModal] = useState(false);
+
+    const [ticketCount, setTicketCount] = useState(1);
+    const ticketPrice = 9.99;
+
+    // Share Modal
+    const [showShareModal, setShowShareModal] = useState(false);
+    const urlToShare = window.location.href; 
+
+    // const handleClick = () => {
+    //     navigate(`/faqs}`);
+    //   };
 
     const toggleWishlist = () => {
         setIsWishlisted(!isWishlisted);
@@ -35,12 +52,13 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
         setTicketCount(prevCount => (prevCount > 1 ? prevCount - 1 : 1));
     };
 
-    const [ticketCount, setTicketCount] = useState(1);
-    const ticketPrice = 9.99;
-
-    // Share Modal
-    const [showShareModal, setShowShareModal] = useState(false);
-    const urlToShare = window.location.href; // or the specific URL you want to share
+     // Function to handle the checkout process
+     const handleCheckout = () => {
+        //temporarily loggin to console
+        console.log('Proceeding to checkout...');
+        navigate(`/faqs`);
+        setShowTicketModal(false);
+    };
 
     return (
     
@@ -118,7 +136,9 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                             <span className="text-lg">Price: </span>
                             <span className="text-lg">CA${(ticketCount * ticketPrice).toFixed(2)}</span>
                         </div>
-                        <Button className="bg-red-500 text-white px-4 py-2 rounded-md w-full" color="error">Register</Button>
+                        <Button onClick={() => setShowTicketModal(true)} className="bg-red-500 text-white px-4 py-2 rounded-md w-full" color="error">Register</Button>
+                         {/* TicketPurchaseModal */}
+                         <TicketPurchaseModal isOpen={showTicketModal} event={event} onClose={() => setShowTicketModal(false)} onCheckout={handleCheckout} />
                     </div>
                 </div>
             </div>

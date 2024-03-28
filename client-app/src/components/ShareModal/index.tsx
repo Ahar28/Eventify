@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
 import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faFacebook, faWhatsapp, faReddit } from '@fortawesome/free-brands-svg-icons';
-import { faEnvelope, faTimes} from '@fortawesome/free-solid-svg-icons';
+import { faTimes} from '@fortawesome/free-solid-svg-icons';
 import Button from '../UI/Button';
 //https://www.iconpacks.net/ reference for svg icons
 import FacebookSVG from '../../assets/brandicons/facebook.svg';
@@ -41,7 +40,7 @@ const ShareModal = ({ url, isOpen, onClose }: { url: string, isOpen: boolean, on
   if (!isOpen) return null;
 
   return (
-    <div    id="modal-backdrop" onClick={handleOutsideClick} className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
+    <div  id="modal-backdrop" onClick={handleOutsideClick} className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto h-full w-full z-50">
       <div className="relative top-20 mx-auto p-5 border w-96 shadow-lg rounded-md bg-white " onClick={(e) => e.stopPropagation()}>
           <div className="flex justify-between items-start mb-4">
             <h3 className="text-lg leading-6 font-medium text-gray-900">Share</h3>
