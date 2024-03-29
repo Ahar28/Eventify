@@ -10,6 +10,7 @@ import Eventfeed from "./pages/Events";
 import Wishlist from "./pages/Wishlist";
 import Calendar from "./components/Calendar/Calendar";
 import EventPage from "./pages/EventDetails";
+import ParticipantInfoPage from "./pages/ParticipantForm";
 // import AddEvent from './pages/UserDashboard/AddEvent';
 
 const EventRoutes: React.FC = () => {
@@ -25,6 +26,7 @@ const EventRoutes: React.FC = () => {
       <Route path = '/wishlist' element = {<Wishlist />} />
       <Route path = '/calendar' element = {<Calendar />} /> 
       <Route path="/events/:id" element={<EventPage />} /> 
+      <Route path="/events/:id/register/participant-info" element={<ParticipantInfoPage />} />
       <Route path="*" element={<WorkingInProgress />} />
     </Routes>
   );

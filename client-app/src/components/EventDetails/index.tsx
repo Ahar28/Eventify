@@ -73,7 +73,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
             <div className="flex flex-col lg:flex-row -mx-4 mt-4">
                 <div className="w-full lg:w-2/3 px-4">
                     <div className="flex justify-between items-start">
-                        <h1 className="text-3xl lg:text-5xl font-bold text-gray-900 mb-3">{event.name}</h1>
+                        <h1 className="text-3xl lg:text-5xl font-bold text-title-color mb-3">{event.name}</h1>
                         <div className="flex items-center space-x-2">
                             <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">
                             <div style={{ padding: '0 px 5px' }}>
@@ -130,7 +130,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
                             <span className="text-lg font-bold">CA${(ticketCount * ticketPrice).toFixed(2)}</span>
                         </div>
                         <Button onClick={() => setShowTicketModal(true)} className="bg-red-500 text-white px-4 py-2 rounded-md w-full" color="error">Register</Button>
-                        {/* TicketPurchaseModal */}
+                        {/* </TicketPurchaseModal */}
                         <TicketPurchaseModal isOpen={showTicketModal} event={event} onClose={() => setShowTicketModal(false)} onCheckout={handleCheckout} />
                     </div>
                 </div>

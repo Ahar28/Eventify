@@ -1,5 +1,6 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
+import { useNavigate } from "react-router-dom"
 import Button from '../UI/Button';
 import Container from '../Container';
 
@@ -10,7 +11,7 @@ import Container from '../Container';
   date: string;
   location: string;
   description: string;
-  image: string; //image carousel property
+  image: string; 
 }
 
   interface TicketOption {
@@ -29,9 +30,10 @@ import Container from '../Container';
   const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({
     isOpen,
     onClose,
-    onCheckout,
+    // onCheckout,
     event,
   }) => {
+    const navigate = useNavigate();
     const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([
       { type: ' Adult ', price: 11.87, quantity: 0 },
       { type: ' Children (above 10 yrs age)', price: 16.77, quantity: 0 },
@@ -62,7 +64,22 @@ import Container from '../Container';
   const calculateTotal = () => {
     return calculateSubtotal() + calculateFees();
   };
-  
+
+  // Modified onCheckout function
+  const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
+
+  const handleCheckout = () => {
+    // Preparing the ticketQuantities object to pass to ParticipantInfoPage
+    const ticketQuantities = ticketOptions.reduce((acc, { type, quantity }) => {
+      if (quantity > 0) acc[type] = quantity;
+      return acc;
+    }, {} as { [type: string]: number });
+
+    // Navigate to ParticipantInfoPage with state
+    navigate(`/events/${event.id}/register/participant-info`, { state: { ticketQuantities, ticketOptions, event } });
+    setShowTicketModal(false); // to close the modal on checkout
+  };
+
   if (!isOpen) return null;
   
     return (
@@ -111,15 +128,15 @@ import Container from '../Container';
                   <p key={index}>{ticket.quantity} x {ticket.type} - CA${(ticket.quantity * ticket.price).toFixed(2)}</p>
                 ))} */}
                 {
-  ticketOptions.map((ticket, index) => (
-    <div key={index} className="py-2 border-b border-gray-300">
-      <div className="flex justify-between items-center">
-        <span>{ticket.quantity} x {ticket.type}</span>
-        <span>CA${(ticket.quantity * ticket.price).toFixed(2)}</span>
-      </div>
-    </div>
-  ))
-}
+                ticketOptions.map((ticket, index) => (
+                  <div key={index} className="py-2 border-b border-gray-300">
+                    <div className="flex justify-between items-center">
+                      <span>{ticket.quantity} x {ticket.type}</span>
+                      <span>CA${(ticket.quantity * ticket.price).toFixed(2)}</span>
+                    </div>
+                  </div>
+                ))
+              }
                 </div>
                 {/* <div className="flex justify-between mb-2">
                 <p>Subtotal: CA${calculateTotal()}</p> */}
@@ -127,7 +144,7 @@ import Container from '../Container';
                 <span>Subtotal</span>
                 <span>CA${calculateSubtotal().toFixed(2)}</span>
               </div>
-                {/* Assume fees are included in the ticket price
+                {/* 
                 <p>Total: CA${calculateTotal()}</p> */}
                 <div className="flex justify-between mb-2">
                 <span>Fees</span>
@@ -139,7 +156,7 @@ import Container from '../Container';
               </div>
               </div>
               <Button 
-              onClick={onCheckout} 
+              onClick={handleCheckout} 
               className="bg-red-500 text-white px-4 py-2 rounded-lg w-full mt-4" color="error">Checkout
               </Button>
           
