@@ -6,7 +6,6 @@ interface IUser extends Document {
   email: string;
   password: string;
   role: "ADMIN" | "GENERAL";
-  mobile?: string;
   isActive: boolean;
   createdAt: Date;
   updatedAt: Date;
@@ -39,10 +38,6 @@ const userSchema: Schema = new Schema(
       enum: ["ADMIN", "GENERAL"],
       default: "GENERAL",
       required: true,
-    },
-    mobile: {
-      type: String,
-      unique: true,
     },
     isActive: {
       type: Boolean,

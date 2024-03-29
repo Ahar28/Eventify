@@ -3,6 +3,8 @@ import Container from '../../components/Container';
 import SectionTitle from '../../components/Landing/SectionTitle';
 import { createEvent } from '../../services/EventService';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
 
 export interface EventDetails {
     description: string;
@@ -26,9 +28,11 @@ export interface Event {
 }
 
 const AddEvent = () => {
+    const user = useSelector(selectUser);
+    console.log(user);
     const [eventData, setEventData] = useState({
         eventName: '',
-        organizer: '',
+        organizer: user.id,
         description: '',
         isOnline: false,
         venue: '',
@@ -193,7 +197,7 @@ const AddEvent = () => {
             const response = await createEvent(event);
             if (response?.data) {
                 if (response?.status === 200) {
-                    navigate('/login');
+                    navigate('/dashboard');
                 } else {
                     setErrorMsg("Something went wrong!");
                 }

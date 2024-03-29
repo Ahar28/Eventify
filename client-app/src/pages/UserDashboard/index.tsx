@@ -3,21 +3,17 @@ import { HorizontalEventCard } from "../../components/HorizontalEventCard";
 import CreateEventProcedure from './CreateEventProcedure';
 import Container from '../../components/Container';
 import { Link } from 'react-router-dom';
-
-interface Event {
-    id: string;
-    title: string;
-    description: string;
-    date: string;
-    imageUrl: string;
-}
+import { getEventsByOrganizer } from '../../services/EventService';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
 
 const UserDashboard: React.FC = () => {
-    const [events, setEvents] = useState<Event[]>([]);
+    const [events, setEvents] = useState<any[]>([]);
+    const user = useSelector(selectUser);
 
     useEffect(() => {
-        fetchEventsCreatedByCurrentUser().then(setEvents);
-    }, []);
+        fetchEventsCreatedByCurrentUser(user).then(setEvents);
+    }, [user]);
 
     return (
         <Container>
@@ -33,7 +29,7 @@ const UserDashboard: React.FC = () => {
             <div className='min-h-screen'>
                 <div>
                     {events.length > 0 ? (
-                        events.map((event, idx) => <HorizontalEventCard key={event.id} index={idx + 1} title={event.title} imageUrl={event.imageUrl} />)
+                        events.map((event, idx) => <HorizontalEventCard key={event._id} index={idx + 1} title={event.eventName} imageUrl={event.titlePicture} isActive={event.isActive} />)
                     ) : (
                         <div className="text-center">
                             <p>No events created yet.</p>
@@ -46,29 +42,18 @@ const UserDashboard: React.FC = () => {
     );
 };
 
-async function fetchEventsCreatedByCurrentUser(): Promise<Event[]> {
-    const events: Event[] = [{
-        id: "1",
-        title: "Tech Expo 2024",
-        description: "Discover the latest in tech innovation.",
-        date: "2024-04-25",
-        imageUrl: "https://picsum.photos/200/300",
-    },
-    {
-        id: "2",
-        title: "Art & Design Conference",
-        description: "Explore new trends in art and design.",
-        date: "2024-05-15",
-        imageUrl: "https://picsum.photos/200/300",
-    },
-    {
-        id: "3",
-        title: "Music Festival",
-        description: "Experience the best of live music from around the world.",
-        date: "2024-06-20",
-        imageUrl: "https://picsum.photos/200/300",
-    }]
-    return events;
+async function fetchEventsCreatedByCurrentUser(user: { id: string; }): Promise<any[]> {
+    const response = await getEventsByOrganizer(user.id);
+    if (response?.data) {
+        if (response?.status === 200) {
+            console.log("DATA===>", response?.data?.data);
+            return response?.data?.data;
+        } else {
+            return [];
+        }
+    } else {
+        return [];
+    }
 }
 
 export default UserDashboard;
