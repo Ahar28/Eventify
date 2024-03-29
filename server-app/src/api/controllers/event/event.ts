@@ -74,7 +74,7 @@ export const createEvent = async (req: Request, res: Response) => {
 
     await newEvent.save();
 
-    return sendResponse(res, 201, {
+    return sendResponse(res, 200, {
       success: true,
       message: "Event created successfully",
       data: newEvent,
@@ -170,6 +170,41 @@ export const deleteEvent = async (req: Request, res: Response) => {
     return sendResponse(res, 500, {
       success: false,
       message: "Server error while deleting the event",
+    });
+  }
+};
+
+export const getEventsByOrganizer = async (req: Request, res: Response) => {
+  const organizerId = req.params.organizerId;
+
+  if (!organizerId) {
+    return sendResponse(res, 400, {
+      success: false,
+      message: "Organizer ID is required",
+    });
+  }
+
+  try {
+    const events = await Event.find({ organizer: organizerId });
+
+    if (events.length === 0) {
+      return sendResponse(res, 200, {
+        success: true,
+        message: "No events found for the specified organizer",
+        data: []
+      });
+    }
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Events retrieved successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Error retrieving events:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while retrieving events",
     });
   }
 };

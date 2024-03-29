@@ -1,8 +1,15 @@
 import React, { useState } from "react";
+import { loginUser } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
+import { useDispatch } from "react-redux";
+import { login } from "../../redux/userSlice";
 
 const LoginForm: React.FC = () => {
   const [formData, setFormData] = useState({ email: "", password: "" });
   const [errors, setErrors] = useState({ email: "", password: "" });
+  const navigate = useNavigate();
+  const dispatch = useDispatch();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -30,10 +37,37 @@ const LoginForm: React.FC = () => {
     return formIsValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form data submitted:", formData);
+      const response = await loginUser(formData);
+      if (response?.data) {
+        if (response?.status === 200) {
+          let userData;
+          userData = response?.data?.data;
+          dispatch(
+            login({
+              token: userData.token,
+              email: userData.email,
+              firstName: userData.firstName,
+              lastName: userData.lastName,
+              id: userData.userId,
+            })
+          )
+          localStorage.setItem('token', userData.token);
+          localStorage.setItem('email', userData.email);
+          localStorage.setItem('firstName', userData.firstName);
+          localStorage.setItem('lastName', userData.lastName);
+          localStorage.setItem('id', userData.userId);
+          navigate('/');
+        } else {
+          e.stopPropagation();
+          setErrorMsg("Something went wrong!");
+        }
+      } else {
+        let message: string = response?.response?.data.message;
+        setErrorMsg(message);
+      }
     }
   };
 
@@ -81,6 +115,7 @@ const LoginForm: React.FC = () => {
           <p className="text-red-500 text-xs mt-1">{errors.password}</p>
         )}
       </div>
+      {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
       <div className="flex items-center justify-between mb-4">
         <button
           type="submit"
