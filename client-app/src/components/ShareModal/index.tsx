@@ -1,7 +1,6 @@
 import React, { useState } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faTimes} from '@fortawesome/free-solid-svg-icons';
 import Button from '../UI/Button';
+import { FaTimes } from 'react-icons/fa';
 //https://www.iconpacks.net/ reference for svg icons
 import FacebookSVG from '../../assets/brandicons/facebook.svg';
 import WhatsAppSVG from '../../assets/brandicons/whatsapp.svg';
@@ -45,7 +44,7 @@ const ShareModal = ({ url, isOpen, onClose }: { url: string, isOpen: boolean, on
           <div className="flex justify-between items-start mb-4">
             <h3 className="text-lg leading-6 font-medium text-gray-900">Share</h3>
             <Button onClick={onClose}  variant='text' color='inherit'>
-              <FontAwesomeIcon icon={faTimes} size="lg" />
+              <FaTimes size={25} />
             </Button>
           </div>
           <div className=" flex justify-center items-center mt-2 px-7 py-3">

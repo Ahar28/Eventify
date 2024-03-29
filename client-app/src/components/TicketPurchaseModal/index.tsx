@@ -1,10 +1,10 @@
 import React, { useState } from 'react';
 import { FaTimes } from 'react-icons/fa';
 import Button from '../UI/Button';
+import Container from '../Container';
 
-// have to declare it somewhere and import it  
-// not modular approach
-interface Event {
+  interface Event {
+  id: number;
   name: string;
   organizer: string;
   date: string;
@@ -13,8 +13,7 @@ interface Event {
   image: string; //image carousel property
 }
 
-
-interface TicketOption {
+  interface TicketOption {
     type: string;
     price: number;
     quantity: number;
@@ -37,7 +36,6 @@ interface TicketOption {
       { type: ' Adult ', price: 11.87, quantity: 0 },
       { type: ' Children (above 10 yrs age)', price: 16.77, quantity: 0 },
       { type: ' Children (below 10 yrs age)', price: 13.77, quantity: 0 },
-      
     ]);
   
     // Function to update the quantity of tickets
@@ -50,9 +48,9 @@ interface TicketOption {
     };
 
      // Function to calculate subtotal
-  const calculateSubtotal = () => {
-    return ticketOptions.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0);
-  };
+    const calculateSubtotal = () => {
+      return ticketOptions.reduce((total, ticket) => total + ticket.price * ticket.quantity, 0);
+    };
 
   // Function to calculate fees (assuming fees are included in the ticket price)
   const calculateFees = () => {
@@ -65,11 +63,12 @@ interface TicketOption {
     return calculateSubtotal() + calculateFees();
   };
   
-    if (!isOpen) return null;
+  if (!isOpen) return null;
   
     return (
+      <Container>
     <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto z-50 flex justify-center items-start pt-10 pb-10">
-        <div className="relative bg-white rounded-lg shadow-xl m-auto my-0 sm:w-4/5 lg:w-3/4 xl:w-1/2  h-4/5 max-h-4/5 overflow-auto">
+        <div className="relative bg-white rounded-lg shadow-xl m-auto my-0 sm:w-4/5 lg:w-3/4 xl:w-1/2  h-4/5 max-h-4/5 overflow-auto" style={{ width: '1200px', height: '600px' }}>
         {/* Close Button */}
         <button 
           onClick={onClose} 
@@ -80,11 +79,15 @@ interface TicketOption {
           <div className="flex flex-col lg:flex-row h-full">
             {/* Ticket selection area (2/3 width) */}
             <div className="w-full lg:w-2/3 border-r p-8 overflow-auto">
-              <h1 className="text-xl font-bold text-gray-900 mb-4">{event.name}</h1>
+              {/* <h1 className="text-xl font-bold text-gray-900 mb-4">{event.name}</h1> */}
+              <h1 className="text-xl font-bold text-gray-900 mb-4 relative pb-2">
+                <span className="pr-4">{event.name}</span>
+                <span className="absolute bottom-0 left-0 w-full h-1 bg-gray-300"></span>
+              </h1>
               {ticketOptions.map((ticket, index) => (
                 <div key={index} className="mb-4">
-                  <h3 className="text-lg font-bold mb-4">{ticket.type}</h3>
-                  <div className="py-2 border-b border-gray-300">
+                  <h3 className="text-lg ">{ticket.type}</h3>
+                  <div className=" border-b border-gray-300">
                   <div className="flex items-center justify-between">
                     <div className="flex items-center">
                       <Button onClick={() => updateQuantity(index, -1)} variant="text">-</Button>
@@ -144,6 +147,7 @@ interface TicketOption {
           </div>
         </div>
       </div>
+      </Container>
     );
   };
 
