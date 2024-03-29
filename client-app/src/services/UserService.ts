@@ -1,0 +1,21 @@
+import { postData } from "./utils";
+
+export async function loginUser(userData: any) {
+  try {
+    const response = await postData(JSON.stringify(userData), "/auth/login");
+    return response;
+  } catch (error) {
+    console.error("Error adding user:", error);
+    return null;
+  }
+}
+
+export async function registerUser(userData: any) {
+  try {
+    const response = await postData(JSON.stringify(userData), "/auth/register");
+    return response;
+  } catch (error) {
+    console.error("Error adding user:", error);
+    return null;
+  }
+}

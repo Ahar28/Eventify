@@ -1,3 +1,3 @@
-import { createEvent, updateEvent, deleteEvent } from "./event";
+import { createEvent, updateEvent, deleteEvent, getEventsByOrganizer } from "./event";
 
-export default { createEvent, updateEvent, deleteEvent };
+export default { createEvent, updateEvent, deleteEvent, getEventsByOrganizer };

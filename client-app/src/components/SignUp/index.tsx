@@ -1,4 +1,6 @@
 import React, { useState } from "react";
+import { registerUser } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const SignUpForm: React.FC = () => {
   const [formData, setFormData] = useState({
@@ -15,6 +17,8 @@ const SignUpForm: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,10 +67,20 @@ const SignUpForm: React.FC = () => {
     return formIsValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form data submitted:", formData);
+      const response = await registerUser(formData);
+      if (response?.data) {
+        if (response?.status === 200) {
+          navigate('/auth/login');
+        } else {
+          setErrorMsg("Something went wrong!");
+        }
+      } else {
+        let message: string = response?.response?.data.message;
+        setErrorMsg(message);
+      }
     }
   };
 
@@ -170,6 +184,7 @@ const SignUpForm: React.FC = () => {
           <p className="text-red-500 text-xs mt-1">{errors.confirmPassword}</p>
         )}
       </div>
+      {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
       <div className="flex items-center justify-between mb-4">
         <button
           type="submit"

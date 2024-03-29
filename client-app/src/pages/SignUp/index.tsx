@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import signUpImage from "../../assets/home/front_world.jpg"; // Assume this is the path to your image
+import signUpImage from "../../assets/home/front_world.jpg";
 
 const SignUp: React.FC = () => {
   const [formData, setFormData] = useState({
