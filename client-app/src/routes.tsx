@@ -9,6 +9,7 @@ import Authentication from "./pages/Authentication";
 import Eventfeed from "./pages/Events";
 import Wishlist from "./pages/Wishlist";
 import Calendar from "./components/Calendar/Calendar";
+import AddEvent from "./pages/UserDashboard/AddEvent";
 import EventPage from "./pages/EventDetails";
 import ParticipantInfoPage from "./pages/ParticipantForm";
 // import AddEvent from './pages/UserDashboard/AddEvent';
@@ -19,7 +20,7 @@ const EventRoutes: React.FC = () => {
       <Route path="/" element={<Landing />} />
       <Route path="/auth/*" element={<Authentication />} />
       <Route path="dashboard" element={<UserDashboard />} />
-      {/* <Route path='dashboard/add-event' element={<AddEvent/>}/> */}
+      <Route path='dashboard/add-event' element={<AddEvent/>}/>
       <Route path="/faqs" element={<FAQPage />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path = '/events' element = {<Eventfeed />} />
