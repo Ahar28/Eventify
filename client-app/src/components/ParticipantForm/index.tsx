@@ -1,10 +1,14 @@
-// src/components/ParticipantForm/index.tsx
-
 import React, { useState } from 'react';
 import Container from '../Container';
 import SectionTitle from '../../components/Landing/SectionTitle';
+import SuccessModal from '../SuccessModal';
 
 interface Participant {
+  firstName: string;
+  lastName: string;
+  email: string;
+}
+interface ParticipantError {
   firstName: string;
   lastName: string;
   email: string;
@@ -13,7 +17,6 @@ interface Participant {
 interface ParticipantFormProps {
   ticketQuantities: { [type: string]: number }; 
   ticketOptions: TicketOption[];
-  
 }
 
 interface TicketOption {
@@ -22,19 +25,27 @@ interface TicketOption {
   quantity: number;
 }
 
-
 const ParticipantForm: React.FC<ParticipantFormProps> = ({ ticketQuantities,ticketOptions }) => {
   const [participants, setParticipants] = useState<Participant[]>([]);
+  //
+  const [errors, setErrors] = useState<ParticipantError[]>([]);
+
+  const [showSuccessModal, setShowSuccessModal] = useState(false);
 
   // Generate initial participants based on ticket quantities
   React.useEffect(() => {
     const initialParticipants: Participant[] = [];
+    //
+    const initialErrors: ParticipantError[] = [];
+
     Object.entries(ticketQuantities).forEach(([type, quantity]) => {
       for (let i = 0; i < quantity; i++) {
         initialParticipants.push({ firstName: '', lastName: '', email: '' });
+        initialErrors.push({ firstName: '', lastName: '', email: '' });
       }
     });
     setParticipants(initialParticipants);
+    setErrors(initialErrors);
   }, [ticketQuantities]);
 
   const handleInputChange = (index: number, field: keyof Participant, value: string) => {
@@ -43,12 +54,32 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({ ticketQuantities,tick
     setParticipants(updatedParticipants);
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
-    e.preventDefault();
-    console.log(participants);
-    // Submit participant data
+  const validateForm = () => {
+    const updatedErrors: ParticipantError[] = participants.map(participant => {
+      return {
+        firstName: participant.firstName ? '' : 'First name is required',
+        lastName: participant.lastName ? '' : 'Last name is required',
+        email: participant.email.match(/\S+@\S+\.\S+/) ? '' : 'Email is invalid',
+      };
+    });
+
+    setErrors(updatedErrors);
+    return !updatedErrors.some(error => error.firstName || error.lastName || error.email);
   };
 
+  const handleSubmit = (e: React.FormEvent) => {
+    e.preventDefault();
+    if (validateForm()) {
+      console.log(participants);
+      // Proceed with submitting participant data
+      setShowSuccessModal(true);
+    }
+  };
+  
+  const closeModal = () => {
+    setShowSuccessModal(false);
+  };
+  
     // Calculate subtotal
     const calculateSubtotal = () => {
       return ticketOptions.reduce((total, ticket) => total + (ticket.price * ticketQuantities[ticket.type]), 0);
@@ -64,7 +95,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({ ticketQuantities,tick
           <form onSubmit={handleSubmit} className="space-y-6">
             {participants.map((participant, index) => (
               <div key={index}>
-                <h2 className="text-xl font-bold mb-4">Attendee {index + 1}</h2>
+                <h2 className="text-xl font-bold">Attendee {index + 1}</h2>
                 {/* First Name and Last Name on the same line */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
                    <input
@@ -102,6 +133,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({ ticketQuantities,tick
             <button type="submit" className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover">
                         Submit
                     </button>
+                    {showSuccessModal && <SuccessModal onClose={closeModal} />}
           </form>
         </div>
 
