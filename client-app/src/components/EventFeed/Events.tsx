@@ -44,23 +44,20 @@ const Events: React.FC = () => {
     const filteredEvents = events.filter(event => {
         const eventDate = new Date(event.date).setHours(0,0,0,0);
         let startDateTime = startDate ? new Date(startDate).setHours(0,0,0,0) : null;
-        let endDateTime = endDate ? new Date(endDate).setHours(23,59,59,999) : startDateTime;
-    
-    
-        if (startDate) {
-            endDateTime = endDate ? new Date(endDate).setHours(23,59,59,999) : new Date(startDate).setHours(23,59,59,999);
-        }
+        let endDateTime = endDate ? new Date(endDate).setHours(23,59,59,999) : (startDate ? new Date(startDate).setHours(23,59,59,999) : null);
     
         const isInRange = (!startDateTime || eventDate >= startDateTime) && (!endDateTime || eventDate <= endDateTime);
     
         const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              event.topic.toLowerCase().includes(searchQuery.toLowerCase()) ||
-                              event.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase()));
+        event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
+        (event.topic && event.topic.toLowerCase().includes(searchQuery.toLowerCase())) ||
+        (event.categories && event.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())));
+
     
         return isInRange && matchesSearch;
     });
+    
     
       
 

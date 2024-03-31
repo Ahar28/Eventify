@@ -33,12 +33,17 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     isWishlisted ? removeFromWishlist(event.id) : addToWishlist(event);
 };
 
+const formatDate = (dateString: string) => {
+  const date = new Date(dateString);
+  return date.toLocaleDateString(undefined, { year: 'numeric', month: 'long', day: 'numeric' });
+};
+
   return (
     <div className="h-[550px] w-[320px] cursor-pointer" key={event.id} onClick={handleClick}>
       <div className="relative rounded-xl overflow-hidden">
         <img src={event.image} alt={event.name} />
         <div className="absolute top-4 right-4 flex items-center bg-white text-black rounded-full py-2 px-4 text-xs font-semibold">
-          <span>{event.date}</span>
+        <span>{formatDate(event.date)}</span>
           <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">
             {isWishlisted ? <FaHeart size={15} /> : <FaRegHeart size={15} />}
           </button>
