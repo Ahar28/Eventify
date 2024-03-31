@@ -6,7 +6,7 @@ import { useWishlist } from "../../context/WishlistContext";
 interface EventCardProps {
   key: React.Key;
   event: {
-    id: number;
+    id: string;
     name: string;
     date: string;
     location: string;
@@ -22,6 +22,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const navigate = useNavigate();
 
   const isWishlisted = wishlist.some(e => e.id === event.id);
+
 
   const handleClick = () => {
     navigate(`/events/${event.id}`,{ state: { event } });

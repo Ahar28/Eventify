@@ -3,9 +3,12 @@ import EventCard from '../EventCard/index';
 import Container from '../Container';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
+import { getEventsExcludeOrganizer } from '../../services/EventService';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
 
 interface Event {
-    id: number;
+    id: string;
     name: string;
     date: string;
     location: string;
@@ -15,94 +18,19 @@ interface Event {
     categories: string[];
 }
 
-const events: Event[] = [
-    {
-        id: 1,
-        name: 'Tech Innovations Conference 2024',
-        date: '2024-03-05',
-        location: 'San Francisco, CA',
-        description: 'A gathering of the brightest minds in technology to discuss future innovations.',
-        image: 'https://picsum.photos/500/500?random=1',
-        topic: 'Technology',
-        categories: ['Innovation', 'Tech Trends'],
-    },
-    {
-        id: 2,
-        name: 'Global Music Festival 2024',
-        date: '2024-04-22',
-        location: 'New York, NY',
-        description: 'Experience the world through music at this vibrant festival featuring artists from around the globe.',
-        image: 'https://picsum.photos/500/500?random=2',
-        topic: 'Music',
-        categories: ['Live Performances', 'International'],
-    },
-    {
-        id: 3,
-        name: 'International Art Expo 2024',
-        date: '2024-05-15',
-        location: 'Paris, France',
-        description: 'Discover contemporary art from top artists and galleries from over 30 countries.',
-        image: 'https://picsum.photos/500/500?random=3',
-        topic: 'Art',
-        categories: ['Contemporary', 'Galleries'],
-    },
-    {
-        id: 4,
-        name: 'Marathon City 2024',
-        date: '2024-06-03',
-        location: 'Chicago, IL',
-        description: 'Join thousands of runners in one of the most scenic marathons in the world.',
-        image: 'https://picsum.photos/500/500?random=4',
-        topic: 'Sports',
-        categories: ['Marathon', 'Running'],
-    },
-    {
-        id: 5,
-        name: 'Educators Global Summit 2024',
-        date: '2024-07-20',
-        location: 'London, UK',
-        description: 'A conference dedicated to innovation in education and teaching methodologies.',
-        image: 'https://picsum.photos/500/500?random=5',
-        topic: 'Education',
-        categories: ['Innovation', 'Teaching Methodologies'],
-    },
-    {
-        id: 6,
-        name: 'International Food & Wine Festival 2024',
-        date: '2024-08-25',
-        location: 'Rome, Italy',
-        description: 'Taste your way around the globe with world-class cuisine and exquisite wines.',
-        image: 'https://picsum.photos/500/500?random=6',
-        topic: 'Cuisine',
-        categories: ['Food', 'Wine', 'International Cuisine'],
-    },
-    {
-        id: 7,
-        name: 'Green Earth Environmental Summit 2024',
-        date: '2024-09-17',
-        location: 'Berlin, Germany',
-        description: 'A platform for sharing innovative solutions to environmental challenges.',
-        image: 'https://picsum.photos/500/500?random=7',
-        topic: 'Environment',
-        categories: ['Sustainability', 'Innovative Solutions'],
-    },
-    {
-        id: 8,
-        name: 'Space Exploration Symposium 2024',
-        date: '2024-10-11',
-        location: 'Houston, TX',
-        description: 'A symposium on the latest developments and future prospects in space exploration.',
-        image: 'https://picsum.photos/500/500?random=8',
-        topic: 'Science',
-        categories: ['Space Exploration', 'Astrophysics'],
-    },
-];
 
 
 const Events: React.FC = () => {
     const [searchQuery, setSearchQuery] = useState('');
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [startDate, endDate] = dateRange;
+    const [events, setEvents] = useState<Event[]>([]);
+
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+        fetchEventsExcludeOrganizer(user).then(setEvents);
+    }, [user]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -168,16 +96,44 @@ const Events: React.FC = () => {
                 </div>
             </div>
             <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 mt-8">
-                {filteredEvents.length > 0 ? (
-                    filteredEvents.map((event) => (
-                        <EventCard key={event.id} event={event} />
-                    ))
-                ) : (
-                    <p style={{ textAlign: 'center', fontSize: '20px', color: '#666', width: '100%' }}>No events found.</p>
-                )}
+                    {filteredEvents.length > 0 ? (
+                        filteredEvents.map((event) => (
+                            <EventCard key={event.id} event={event} />
+                        ))
+                    ) : (
+                        <p style={{ textAlign: 'center', fontSize: '20px', color: '#666', width: '100%' }}>No events found.</p>
+                    )}
             </div>
         </Container>
     );
 };
+
+export async function fetchEventsExcludeOrganizer(user: { id: string; }): Promise<any[]> {
+    try{
+    const response = await getEventsExcludeOrganizer(user.id);
+    const data = await response.data;
+        console.log(data);
+        if (response?.data) {
+            const mappedEvents = data.data.map((event: any) => ({
+                id: event._id, 
+                name: event.eventName,
+                date: event.eventStartDateTime, 
+                location: event.details.venue, 
+                description: event.details.description,
+                image: event.titlePicture, 
+            }));
+            console.log("Excluded Organizer Events:", mappedEvents);
+            return mappedEvents;
+        } else {
+            console.error('Failed to fetch events:', data.message);
+            return [];
+        }
+    } 
+    catch (error) {
+        console.error('Error fetching events:', error);
+        return [];
+    }
+}
+
 
 export default Events;

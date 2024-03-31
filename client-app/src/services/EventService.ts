@@ -20,3 +20,13 @@ export async function getEventsByOrganizer(organizerId: string) {
         return null;
     }    
 }
+
+export async function getEventsExcludeOrganizer(organizerId: string) {
+    try {
+        const response = await getData("/event/events-exclude-organizer/" + organizerId);
+        return response;
+    } catch (error) {
+        console.error("Error getting event:", error);
+        return null;
+    }    
+}

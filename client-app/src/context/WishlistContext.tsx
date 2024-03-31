@@ -2,7 +2,7 @@
 import React, { createContext, useContext, ReactNode, useState } from 'react';
 
 interface Event {
-  id: number;
+  id: string;
   name: string;
   date: string;
   location: string;
@@ -15,7 +15,7 @@ interface Event {
 interface WishlistContextType {
   wishlist: Event[];
   addToWishlist: (event: Event) => void;
-  removeFromWishlist: (id: number) => void;
+  removeFromWishlist: (id: string) => void;
 }
 
 const WishlistContext = createContext<WishlistContextType | undefined>(undefined);
@@ -37,7 +37,7 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
     }
   };
 
-  const removeFromWishlist = (id: number) => {
+  const removeFromWishlist = (id: string) => {
     setWishlist(currentWishlist => currentWishlist.filter(e => e.id !== id));
   };
 

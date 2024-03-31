@@ -1,7 +1,8 @@
 import { Request, Response } from "express";
 import Event from "../../../models/Event";
 import sendResponse from "../../../utils/response";
-import User from "../../../models/User";
+import User  from "../../../models/User";
+import mongoose from "mongoose";
 
 export const createEvent = async (req: Request, res: Response) => {
   const {
@@ -208,3 +209,35 @@ export const getEventsByOrganizer = async (req: Request, res: Response) => {
     });
   }
 };
+
+export const getEventsExcludingOrganizer = async (req: Request, res: Response) => {
+  const loggedInUserId = req.params.organizerId;
+  console.log(loggedInUserId);
+  console.log(loggedInUserId);
+  if (!loggedInUserId || !mongoose.Types.ObjectId.isValid(loggedInUserId)) {
+    return sendResponse(res, 400, {
+      success: false,
+      message: "A valid logged-in user ID is required",
+    });
+  }
+
+  try {
+    const events = await Event.find({
+      organizer: { $ne: new mongoose.Types.ObjectId(loggedInUserId) },
+      isActive: true,
+    });
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Events retrieved successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Error retrieving events:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while retrieving events",
+    });
+  }
+};
+
