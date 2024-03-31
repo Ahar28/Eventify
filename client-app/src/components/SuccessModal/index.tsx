@@ -2,6 +2,7 @@ import React from 'react';
 import Container from '../Container';
 import { FaTimes } from 'react-icons/fa';
 import { PiSealCheckFill } from "react-icons/pi";
+import Button from '../UI/Button';
 
 interface SuccessModalProps {
   onClose: () => void;
@@ -23,6 +24,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
           <h1 className="text-3xl font-bold mb-4">Success!</h1>
           <p className="mb-4">Your tickets have been registered successfully.</p>
           <PiSealCheckFill size={75} className="text-green-500" />
+          <Button onClick={onClose} className="absolute top-20 right-0 m-4" >View Your Ticket</Button>
         </div>
       </div>
     </div>
