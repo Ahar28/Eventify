@@ -1,6 +1,10 @@
 import React, { useState } from "react";
+import { useLocation, useNavigate } from "react-router-dom";
+import { resetPassword } from "../../services/UserService";
 
 const ResetPasswordForm: React.FC = () => {
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState('');
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -9,6 +13,8 @@ const ResetPasswordForm: React.FC = () => {
     password: "",
     confirmPassword: "",
   });
+  const location = useLocation();
+  const userId = location.search.split("=")[1];
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -36,11 +42,23 @@ const ResetPasswordForm: React.FC = () => {
     return formIsValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form data submitted:", formData);
-      // Here you can add the logic to update the password
+      const userData = { userId: userId, newPassword: formData.password }
+      const response = await resetPassword(userData);
+      if (response?.data) {
+        if (response?.status === 200) {
+          navigate('/auth/login');
+        } else {
+          e.stopPropagation();
+          setErrorMsg("Something went wrong!");
+        }
+      } else {
+        let message: string = response?.response?.data.message;
+        setErrorMsg(message);
+      }
     }
   };
 
@@ -89,6 +107,7 @@ const ResetPasswordForm: React.FC = () => {
         )}
       </div>
       <div className="flex items-center justify-between mb-4">
+        {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
         <button
           type="submit"
           className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover"
