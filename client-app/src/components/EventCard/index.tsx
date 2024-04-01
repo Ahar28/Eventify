@@ -28,10 +28,14 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
     navigate(`/events/${event.id}`,{ state: { event } });
   };
 
-  const toggleWishlist = (e: React.MouseEvent) => {
-    e.stopPropagation();
-    isWishlisted ? removeFromWishlist(event.id) : addToWishlist(event);
-};
+  const toggleWishlist = async (e: React.MouseEvent) => {
+    e.stopPropagation(); 
+    if (isWishlisted) {
+      await removeFromWishlist(event.id); 
+    } else {
+      await addToWishlist(event); 
+    }
+  };
 
 const formatDate = (dateString: string) => {
   const date = new Date(dateString);

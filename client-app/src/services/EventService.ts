@@ -1,5 +1,8 @@
+import axios from "axios";
 import { Event } from "../pages/UserDashboard/AddEvent";
 import { getData, postData } from "./utils";
+
+const API_URL = "http://localhost:8000/api";
 
 export async function createEvent(eventData: Event) {
     try {
@@ -30,3 +33,26 @@ export async function getEventsExcludeOrganizer(organizerId: string) {
         return null;
     }    
 }
+
+interface WishlistData {
+    userId: string;
+    eventId: string;
+  }
+  
+  export const addToWishlist = async ({ userId, eventId }: WishlistData) => {
+    try {
+        const response = await axios.post(`${API_URL}/event/wishlist/add`, { userId, eventId });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
+
+export const removeFromWishlist = async (userId: string, eventId: string) => {
+    try {
+        const response = await axios.delete(`${API_URL}/event/wishlist/remove/${userId}`, { data: { eventId } });
+        return response.data;
+    } catch (error) {
+        throw error;
+    }
+};
