@@ -34,7 +34,7 @@ const Authentication: React.FC = () => {
             className="h-screen w-full object-cover rounded-3xl"
           />
         </div>
-        <div className="w-full lg:w-2/5 flex justify-center items-center min-h-screen">
+        <div className="w-full lg:w-2/5 flex justify-center items-center min-h-screen ">
           {renderComponents(location)}
         </div>
       </div>

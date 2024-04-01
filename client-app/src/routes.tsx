@@ -25,8 +25,8 @@ const EventRoutes: React.FC = () => {
       <Route path="/contact" element={<ContactUs />} />
       <Route path = '/events' element = {<Eventfeed />} />
       <Route path = '/wishlist' element = {<Wishlist />} />
-      <Route path = '/calendar' element = {<Calendar />} /> 
-      <Route path="/events/:id" element={<EventPage />} /> 
+      <Route path = '/calendar' element = {<Calendar />} />
+      <Route path="/events/:id" element={<EventPage />} />
       <Route path="/events/:id/register/participant-info" element={<ParticipantInfoPage />} />
       <Route path="*" element={<WorkingInProgress />} />
     </Routes>
