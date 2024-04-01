@@ -3,6 +3,7 @@ import React, { createContext, useContext, ReactNode, useState, useCallback } fr
 import { selectUser } from '../redux/userSlice';
 import { useSelector } from 'react-redux';
 import axios from 'axios';
+import { addToWishlistService, removeFromWishlistService } from '../services/EventService';
 
 interface Event {
   id: string;
@@ -37,33 +38,26 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
   const userId = user?.id;
 
   const addToWishlist = useCallback(async (event: Event) => {
-    if (!wishlist.some(e => e.id === event.id)) {
-      try {
-        const response = await axios.post(`http://localhost:8000/api/event/wishlist/add`, {
-          userId,
-          eventId: event.id,
-        });
-        if (response.data.success) {
-          setWishlist(currentWishlist => [...currentWishlist, event]);
-        }
-      } catch (error) {
-        console.error('Error adding to wishlist:', error);
+    try {
+      const data = await addToWishlistService(userId, event.id);
+      if (data.success) {
+        setWishlist(currentWishlist => [...currentWishlist, event]);
       }
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
     }
   }, [wishlist, userId]);
 
   const removeFromWishlist = useCallback(async (id: string) => {
     try {
-      const response = await axios.delete(`http://localhost:8000/api/event/wishlist/remove/${userId}`, {
-        data: { eventId: id },
-      });
-      if (response.data.success) {
+      const data = await removeFromWishlistService(userId, id);
+      if (data.success) {
         setWishlist(currentWishlist => currentWishlist.filter(e => e.id !== id));
       }
     } catch (error) {
       console.error('Error removing from wishlist:', error);
     }
-  }, [userId]);
+  }, [wishlist, userId]);
 
   return (
     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>

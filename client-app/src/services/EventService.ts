@@ -1,6 +1,7 @@
 import axios from "axios";
 import { Event } from "../pages/UserDashboard/AddEvent";
-import { getData, postData } from "./utils";
+import { deleteData, getData, postData } from "./utils";
+import { json } from "stream/consumers";
 
 const API_URL = "http://localhost:8000/api";
 
@@ -39,20 +40,27 @@ interface WishlistData {
     eventId: string;
   }
   
-  export const addToWishlist = async ({ userId, eventId }: WishlistData) => {
+  export const addToWishlistService = async (userId: string, eventId: string) => {
     try {
-        const response = await axios.post(`${API_URL}/event/wishlist/add`, { userId, eventId });
-        return response.data;
-    } catch (error) {
-        throw error;
-    }
-};
+        const data = {userId, eventId};
+      const response = await postData(JSON.stringify(data), "/event/wishlist/add");
 
-export const removeFromWishlist = async (userId: string, eventId: string) => {
-    try {
-        const response = await axios.delete(`${API_URL}/event/wishlist/remove/${userId}`, { data: { eventId } });
-        return response.data;
+      return response.data;
     } catch (error) {
-        throw error;
+      console.error('Error adding to wishlist:', error);
+      throw error;
     }
-};
+  };
+  
+
+  export const removeFromWishlistService = async (userId: string, eventId: string) => {
+    try {
+      const response = await deleteData(`/event/wishlist/remove/${userId}`, { eventId });
+      return response.data;
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+      throw error;
+    }
+  };
+  
+  
