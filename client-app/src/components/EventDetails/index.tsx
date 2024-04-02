@@ -9,7 +9,7 @@ import ShareModal from '../ShareModal';
 import TicketPurchaseModal from '../TicketPurchaseModal';
 
 interface Event {
-    id: number;
+    id: string;
     name: string;
     organizer: string;
     date: string;
