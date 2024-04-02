@@ -63,3 +63,24 @@ export async function getData(url: string, token?: string) {
         return error;
     }
 }
+
+export async function deleteData(url: string, body?: any, token?: string) {
+    try {
+        var myHeaders: any = {};
+        myHeaders["Accept"] = "application/json";
+        myHeaders["Access-Control-Allow-Origin"] = "*";
+        if (token) myHeaders["Authorization"] = `Bearer ${token}`;
+
+        const requestOptions = {
+            headers: myHeaders,
+            data: body 
+        };
+
+        const response = await axios.delete(API_URL + url, requestOptions);
+        return response;
+
+    } catch (error: any) {
+        console.error("Error on delete request:", error.response || error.message || error);
+        throw error; 
+    }
+}

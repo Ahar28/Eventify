@@ -5,7 +5,7 @@ import Button from '../UI/Button';
 import Container from '../Container';
 
   interface Event {
-  id: number;
+  id: string;
   name: string;
   organizer: string;
   date: string;
