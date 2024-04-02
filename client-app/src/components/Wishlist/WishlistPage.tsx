@@ -1,8 +1,8 @@
 import React, { useEffect, useState } from 'react';
 import { useWishlist } from '../../context/WishlistContext';
 import EventCard from '../../components/EventCard';
-import Container from '../../components/Container'; 
-import { getWishlistEvents as getWishlistEventsService } from '../../services/EventService'; // Adjust the import path as necessary
+import Container from '../../components/Container';
+import { getWishlistEvents as getWishlistEventsService } from '../../services/EventService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
 
@@ -17,21 +17,20 @@ interface Event {
   categories: string[];
 }
 
-
-
 const WishlistPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const user = useSelector(selectUser);
   const userId = user?.id;
+  const { wishlist } = useWishlist();
   useEffect(() => {
     const fetchEvents = async () => {
       try {
         const response = await getWishlistEventsService(userId);
         console.log(response);
-        const mappedEvents = response.data.map((event :any)=> ({
+        const mappedEvents = response.data.map((event: any) => ({
           id: event._id,
           name: event.eventName,
-          date: event.eventStartDateTime, 
+          date: event.eventStartDateTime,
           location: event.details.venue,
           description: event.details.description,
           image: event.titlePicture,
@@ -41,12 +40,11 @@ const WishlistPage: React.FC = () => {
         console.error("Error fetching wishlist events:", error);
       }
     };
-  
+
     if (userId) {
       fetchEvents();
     }
-  }, [userId]);
-  
+  }, [userId, wishlist]);
 
   return (
     <Container>

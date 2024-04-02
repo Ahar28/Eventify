@@ -63,6 +63,7 @@ export const login = async (
         lastName: user.lastName,
         role: user.role,
         userId: user._id,
+        bio: user.bio
       },
     });
   } catch (error) {

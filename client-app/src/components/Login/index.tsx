@@ -52,6 +52,7 @@ const LoginForm: React.FC = () => {
               firstName: userData.firstName,
               lastName: userData.lastName,
               id: userData.userId,
+              bio: userData.bio
             })
           )
           localStorage.setItem('token', userData.token);
