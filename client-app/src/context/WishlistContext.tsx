@@ -1,7 +1,12 @@
 
-import React, { createContext, useContext, ReactNode, useState } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
+import { selectUser } from '../redux/userSlice';
+import { useSelector } from 'react-redux';
+import axios from 'axios';
+import { addToWishlistService, removeFromWishlistService } from '../services/EventService';
 
 interface Event {
+  id: string;
   id: string;
   name: string;
   date: string;
@@ -15,6 +20,7 @@ interface Event {
 interface WishlistContextType {
   wishlist: Event[];
   addToWishlist: (event: Event) => void;
+  removeFromWishlist: (id: string) => void;
   removeFromWishlist: (id: string) => void;
 }
 
@@ -30,16 +36,30 @@ export const useWishlist = (): WishlistContextType => {
 
 export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) => {
   const [wishlist, setWishlist] = useState<Event[]>([]);
+  const user = useSelector(selectUser);
+  const userId = user?.id;
 
-  const addToWishlist = (event: Event) => {
-    if (!wishlist.some(e => e.id === event.id)) {
-      setWishlist(currentWishlist => [...currentWishlist, event]);
+  const addToWishlist = useCallback(async (event: Event) => {
+    try {
+      const data = await addToWishlistService(userId, event.id);
+      if (data.success) {
+        setWishlist(currentWishlist => [...currentWishlist, event]);
+      }
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
     }
-  };
+  }, [wishlist, userId]);
 
-  const removeFromWishlist = (id: string) => {
-    setWishlist(currentWishlist => currentWishlist.filter(e => e.id !== id));
-  };
+  const removeFromWishlist = useCallback(async (id: string) => {
+    try {
+      const data = await removeFromWishlistService(userId, id);
+      if (data.success) {
+        setWishlist(currentWishlist => currentWishlist.filter(e => e.id !== id));
+      }
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+    }
+  }, [wishlist, userId]);
 
   return (
     <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>

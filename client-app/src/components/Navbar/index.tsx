@@ -19,6 +19,7 @@ const navLinks: NavLinkData[] = [
   { name: "Contact Us", to: "/contact" },
   { name: "Dashboard", to: "/dashboard", requireAuth: true },
   { name: "Wishlist", to: "/wishlist", requireAuth: true },
+  { name: "Calendar", to: "/calendar", requireAuth: true },
 ];
 
 const Navbar: React.FC = () => {

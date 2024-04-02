@@ -36,10 +36,10 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
     const [ticketCount, setTicketCount] = useState(1);
     const ticketPrice = 9.99;
 
-    // Check if the event is in the wishlist
+    
     const isWishlisted = wishlist.some(wishlistEvent => wishlistEvent.id === event.id);
 
-    // Function to toggle wishlist status
+    
     const toggleWishlist = () => {
         if (isWishlisted) {
         removeFromWishlist(event.id);
@@ -54,7 +54,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ event }) => {
         } else {
           document.body.style.overflow = '';
         }
-    // Clean up function to reset overflow when component unmounts or modal closes
+   
     return () => {
         document.body.style.overflow = '';
       };

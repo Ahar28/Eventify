@@ -1,3 +1,3 @@
-import { login, register } from "./login";
+import { login, register, sendVerificationLink, resetPassword } from "./login";
 
-export default { login, register };
+export default { login, register, sendVerificationLink, resetPassword };

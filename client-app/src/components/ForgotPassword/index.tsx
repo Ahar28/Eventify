@@ -1,8 +1,12 @@
 import React, { useState } from "react";
+import { sendVerificationLink } from "../../services/UserService";
+import { useNavigate } from "react-router-dom";
 
 const ForgotPasswordForm: React.FC = () => {
   const [formData, setFormData] = useState({ email: "" });
   const [errors, setErrors] = useState({ email: "" });
+  const navigate = useNavigate();
+  const [errorMsg, setErrorMsg] = useState('');
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -25,11 +29,19 @@ const ForgotPasswordForm: React.FC = () => {
     return formIsValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form data submitted:", formData);
-      // Here you can add the logic to send a verification link to the email
+      const response = await sendVerificationLink(formData);
+      if (response?.data) {
+        if (response?.status === 200) {
+          navigate('/login');
+        }
+      } else {
+        e.stopPropagation();
+        setErrorMsg("Something went wrong!");
+      }
     }
   };
 
@@ -59,6 +71,7 @@ const ForgotPasswordForm: React.FC = () => {
         )}
       </div>
       <div className="flex items-center justify-between mb-4">
+        {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
         <button
           type="submit"
           className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover"

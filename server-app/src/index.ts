@@ -17,7 +17,7 @@ app.get("/", (req: Request, res: Response) => {
   res.send("Welcome to Eventify Server");
 });
 
-app.use("/api/", routes);
+app.use("/api", routes);
 
 app.listen(port, async () => {
   await connect();
