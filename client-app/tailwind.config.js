@@ -6,12 +6,13 @@ module.exports = {
         xs: "410px",
       },
       backgroundImage: {
-        homefrontbg: "url(./assets/home/front_world.png)",
+        homefrontbg: "url(./assets/home/front_world.jpg)",
         "quiz-bg": "url(./assets/home/quiz_bg.png)",
       },
       colors: {
+        "title-color": "#2C6D99",
         "button-primary": "#1b5785",
-        "button-primary-hover": "#062b47",
+        "button-primary-hover": "#2C6D99",
       },
     },
   },
