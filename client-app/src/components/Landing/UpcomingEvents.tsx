@@ -1,11 +1,14 @@
-import React from 'react';
+import React, { useEffect, useState } from 'react';
 import EventCard from '../EventCard/index';
 import SectionTitle from './SectionTitle';
 import Container from '../Container';
 import { useNavigate } from 'react-router-dom';
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
+import { fetchEventsExcludeOrganizer } from '../EventFeed/Events'
 
 interface Event {
-    id: number;
+    id: string;
     name: string;
     date: string;
     location: string;
@@ -13,79 +16,24 @@ interface Event {
     image: string;
 }
 
-const events: Event[] = [
-    {
-        id: 1,
-        name: 'Tech Innovations Conference 2024',
-        date: 'March 5th, 2024',
-        location: 'San Francisco, CA',
-        description: 'A gathering of the brightest minds in technology to discuss future innovations.',
-        image: 'https://picsum.photos/500/500?random=1',
-    },
-    {
-        id: 2,
-        name: 'Global Music Festival 2024',
-        date: 'April 22nd, 2024',
-        location: 'New York, NY',
-        description: 'Experience the world through music at this vibrant festival featuring artists from around the globe.',
-        image: 'https://picsum.photos/500/500?random=2',
-    },
-    {
-        id: 3,
-        name: 'International Art Expo 2024',
-        date: 'May 15th, 2024',
-        location: 'Paris, France',
-        description: 'Discover contemporary art from top artists and galleries from over 30 countries.',
-        image: 'https://picsum.photos/500/500?random=3',
-    },
-    {
-        id: 4,
-        name: 'Marathon City 2024',
-        date: 'June 3rd, 2024',
-        location: 'Chicago, IL',
-        description: 'Join thousands of runners in one of the most scenic marathons in the world.',
-        image: 'https://picsum.photos/500/500?random=4',
-    },
-    {
-        id: 5,
-        name: 'Educators Global Summit 2024',
-        date: 'July 20th, 2024',
-        location: 'London, UK',
-        description: 'A conference dedicated to innovation in education and teaching methodologies.',
-        image: 'https://picsum.photos/500/500?random=5',
-    },
-    {
-        id: 6,
-        name: 'International Food & Wine Festival 2024',
-        date: 'August 25th, 2024',
-        location: 'Rome, Italy',
-        description: 'Taste your way around the globe with world-class cuisine and exquisite wines.',
-        image: 'https://picsum.photos/500/500?random=6',
-    },
-    {
-        id: 7,
-        name: 'Green Earth Environmental Summit 2024',
-        date: 'September 17th, 2024',
-        location: 'Berlin, Germany',
-        description: 'A platform for sharing innovative solutions to environmental challenges.',
-        image: 'https://picsum.photos/500/500?random=7',
-    },
-    {
-        id: 8,
-        name: 'Space Exploration Symposium 2024',
-        date: 'October 11th, 2024',
-        location: 'Houston, TX',
-        description: 'A symposium on the latest developments and future prospects in space exploration.',
-        image: 'https://picsum.photos/500/500?random=8',
-    },
-];
 
 const TopUpcomingEvents: React.FC = () => {
     const navigate = useNavigate();
+    const [events, setEvents] = useState<Event[]>([]);
+    
+    const user = useSelector(selectUser);
+
+    useEffect(() => {
+        fetchEventsExcludeOrganizer(user).then(setEvents);
+    }, [user]);
+
+    
 
     const handleDiscoverEventsClick = () => {
         navigate('/events');
     };
+
+    
     return (
         <section className="my-14">
             <Container>
@@ -109,3 +57,5 @@ const TopUpcomingEvents: React.FC = () => {
 };
 
 export default TopUpcomingEvents;
+
+
