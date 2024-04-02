@@ -1,4 +1,4 @@
-import { postData } from "./utils";
+import { postData, putData } from "./utils";
 
 export async function loginUser(userData: any) {
   try {
@@ -42,6 +42,16 @@ export async function resetPassword(userData: any) {
     return response;
   } catch (error) {
     console.error("Error adding user:", error);
+    return null;
+  }
+}
+
+export async function updateUser(userId: string, userData: any) {
+  try {
+    const response = await putData(JSON.stringify(userData), "/user/update/" + userId);
+    return response;
+  } catch (error) {
+    console.error("Error updating user: ", error);
     return null;
   }
 }
