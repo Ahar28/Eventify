@@ -212,8 +212,6 @@ export const getEventsByOrganizer = async (req: Request, res: Response) => {
 
 export const getEventsExcludingOrganizer = async (req: Request, res: Response) => {
   const loggedInUserId = req.params.organizerId;
-  console.log(loggedInUserId);
-  console.log(loggedInUserId);
   if (!loggedInUserId || !mongoose.Types.ObjectId.isValid(loggedInUserId)) {
     return sendResponse(res, 400, {
       success: false,

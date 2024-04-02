@@ -7,7 +7,7 @@ interface IWishlist extends Document {
 
 const wishlistSchema: Schema = new Schema({
   user: { type: mongoose.Schema.Types.ObjectId, ref: 'User', required: true },
-  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'Event' }],
+  events: [{ type: mongoose.Schema.Types.ObjectId, ref: 'events' }],
 });
 
 const Wishlist = mongoose.model<IWishlist>('Wishlist', wishlistSchema);

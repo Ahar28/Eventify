@@ -50,3 +50,17 @@ export const removeFromWishlist = async (req: Request, res: Response) => {
     return sendResponse(res, 500, { success: false, message: "Could not remove from wishlist" });
   }
 };
+
+export const getWishlistEvents = async (req: Request, res: Response) => {
+  try {
+    const { userId } = req.params;
+    const wishlist = await Wishlist.findOne({ user: userId }).populate('events');
+    if (!wishlist) {
+      return sendResponse(res, 404, { success: false, message: "Wishlist not found" });
+    }
+    return sendResponse(res, 200, { success: true, data: wishlist.events });
+  } catch (error) {
+    console.error("Error getting wishlist events:", error);
+    return sendResponse(res, 500, { success: false, message: "Could not fetch wishlist events" });
+  }
+};

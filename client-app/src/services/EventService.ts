@@ -63,4 +63,13 @@ interface WishlistData {
     }
   };
   
+  export const getWishlistEvents = async (userId: string) => {
+    try {
+      const response = await getData(`/event/wishlist/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting wishlist events:', error);
+      throw error;
+    }
+  };
   
