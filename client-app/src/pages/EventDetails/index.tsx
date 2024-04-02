@@ -1,16 +1,16 @@
 import React from 'react';
 import EventDetails from '../../components/EventDetails';
-import { useLocation } from "react-router-dom";
+import { useParams } from "react-router-dom";
 
 const EventPage: React.FC = () => {
 
-    const location = useLocation();
-    const event = location.state.event;
-    // console.log(event);
- 
+    // const eventId  = useParams< string >();
+    const { id } = useParams<{ id: string }>();
+    
+
     return (
              <div className="flex justify-center items-center min-h-screen bg-gray-100">
-                <EventDetails event={event} />
+                <EventDetails eventId = {id}  />
             </div>);
 };
 

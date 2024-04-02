@@ -7,7 +7,6 @@ import { addToWishlistService, removeFromWishlistService } from '../services/Eve
 
 interface Event {
   id: string;
-  id: string;
   name: string;
   date: string;
   location: string;
@@ -20,7 +19,6 @@ interface Event {
 interface WishlistContextType {
   wishlist: Event[];
   addToWishlist: (event: Event) => void;
-  removeFromWishlist: (id: string) => void;
   removeFromWishlist: (id: string) => void;
 }
 

@@ -1,7 +1,7 @@
 import React, { useState} from 'react';
 
 interface ImageCarouselProps {
-    images: string[] | string; // Either an array of images or a single image
+    images: string[] | string | undefined; // Either an array of images or a single image
 }
 
 //if I want to show multiple images
