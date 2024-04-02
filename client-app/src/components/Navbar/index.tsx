@@ -14,12 +14,11 @@ interface NavLinkData {
 const navLinks: NavLinkData[] = [
   { name: "Home", to: "/" },
   { name: "Events", to: "/events" },
-  { name: "News", to: "/news" },
+  { name: "Dashboard", to: "/dashboard", requireAuth: true },
+  { name: "Calendar", to: "/calendar", requireAuth: true },
+  { name: "Wishlist", to: "/wishlist", requireAuth: true },
   { name: "FAQs", to: "/faqs" },
   { name: "Contact Us", to: "/contact" },
-  { name: "Dashboard", to: "/dashboard", requireAuth: true },
-  { name: "Wishlist", to: "/wishlist", requireAuth: true },
-  { name: "Calendar", to: "/calendar", requireAuth: true },
 ];
 
 const Navbar: React.FC = () => {
