@@ -1,7 +1,9 @@
-import React, {useState} from "react";
+import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useWishlist } from "../../context/WishlistContext";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/userSlice";
 
 interface EventCardProps {
   key: React.Key;
@@ -20,17 +22,18 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   // const [isWishlisted, setIsWishlisted] = useState(false);
 
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   const isWishlisted = wishlist.some(e => e.id === event.id);
 
   const handleClick = () => {
-    navigate(`/events/${event.id}`,{ state: { event } });
+    navigate(`/events/${event.id}`, { state: { event } });
   };
 
   const toggleWishlist = (e: React.MouseEvent) => {
     e.stopPropagation();
     isWishlisted ? removeFromWishlist(event.id) : addToWishlist(event);
-};
+  };
 
   return (
     <div className="h-[550px] w-[320px] cursor-pointer" key={event.id} onClick={handleClick}>
@@ -38,9 +41,11 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
         <img src={event.image} alt={event.name} />
         <div className="absolute top-4 right-4 flex items-center bg-white text-black rounded-full py-2 px-4 text-xs font-semibold">
           <span>{event.date}</span>
-          <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">
-            {isWishlisted ? <FaHeart size={15} /> : <FaRegHeart size={15} />}
-          </button>
+          {user &&
+            <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">
+              {isWishlisted ? <FaHeart size={15} /> : <FaRegHeart size={15} />}
+            </button>
+          }
         </div>
 
       </div>
