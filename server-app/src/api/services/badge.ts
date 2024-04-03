@@ -18,7 +18,7 @@ export const checkAndGenerateBadge = async (userId: string) => {
 const userEvents = await Event.find({ "attendees.user": userId }).countDocuments();
 const userBadges = await Badge.find({ user: userId });
 
-const earnedBadgeTypes = new Set(userBadges.map((badge: typeof Badge) => badge.badgeType));
+const earnedBadgeTypes = new Set(userBadges.map(badge => badge.badgeType));
 for (const criteria of badgeCriteria) {
     if (userEvents >= criteria.threshold && !earnedBadgeTypes.has(criteria.badgeType)) {
         const newBadge = new Badge({
@@ -32,7 +32,7 @@ for (const criteria of badgeCriteria) {
         const user = await User.findById(userId);
         if (user && user.email) {
             const emailSubject = 'Congratulations on your new badge!';
-            const emailBody = `<p>Dear ${user.name},</p><p>Congratulations on earning a new badge in our platform! Keep attending events to earn more badges.</p><p>Best,</p><p>Your Team</p>`;
+            const emailBody = `<p>Dear ${user.firstName},</p><p>Congratulations on earning a new badge in our platform! Keep attending events to earn more badges.</p><p>Best,</p><p>Your Team</p>`;
             await sendEmail(user.email, emailSubject, emailBody);
         }
     }

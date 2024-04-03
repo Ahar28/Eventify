@@ -6,7 +6,7 @@ export const generateBadge = async (req: Request, res: Response) => {
   try {
     await checkAndGenerateBadge(req.params.userId);
       sendResponse(res, 200, { success: true, message: "Badge check and generation process completed successfully." });
-  } catch (error) {
+  } catch (error: any) {
       sendResponse(res, 400, { success: false, message: error.message });
   }
 };
