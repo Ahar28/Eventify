@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 
