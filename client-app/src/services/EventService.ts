@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Event } from "../pages/UserDashboard/AddEvent";
 import { deleteData, getData, postData } from "./utils";
 import { json } from "stream/consumers";
@@ -72,3 +71,15 @@ interface WishlistData {
       throw error;
     }
   };
+
+  export async function getEventsbyId(eventId: string) {
+    try {
+      console.log("server");
+      console.log("Event ID: ", eventId);
+        const response = await getData("/event/" + eventId);
+        return response;
+    } catch (error) {
+        console.error("Error getting event:", error);
+        return null;
+    }
+}

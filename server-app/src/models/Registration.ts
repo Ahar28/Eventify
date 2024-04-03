@@ -8,6 +8,13 @@ interface IRegistration extends Document {
   paymentStatus: "PAID" | "UNPAID" | "REFUNDED" | "PENDING";
   amountPaid?: number;
   notes?: string;
+  participants: [
+    {
+      firstName: String,
+      lastName: String,
+      email: String,
+    }
+  ],
 }
 
 const registrationSchema: Schema = new Schema(
@@ -44,6 +51,13 @@ const registrationSchema: Schema = new Schema(
     notes: {
       type: String,
     },
+    participants: [
+      {
+        firstName: String,
+        lastName: String,
+        email: String,
+      }
+    ],
   },
   { timestamps: true }
 );
