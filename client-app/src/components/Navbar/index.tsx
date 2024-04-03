@@ -97,7 +97,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden transition-all" id="mobile-menu">
+          <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg z-50 transition-all" id="mobile-menu">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-black">
               {navLinks.map((link) => (
                 (!link.requireAuth || user) && (
