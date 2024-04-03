@@ -15,6 +15,7 @@ export const generateAndDownloadCertificate = async (req: Request, res: Response
             return res.status(404).send("User or event not found.");
         }
 
+        console.log("Generating certificate for:", user.firstName, user.lastName, event.eventName, event.eventStartDateTime.toDateString());
         const doc = new PDFDocument();
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="certificate-${userId}-${eventId}.pdf"`);

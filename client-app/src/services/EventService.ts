@@ -83,3 +83,8 @@ interface WishlistData {
         return null;
     }
 }
+
+export const fetchParticipatoryEvents = async (userId: string) => {
+    const response = await getData(`/register/participation/${userId}`);
+    return response.data;
+};

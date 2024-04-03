@@ -1,40 +1,47 @@
-import { useState, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useSelector, useDispatch } from 'react-redux';
 import Container from '../../components/Container';
 import { selectUser, user as USER } from '../../redux/userSlice';
 import { updateUser } from '../../services/UserService';
 import { fetchUserBadges } from '../../services/BadgeService';
+import { fetchParticipatoryEvents } from '../../services/EventService';
 
 const UserProfile = () => {
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
     const [formData, setFormData] = useState({
-        firstName: '',
-        lastName: '',
-        email: '',
-        profilePicture: '',
-        bio: '',
+        firstName: user.firstName || '',
+        lastName: user.lastName || '',
+        email: user.email || '',
+        profilePicture: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&size=128`,
+        bio: user.bio || '',
         badge: '',
+        participatoryEvents: [],
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
-    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         if (user) {
-            fetchUserBadges(user.id).then(badgeData => {
-                const badgeType = badgeData?.data?.badgeType || 'No Badge';
-                setFormData(prevState => ({
-                    ...prevState,
-                    firstName: user.firstName,
-                    lastName: user.lastName,
-                    email: user.email,
-                    profilePicture: user.profilePicture || `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&size=128`,
-                    bio: user.bio,
-                    badge: badgeType,
-                }));
-            }).catch(error => console.error('Fetching badges failed:', error));
+            fetchUserBadges(user.id)
+                .then(badgeData => {
+                    const badgeType = badgeData?.data?.badgeType || 'No Badge';
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        badge: badgeType,
+                    }));
+                })
+                .catch(error => console.error('Fetching badges failed:', error));
+
+            fetchParticipatoryEvents(user.id)
+                .then(eventsData => {
+                    setFormData(prevFormData => ({
+                        ...prevFormData,
+                        participatoryEvents: eventsData.data || [],
+                    }));
+                })
+                .catch(err => console.error(err));
         }
     }, [user]);
 
@@ -51,20 +58,24 @@ const UserProfile = () => {
         setLoading(true);
         try {
             const response = await updateUser(user.id, formData);
-            if (response?.data) {
-                if (response?.status === 200) {
-                    let data = response.data.data;
-                    dispatch(USER({ ...user, firstName: data.firstName, lastName: data.lastName, bio: data.bio }));
-                    setEditMode(false);
-                    setError('');
-                }
+            if (response?.status === 200) {
+                let data = response.data.data;
+                dispatch(USER({ ...user, firstName: data.firstName, lastName: data.lastName, bio: data.bio }));
+                setEditMode(false);
+                setError('');
             } else {
                 setError(response?.data.message);
+                setError('Failed to update profile. Please try again.');
             }
         } catch (err) {
             setError('Failed to update profile. Please try again later.');
         }
         setLoading(false);
+    };
+
+    const handleCertificateDownload = (eventId: any) => {
+        const downloadUrl = `http://localhost:8000/api/event/certificate/${user.id}/${eventId}`;
+        window.open(downloadUrl, '_blank');
     };
 
     return (
@@ -139,6 +150,17 @@ const UserProfile = () => {
                                 disabled={!editMode}
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
                             />
+                        </div>
+                        <div>
+                            <label htmlFor="badges" className="block text-md font-medium text-gray-700">Participatory Events</label>
+                            <div className="mt-2">
+                                {formData.participatoryEvents.length > 0 ? formData.participatoryEvents.map((event: { _id: string, eventName: string }) => (
+                                    <div key={event._id} className="mb-4 p-4 border rounded-lg">
+                                        <h4 className="font-semibold">{event.eventName}</h4>
+                                        <button onClick={() => handleCertificateDownload(event._id)} className="mt-2 text-blue-500 hover:text-blue-700">Download Certificate</button>
+                                    </div>
+                                )) : <p>No participatory events found.</p>}
+                            </div>
                         </div>
                         {editMode ? (
                             <div className="flex justify-between">
