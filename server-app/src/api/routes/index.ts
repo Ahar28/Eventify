@@ -6,7 +6,6 @@ import payment from "./payment";
 import user from "./user";
 import register from "./register";
 import badge from "./badge";
-import certificate from "./certificate";
 
 router.use("/auth", auth);
 router.use("/event", event);
@@ -14,6 +13,5 @@ router.use("/payment", payment);
 router.use("/user", user);
 router.use("/register", register);
 router.use("/badge", badge);
-router.use("/certificate", certificate);
 
 export default router;

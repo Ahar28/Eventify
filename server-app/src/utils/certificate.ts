@@ -1,40 +1,34 @@
-// Example using Express and pdfkit for PDF generation
+// server-app/src/utils/certificate.ts
 import PDFDocument from 'pdfkit';
-import User from "../models/User";
+import User from '../models/User';
 import Event from '../models/Event';
 import { Request, Response } from 'express';
 
-export const generateAndDownloadCertificate = (req: Request, res: Response) => {
+export const generateAndDownloadCertificate = async (req: Request, res: Response) => {
     const { userId, eventId } = req.params;
 
-    const user = User.findById(userId).exec();
-    const event = Event.findById(eventId).exec();
+    try {
+        const user = await User.findById(userId);
+        const event = await Event.findById(eventId);
 
-    // Set up the PDF document
-    const doc = new PDFDocument();
-    res.setHeader('Content-Type', 'application/pdf');
-    res.setHeader('Content-Disposition', `attachment; filename="certificate-${userId}-${eventId}.pdf"`);
+        if (!user || !event) {
+            return res.status(404).send("User or event not found.");
+        }
 
-    // Pipe the PDF into the response
-    doc.pipe(res);
+        const doc = new PDFDocument();
+        res.setHeader('Content-Type', 'application/pdf');
+        res.setHeader('Content-Disposition', `attachment; filename="certificate-${userId}-${eventId}.pdf"`);
 
-    // Add content to the PDF
-    doc.rect(50, 50, 500, 700).stroke();
+        doc.pipe(res);
+        doc.fontSize(24).text('CERTIFICATE OF COMPLETION', { align: 'center' });
+        doc.moveDown();
+        doc.fontSize(18).text(`This certifies that ${user.firstName} ${user.lastName}`, { align: 'center' });
+        doc.moveDown();
+        doc.text(`has participated in the "${event.eventName}" on ${event.eventStartDateTime.toDateString()}.`, { align: 'center' });
+        doc.end();
 
-    doc.fontSize(24)
-      .text('CERTIFICATE OF COMPLETION', 100, 100, { align: 'center' });
-
-    doc.fontSize(18)
-        .text(`This is to certify that`, 100, 200)
-        .moveDown(0.5)
-        .text(`${user.firstName} ${user.lastName}`, { align: 'center' })
-        .moveDown(0.5)
-        .text(`Has successfully completed/participated in`, 100, 300)
-        .moveDown(0.5)
-        .text(`${event.eventName}`, { align: 'center' })
-        .moveDown(0.5)
-        .text(`held on ${event.eventStartDateTime}`, 100, 400);
-
-    // Finalize the PDF and end the stream
-    doc.end();
+    } catch (error) {
+        console.error('Certificate Generation Error:', error);
+        res.status(500).send("An error occurred while generating the certificate.");
+    }
 };
