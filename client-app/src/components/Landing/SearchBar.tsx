@@ -81,7 +81,7 @@ const SearchBar: React.FC = () => {
           <div className="grid grid-cols-2 gap-4">
             {events.slice(0, 4).map((event) => (
               <div key={event.id} className="flex items-center gap-2 flex-wrap border-[1px] rounded-md p-2 cursor-pointer hover:bg-gray-600 hover:text-white border-gray-500" onClick={() => handleClick(event.id)}>
-                <img src={event.image || random} alt="event" className="w-12 h-12 rounded-full" onClick={() => handleClick(event.id)}/>
+                <img src={event.image || random} alt="event" className="w-12 h-12 rounded-full" onClick={() => handleClick(event.id)} />
                 <div>
                   <h1 className="font-light capitalize text-base">{event.name.length >= 14 ? `${event.name.substring(0, 14)}...` : event.name}</h1>
                   <p className="opacity-40">{formatDate(event.date)}</p>
