@@ -13,3 +13,13 @@ export async function createEventRegistration(eventData: TicketRegistration) {
         return null;
     }
 }
+
+export async function deleteEventRegistration(eventData: string) {
+    try {
+        const response = await deleteData(JSON.stringify(eventData), "/register/delete/:id");
+        return response;
+    } catch (error) {
+        console.error("Error registering for event:", error);
+        return null;
+    }
+}

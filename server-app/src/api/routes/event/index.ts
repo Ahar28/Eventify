@@ -11,6 +11,7 @@ router.get("/events-exclude-organizer/:organizerId",eventController.getEventsExc
 router.post('/wishlist/add', eventController.addToWishlist);
 router.delete('/wishlist/remove/:userId', eventController.removeFromWishlist);
 router.get("/wishlist/:userId", eventController.getWishlistEvents);
+router.get("/events-registered-byuser/:userId",eventController.getEventsRegisteredByUser);
 
 router.get("/:eventId", eventController.getEventById);
 

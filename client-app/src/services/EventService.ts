@@ -34,6 +34,16 @@ export async function getEventsExcludeOrganizer(organizerId: string) {
     }    
 }
 
+export async function getEventsRegisteredByUser(userId: string) {
+  try {
+      const response = await getData("/event/events-registered-byuser/" + userId);
+      return response;
+  } catch (error) {
+      console.error("Error getting events:", error);
+      return null;
+  }    
+}
+
 interface WishlistData {
     userId: string;
     eventId: string;
