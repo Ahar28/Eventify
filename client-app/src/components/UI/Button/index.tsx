@@ -8,6 +8,7 @@ interface CustomButtonProps {
     className?: string;
     variant?: 'text' | 'contained' | 'outlined';
     color?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
+    disabled?: boolean;
 }
 
 const EButton: React.FC<CustomButtonProps> = ({
@@ -17,6 +18,7 @@ const EButton: React.FC<CustomButtonProps> = ({
     className,
     variant = 'contained',
     color = 'primary',
+    disabled = false,
 }) => {
     return (
         <Button
@@ -25,6 +27,7 @@ const EButton: React.FC<CustomButtonProps> = ({
             className={`py-2 px-4 rounded ${className}`}
             variant={variant}
             color={color}
+            disabled={!disabled ? false : true}
         >
             {children}
         </Button>
