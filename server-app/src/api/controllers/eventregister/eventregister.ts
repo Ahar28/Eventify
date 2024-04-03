@@ -40,3 +40,36 @@ export const createEventRegistration = async (req: Request, res: Response) => {
       });
     }
   };
+
+  export const deleteEventRegistration = async (req: Request, res: Response) => {
+    const { registrationId } = req.params;
+  
+    if (!registrationId) {
+      return sendResponse(res, 400, {
+        success: false,
+        message: "Registration ID is required",
+      });
+    }
+  
+    try {
+      const registration = await Registration.findByIdAndDelete(registrationId);
+  
+      if (!registration) {
+        return sendResponse(res, 404, {
+          success: false,
+          message: "Registration not found",
+        });
+      }
+  
+      return sendResponse(res, 200, {
+        success: true,
+        message: "Registration deleted successfully",
+      });
+    } catch (error) {
+      console.error("Delete Registration Error:", error);
+      return sendResponse(res, 500, {
+        success: false,
+        message: "Server error while deleting the registration",
+      });
+    }
+  };
