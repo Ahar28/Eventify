@@ -27,7 +27,7 @@ export const createEventRegistration = async (req: Request, res: Response) => {
   
       await registration.save();
   
-      return sendResponse(res, 201, {
+      return sendResponse(res, 200, {
         success: true,
         message: "Registration successful",
         data: registration,
@@ -61,9 +61,10 @@ export const createEventRegistration = async (req: Request, res: Response) => {
         });
       }
   
-      return sendResponse(res, 200, {
+      return sendResponse(res, 201, {
         success: true,
         message: "Registration deleted successfully",
+        data: registration,
       });
     } catch (error) {
       console.error("Delete Registration Error:", error);

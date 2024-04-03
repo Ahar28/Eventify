@@ -8,16 +8,6 @@ interface TicketOption {
   quantity: number;
 }
 
-// interface Event {
-//   id: number;
-//   name: string;
-//   organizer: string;
-//   date: string;
-//   location: string;
-//   description: string;
-//   image: string ; //image carousel property
-// }
-
 interface EventDetails {
   details: {
     description: string;
@@ -50,8 +40,6 @@ const ParticipantInfoPage: React.FC = () => {
   //const { ticketQuantities } = location.state as { ticketQuantities: { [type: string]: number }};
   const { ticketQuantities, ticketOptions, event } = location.state as { ticketQuantities: { [type: string]: number }, ticketOptions: TicketOption[], event: EventDetails};
   debugger;
-  let eventDate = new Date(event.eventStartDateTime);
-let readableDate = eventDate.toLocaleString();
 
   return (
 
@@ -67,7 +55,7 @@ let readableDate = eventDate.toLocaleString();
       {/* Thematic Break / Divider */}
       <div className="border-t border-gray-300 my-6"></div>
         {/* Participant Form */}
-      <ParticipantForm ticketQuantities={ticketQuantities} ticketOptions={ticketOptions} />
+      <ParticipantForm ticketQuantities={ticketQuantities} ticketOptions={ticketOptions} eventdetails={event}/>
     </div>
   );
 };
