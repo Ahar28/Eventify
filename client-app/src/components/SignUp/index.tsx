@@ -42,7 +42,7 @@ const SignUpForm: React.FC = () => {
     } else if (!nameRegex.test(formData.firstName)) {
       formIsValid = false;
       tempErrors.firstName =
-        "First name must not contain numbers or special characters";
+        "Numbers / special characters not allowed";
     }
 
     if (!formData.lastName) {
@@ -51,7 +51,7 @@ const SignUpForm: React.FC = () => {
     } else if (!nameRegex.test(formData.lastName)) {
       formIsValid = false;
       tempErrors.lastName =
-        "Last name must not contain numbers or special characters";
+        "Numbers / special characters not allowed";
     }
 
     const emailRegex =
@@ -72,7 +72,7 @@ const SignUpForm: React.FC = () => {
     } else if (!passwordRegex.test(formData.password)) {
       formIsValid = false;
       tempErrors.password =
-        "Password must be at least 8 characters long and contain alphanumeric and special characters";
+        "At least 8 characters long and contain alphanumeric and special characters";
     }
 
     if (formData.password !== formData.confirmPassword) {
