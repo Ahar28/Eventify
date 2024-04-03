@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaPrint, FaRegTimesCircle } from "react-icons/fa";
 import Button from "../UI/Button";
 import Container from "../Container";
@@ -7,10 +7,14 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import QRCode from "qrcode.react";
 import CancellationModal from "../CancelModal";
+import { useSelector } from 'react-redux';
+import { selectUser } from '../../redux/userSlice';
+import { getEventsRegisteredByUser as getEventsRegisteredByUser } from '../../services/EventService';
 
 const TicketInfoComponent: React.FC = () => {
   const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState(false);
+
   const ticketInfo = {
     orderId: "9280108829",
     eventName: "DSU Holi event",
@@ -23,6 +27,29 @@ const TicketInfoComponent: React.FC = () => {
       email: "aharnish.solanki@dal.ca",
     },
   };
+
+  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
+  const user = useSelector(selectUser); 
+
+  useEffect(() => {
+    const fetchRegisteredEvents = async () => {
+      if (user?.id) {
+        try {
+          const response = await getEventsRegisteredByUser(user.id);
+          if (response?.data.data) {
+            setRegisteredEvents(response.data.data);
+          } else {
+            // Handle the case where no data is returned or an error occurred
+          }
+        } catch (error) {
+          console.error("Error fetching registered events:", error);
+        }
+      }
+    };
+
+    fetchRegisteredEvents();
+  }, [user?.id]);
+
 
   const handlePrint = () => {
     window.print();
@@ -74,7 +101,6 @@ const TicketInfoComponent: React.FC = () => {
           </div>
 
           <div className="pt-4">
-            {/* <h2 className="text-lg font-semibold">General Admission</h2> */}
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
               <div>
                 <p className="text-2xl mb-3">
@@ -103,6 +129,15 @@ const TicketInfoComponent: React.FC = () => {
                 <p>{ticketInfo.location}</p>
               </div>
             </div>
+             {/* {registeredEvents.map((event, index) => (
+        <div key={index} className="bg-white p-6 rounded-lg shadow-lg"> */}
+          {/* Map through registeredEvents to display ticket info */}
+          {/* Replace the static ticketInfo with the event object */}
+        
+          {/* <p className="mb-1">{event.date}</p>
+          <p>{event.location}</p> */}
+        </div>
+      {/* ))} */}
             <div className="flex space-x-4">
               <Button
                 onClick={handlePrint}
@@ -121,14 +156,15 @@ const TicketInfoComponent: React.FC = () => {
               </Button>
             </div>
           </div>
+          
         </div>
-      </div>
       {/* Cancellation Confirmation Modal */}
       <CancellationModal
         isOpen={isCancellationModalOpen}
         onCancel={handleCloseCancellationModal}
         onConfirm={handleCancel}
       />
+      
     </Container>
   );
 };
