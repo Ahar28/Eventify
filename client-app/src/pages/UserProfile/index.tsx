@@ -3,6 +3,7 @@ import { useSelector, useDispatch } from 'react-redux';
 import Container from '../../components/Container';
 import { selectUser, user as USER } from '../../redux/userSlice';
 import { updateUser } from '../../services/UserService';
+import { fetchUserBadges } from '../../services/BadgeService';
 
 const UserProfile = () => {
     const user = useSelector(selectUser);
@@ -14,19 +15,25 @@ const UserProfile = () => {
         email: '',
         profilePicture: '',
         bio: '',
+        badge: '',
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
     useEffect(() => {
         if (user) {
-            setFormData({
-                firstName: user.firstName,
-                lastName: user.lastName,
-                email: user.email,
-                profilePicture: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&&size=128`,
-                bio: user.bio,
-            });
+            fetchUserBadges(user.id).then(badgeData => {
+                const badgeType = badgeData?.data?.badgeType || 'No Badge';
+                setFormData(prevState => ({
+                    ...prevState,
+                    firstName: user.firstName,
+                    lastName: user.lastName,
+                    email: user.email,
+                    profilePicture: user.profilePicture || `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&size=128`,
+                    bio: user.bio,
+                    badge: badgeType,
+                }));
+            }).catch(error => console.error('Fetching badges failed:', error));
         }
     }, [user]);
 
@@ -120,6 +127,18 @@ const UserProfile = () => {
                                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
                             />
                         </div>
+                        <div className="mb-4">
+                            <label htmlFor="badges" className="block text-md font-medium text-gray-700">Badge</label>
+                            <input
+                                type="text"
+                                id="badge"
+                                name="badge"
+                                value={formData.badge}
+                                onChange={handleInputChange}
+                                disabled={!editMode}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                            />
+                        </div>
                         {editMode ? (
                             <div className="flex justify-between">
                                 <button
@@ -146,6 +165,7 @@ const UserProfile = () => {
                                 Edit Profile
                             </button>
                         )}
+
                     </form>
                 </div>
             </div>

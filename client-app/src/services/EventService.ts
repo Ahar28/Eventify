@@ -22,7 +22,7 @@ export async function getEventsByOrganizer(organizerId: string) {
     } catch (error) {
         console.error("Error getting event:", error);
         return null;
-    }    
+    }
 }
 
 export async function getEventsExcludeOrganizer(organizerId: string) {
@@ -32,14 +32,14 @@ export async function getEventsExcludeOrganizer(organizerId: string) {
     } catch (error) {
         console.error("Error getting event:", error);
         return null;
-    }    
+    }
 }
 
 interface WishlistData {
     userId: string;
     eventId: string;
   }
-  
+
   export const addToWishlistService = async (userId: string, eventId: string) => {
     try {
         const data = {userId, eventId};
@@ -51,7 +51,7 @@ interface WishlistData {
       throw error;
     }
   };
-  
+
 
   export const removeFromWishlistService = async (userId: string, eventId: string) => {
     try {
@@ -62,7 +62,7 @@ interface WishlistData {
       throw error;
     }
   };
-  
+
   export const getWishlistEvents = async (userId: string) => {
     try {
       const response = await getData(`/event/wishlist/${userId}`);
@@ -72,4 +72,3 @@ interface WishlistData {
       throw error;
     }
   };
-  

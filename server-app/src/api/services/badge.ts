@@ -1,40 +1,29 @@
 import Badge from "../../models/Badge";
-import User from "../../models/User";
-import Event from "../../models/Event";
-import { sendEmail } from '../../utils/mailer';
+import Registration from "../../models/Registration";
 
-interface BadgeCriteria {
-    threshold: number;
-    badgeType: string;
-}
+const badgeTypes = ["Bronze Attendee", "Silver Attendee", "Gold Attendee"];
 
-const badgeCriteria: BadgeCriteria[] = [
-    { threshold: 5, badgeType: "Bronze Attendee" },
-    { threshold: 10, badgeType: "Silver Attendee" },
-    { threshold: 20, badgeType: "Gold Attendee" },
-];
+export const generateBadgeForUser = async (userId: string) => {
+  const eventCount = await Registration.countDocuments({ user: userId, status: "CONFIRMED" });
+  console.log("eventCount", eventCount);
 
-export const checkAndGenerateBadge = async (userId: string) => {
-const userEvents = await Event.find({ "attendees.user": userId }).countDocuments();
-const userBadges = await Badge.find({ user: userId });
+  let badgeType = null;
+  if(eventCount >= 10 && eventCount < 20) badgeType = badgeTypes[1]; // Silver
+  else if(eventCount >= 20) badgeType = badgeTypes[2]; // Gold
+  else if(eventCount >= 2) badgeType = badgeTypes[0]; // Bronze
 
-const earnedBadgeTypes = new Set(userBadges.map(badge => badge.badgeType));
-for (const criteria of badgeCriteria) {
-    if (userEvents >= criteria.threshold && !earnedBadgeTypes.has(criteria.badgeType)) {
-        const newBadge = new Badge({
-            user: userId,
-            badgeId: `BADGE-${userId}-${criteria.badgeType}`,
-            badgeType: criteria.badgeType,
-            eventsAttendedThreshold: criteria.threshold,
-        });
-        await newBadge.save();
-
-        const user = await User.findById(userId);
-        if (user && user.email) {
-            const emailSubject = 'Congratulations on your new badge!';
-            const emailBody = `<p>Dear ${user.firstName},</p><p>Congratulations on earning a new badge in our platform! Keep attending events to earn more badges.</p><p>Best,</p><p>Your Team</p>`;
-            await sendEmail(user.email, emailSubject, emailBody);
-        }
+  if(badgeType) {
+    const existingBadge = await Badge.findOne({ user: userId, badgeType });
+    if (!existingBadge) {
+      const newBadge = new Badge({ user: userId, badgeType });
+      await newBadge.save();
+      return newBadge;
     }
-}
+    else {
+      console.log("User already has this badge");
+      return existingBadge;
+    }
+  }
+
+  return null;
 };
