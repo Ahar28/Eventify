@@ -19,6 +19,7 @@ const UserProfile = () => {
     });
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [events, setEvents] = useState([]);
 
     useEffect(() => {
         if (user) {
