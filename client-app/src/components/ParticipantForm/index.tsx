@@ -81,9 +81,25 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({ ticketQuantities,tick
   };
   
     // Calculate subtotal
-    const calculateSubtotal = () => {
-      return ticketOptions.reduce((total, ticket) => total + (ticket.price * ticketQuantities[ticket.type]), 0);
-    };
+    // const calculateSubtotal = () => {
+    //   return ticketOptions.reduce((total, ticket) => total + (ticket.price * ticketQuantities[ticket.type]), 0);
+    // };
+
+    // Calculate subtotal
+const calculateSubtotal = () => {
+  const validTickets = ticketOptions.filter(ticket => ticketQuantities[ticket.type] > 0);
+  
+  // Calculating the subtotal for valid tickets
+  const subtotal = validTickets.reduce((total, ticket) => {
+    // condition to ensure quantity is a number to avoid NaN results
+    const quantity = Number(ticketQuantities[ticket.type]) || 0;
+    return total + (ticket.price * quantity);
+  }, 0);
+
+  //to ensure that the subtotal is not NaN; and return 0 if it is
+  return isNaN(subtotal) ? 0 : subtotal;
+};
+
 
  return (
   <Container>

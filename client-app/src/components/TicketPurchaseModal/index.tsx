@@ -56,6 +56,9 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
 
   const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([]);
 
+  // condition to check if the  ticket quantity is greater than 0
+  const isAnyTicketSelected = ticketOptions.some(ticket => ticket.quantity > 0);
+
   useEffect(() => {
     if (event && event.price) {
       // Updating ticketOptions based on the event data
@@ -103,6 +106,13 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
   const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
 
   const handleCheckout = () => {
+
+    if (!isAnyTicketSelected) {
+      // Optionally, alert the user or handle this case as needed
+      console.log("Please select at least one ticket to proceed.");
+      return; // Exit the function if no tickets are selected
+    }
+
     // Preparing the ticketQuantities object to pass to ParticipantInfoPage
     const ticketQuantities = ticketOptions.reduce((acc, { type, quantity }) => {
       if (quantity > 0) acc[type] = quantity;
@@ -110,20 +120,13 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     }, {} as { [type: string]: number });
 
     // Navigate to ParticipantInfoPage with state
-    // navigate(`/events/${event?._id}/register/participant-info`, {
-    //   state: { ticketQuantities, ticketOptions, event },
-    // });
-    
-    // navigate(`/events/${event?.eventName}/register/participant-info`, {
-    //   state: { ticketQuantities, ticketOptions, event },
-    // });
-debugger;
-    navigate(`/events/register/participant-info`, {
+    navigate(`/event/${event?._id}/register/participant-info`, {
       state: { ticketQuantities, ticketOptions, event },
     });
-
+    
     setShowTicketModal(false); // to close the modal on checkout
   };
+
 
   if (!isOpen) return null;
 
@@ -223,6 +226,7 @@ debugger;
                 onClick={handleCheckout}
                 className="bg-red-500 text-white px-4 py-2 rounded-lg w-full mt-4"
                 color="error"
+                disabled={!isAnyTicketSelected}
               >
                 Checkout
               </Button>
