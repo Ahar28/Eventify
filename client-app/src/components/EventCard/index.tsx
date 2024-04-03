@@ -42,9 +42,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   };
 
   return (
-    <div className="h-[550px] w-[320px] cursor-pointer" onClick={handleClick}>
+    <div className="h-[350px] w-[320px] cursor-pointer" onClick={handleClick}>
       <div className="relative rounded-xl overflow-hidden">
-        <img src={event.image} alt={event.name} />
+        <img src={event.image} alt={event.name} style={{ width: '500px', height: '200px' }}/>
         <div className="absolute top-4 right-4 flex items-center bg-white text-black rounded-full py-2 px-4 text-xs font-semibold">
           <span>{formatDate(event.date)}</span>
           {user && <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">

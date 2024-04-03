@@ -107,7 +107,7 @@ const Events: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 mt-8">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 my-8">
                     {filteredEvents.length > 0 ? (
                         filteredEvents.map((event) => (
                             <EventCard key={event.id} event={event} />
