@@ -1,6 +1,7 @@
 import express from "express";
 import eventController from "../../controllers/event";
 import { authenticateUser } from "../../../middlewares/auth";
+import eventAnalyticsController from "../../controllers/analytics";
 const router = express.Router();
 
 router.post("/create", eventController.createEvent);
@@ -14,5 +15,7 @@ router.get(
 router.post("/wishlist/add", eventController.addToWishlist);
 router.delete("/wishlist/remove/:userId", eventController.removeFromWishlist);
 router.get("/wishlist/:userId", eventController.getWishlistEvents);
+
+router.get("/event-data", eventAnalyticsController.getEventData);
 
 export default router;
