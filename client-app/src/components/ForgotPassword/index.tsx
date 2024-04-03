@@ -36,7 +36,7 @@ const ForgotPasswordForm: React.FC = () => {
       const response = await sendVerificationLink(formData);
       if (response?.data) {
         if (response?.status === 200) {
-          navigate('/login');
+          navigate('/auth/login');
         }
       } else {
         e.stopPropagation();
@@ -70,8 +70,8 @@ const ForgotPasswordForm: React.FC = () => {
           <p className="text-red-500 text-xs mt-1">{errors.email}</p>
         )}
       </div>
+      {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
       <div className="flex items-center justify-between mb-4">
-        {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
         <button
           type="submit"
           className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover"
