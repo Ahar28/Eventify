@@ -42,7 +42,7 @@ const UserDashboard: React.FC = () => {
     );
 };
 
-async function fetchEventsCreatedByCurrentUser(user: { id: string; }): Promise<any[]> {
+export async function fetchEventsCreatedByCurrentUser(user: { id: string; }): Promise<any[]> {
     const response = await getEventsByOrganizer(user.id);
     if (response?.data) {
         if (response?.status === 200) {
