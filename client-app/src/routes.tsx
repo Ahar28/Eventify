@@ -18,18 +18,19 @@ import TicketPage from "./pages/Ticket";
 const EventRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path="/" element={<Landing />} />
-      <Route path="/auth/*" element={<Authentication />} />
-      <Route path="dashboard" element={<UserDashboard />} />
-      <Route path='dashboard/add-event' element={<AddEvent/>}/>
-      <Route path="/faqs" element={<FAQPage />} />
-      <Route path="/contact" element={<ContactUs />} />
-      <Route path = '/events' element = {<Eventfeed />} />
-      <Route path = '/wishlist' element = {<Wishlist />} />
-      <Route path = '/calendar' element = {<Calendar />} />
-      <Route path="/event/:id" element={<EventPage />} />
-      <Route path="/event/:id/register/participant-info" element={<ParticipantInfoPage />} />
-      <Route path="/ticket" element={<TicketPage />} /> 
+      <Route path= "/" element={<Landing />} />
+      <Route path= "/auth/*" element={<Authentication />} />
+      <Route path= "dashboard" element={<UserDashboard />} />
+      <Route path= 'dashboard/add-event' element={<AddEvent/>}/>
+      <Route path= "/faqs" element={<FAQPage />} />
+      <Route path= "/contact" element={<ContactUs />} />
+      <Route path = "/events" element = {<Eventfeed />} />
+      <Route path = "/wishlist" element = {<Wishlist />} />
+      <Route path = "/calendar" element = {<Calendar />} />
+      <Route path = "/event/:id" element={<EventPage />} />
+      <Route path = "/event/register/participant-info" element={<ParticipantInfoPage />} />
+      {/* <Route path = "/event/:id/register/participant-info" element={<ParticipantInfoPage />} /> */}
+      <Route path = "/ticket" element={<TicketPage />} /> 
       {/* <Route path="/ticket/:id" element={<TicketPage />} /> */}
       <Route path="*" element={<WorkingInProgress />} />
     </Routes>

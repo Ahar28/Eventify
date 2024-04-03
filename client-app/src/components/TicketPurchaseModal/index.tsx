@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
@@ -50,18 +50,21 @@ interface TicketPurchaseModalProps {
   event: EventDetails | null | undefined;
 }
 
-const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({
-  isOpen,
-  onClose,
-  // onCheckout,
-  event,
-}) => {
+const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClose, onCheckout, event, }) => {
+  
   const navigate = useNavigate();
-  const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([
-    { type: " Adult ", price: 11.87, quantity: 0 },
-    { type: " Children (above 10 yrs age)", price: 16.77, quantity: 0 },
-    { type: " Children (below 10 yrs age)", price: 13.77, quantity: 0 },
-  ]);
+
+  const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([]);
+
+  useEffect(() => {
+    if (event && event.price) {
+      // Updating ticketOptions based on the event data
+      setTicketOptions([
+        { type: "Adult", price: event.price, quantity: 0 },
+        { type: "Teen (above 12 yrs)", price: event.price / 2, quantity: 0 },
+      ]);
+    }
+  }, [event]);
 
   // Function to update the quantity of tickets
   const updateQuantity = (index: number, delta: number) => {
@@ -82,7 +85,7 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({
     );
   };
 
-  // Function to calculate fees (assuming fees are included in the ticket price)
+  // Function to calculate fees
   const calculateFees = () => {
     const fees = ticketOptions.reduce(
       (fees, ticket) => fees + ticket.price * ticket.quantity * 0.15,
@@ -107,7 +110,18 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({
     }, {} as { [type: string]: number });
 
     // Navigate to ParticipantInfoPage with state
-    navigate(`/events/${event?._id}/register/participant-info`, { state: { ticketQuantities, ticketOptions, event } });
+    // navigate(`/events/${event?._id}/register/participant-info`, {
+    //   state: { ticketQuantities, ticketOptions, event },
+    // });
+    
+    // navigate(`/events/${event?.eventName}/register/participant-info`, {
+    //   state: { ticketQuantities, ticketOptions, event },
+    // });
+debugger;
+    navigate(`/events/register/participant-info`, {
+      state: { ticketQuantities, ticketOptions, event },
+    });
+
     setShowTicketModal(false); // to close the modal on checkout
   };
 

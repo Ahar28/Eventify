@@ -8,7 +8,6 @@ import ImageCarousel from "../ImageCarousel";
 import ShareModal from "../ShareModal";
 import TicketPurchaseModal from "../TicketPurchaseModal";
 import { getEventsbyId } from '../../services/EventService';
-import { debug } from "console";
 
 
 interface EventDetails {
@@ -40,7 +39,6 @@ interface EventDetailsProps {
 const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   console.log( "ahar ",eventId);
   const [event, setEvent] = useState<EventDetails | null>();
-  debugger;
   console.log("event", event);
   const [isLoading, setIsLoading] = useState(true);
   const [error, setError] = useState("");
@@ -55,8 +53,6 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [showShareModal, setShowShareModal] = useState(false);
   const urlToShare = window.location.href;
 
-  const [ticketCount, setTicketCount] = useState(1);
-  const ticketPrice = 9.99;
 
   // const toggleWishlist = () => {
   //   if(event){
@@ -69,10 +65,8 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   // };
 
 useEffect(() => {
-  debugger;
     if (eventId) {
         fetchEventById(eventId).then(setEvent);
-        debugger;
         console.log("event useeffect ", event);
     }
 }, [eventId]);
@@ -92,7 +86,7 @@ useEffect(() => {
 
   // Function to handle the checkout process
   const handleCheckout = () => {
-    navigate(`/faqs`);
+    navigate(`/faq`);
     setShowTicketModal(false);
   };
 
@@ -179,7 +173,7 @@ useEffect(() => {
               <div className="mb-4 text-center">
                 <span className="text-lg font-bold">Price: </span>
                 <span className="text-lg font-bold">
-                  CA${(ticketCount * ticketPrice).toFixed(2)}
+                  CA${event?.price?.toFixed(2)}
                 </span>
               </div>
               <Button
@@ -204,16 +198,12 @@ useEffect(() => {
   );
 };
 
-
 export async function fetchEventById(eventId: string): Promise<any| null> {
   try {
     const response = await getEventsbyId(eventId);
-    // const response = await fetch(`http://localhost:8000/api/event/${eventId}`);
     console.log(response.data);
-    //const data = await response.json();
     const data = await response.data.data;
     console.log("response is ", response);
-    debugger;
     if (response?.data) {
 
       console.log("response.data  :", response.data);
@@ -246,7 +236,5 @@ export async function fetchEventById(eventId: string): Promise<any| null> {
     return null;
   }
 }
-
-
 
 export default EventDetails;
