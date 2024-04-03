@@ -48,19 +48,18 @@ const Events: React.FC = () => {
     
         const isInRange = (!startDateTime || eventDate >= startDateTime) && (!endDateTime || eventDate <= endDateTime);
     
-        const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (event.topic && event.topic.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (event.categories && event.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())));
+        const matchesSearch = (event.name?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.location?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.description?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.topic ? event.topic.toLowerCase().includes(searchQuery.toLowerCase()) : false) ||
+        (event.categories ? event.categories.some(category => category?.toLowerCase().includes(searchQuery.toLowerCase())) : false);
+
 
     
         return isInRange && matchesSearch;
     });
     
     
-      
-
     return (
         <Container>
             <div className="flex justify-between items-center flex-wrap gap-4 mb-8">
