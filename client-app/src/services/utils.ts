@@ -84,3 +84,34 @@ export async function deleteData(url: string, body?: any, token?: string) {
         throw error; 
     }
 }
+
+interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
+    timeZone?: string;
+  }
+  
+  /**
+   * Formats the date and time according to the given options.
+   * 
+   * @param {string} dateTime The date-time string to format.
+   * @param {DateTimeFormatOptions} options Options to control the formatting.
+   * @returns {string} The formatted date-time string.
+   */
+  export function formatDateTime(dateTime: string, options: DateTimeFormatOptions = {}): string {
+    const defaultOptions: DateTimeFormatOptions = {
+      year: 'numeric',
+      month: 'long',
+      day: 'numeric',
+      weekday: 'long',
+      hour: 'numeric',
+      minute: 'numeric',
+      second: undefined,
+      timeZoneName: 'short',
+      hour12: true
+    };
+  
+    const date = new Date(dateTime);
+    return date.toLocaleString('en-US', { ...defaultOptions, ...options });
+  }
+  
+  export default formatDateTime;
+  
