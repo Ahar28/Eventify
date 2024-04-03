@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState, useEffect } from 'react';
 import { HorizontalEventCard } from "../../components/HorizontalEventCard";
 import CreateEventProcedure from './CreateEventProcedure';

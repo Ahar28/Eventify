@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from 'react';
 import Container from '../Container';
 import { logo_2 } from '../../assets/home';
