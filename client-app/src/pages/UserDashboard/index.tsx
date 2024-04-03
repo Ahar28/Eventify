@@ -29,7 +29,7 @@ const UserDashboard: React.FC = () => {
             <div className='min-h-screen'>
                 <div>
                     {events.length > 0 ? (
-                        events.map((event, idx) => <HorizontalEventCard key={event._id} index={idx + 1} title={event.eventName} imageUrl={event.titlePicture} isActive={event.isActive} />)
+                        events.map((event, idx) => <HorizontalEventCard key={event._id} eventId={event._id} index={idx + 1} title={event.eventName} imageUrl={event.titlePicture} isActive={event.isActive} />)
                     ) : (
                         <div className="text-center">
                             <p>No events created yet.</p>
@@ -42,7 +42,7 @@ const UserDashboard: React.FC = () => {
     );
 };
 
-async function fetchEventsCreatedByCurrentUser(user: { id: string; }): Promise<any[]> {
+export async function fetchEventsCreatedByCurrentUser(user: { id: string; }): Promise<any[]> {
     const response = await getEventsByOrganizer(user.id);
     if (response?.data) {
         if (response?.status === 200) {
