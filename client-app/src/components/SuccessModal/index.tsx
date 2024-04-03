@@ -3,12 +3,19 @@ import Container from '../Container';
 import { FaTimes } from 'react-icons/fa';
 import { PiSealCheckFill } from "react-icons/pi";
 import Button from '../UI/Button';
+import { useNavigate } from 'react-router-dom';
 
 interface SuccessModalProps {
   onClose: () => void;
 }
 
 const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
+  const navigate = useNavigate();
+  const handleViewTickets = () => {
+    navigate('/mytickets');
+    onClose();
+  };
+
   return (
     <Container>
      <div className="fixed inset-0 bg-gray-600 bg-opacity-50 overflow-y-auto z-50 flex justify-center items-center">
@@ -16,7 +23,7 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
          {/* Close Button */}
          <button 
           onClick={onClose} 
-          className="absolute top-0 right-0 m-4" // to Position it absolutely to the top-right of its relative parent
+          className="absolute top-0 right-0 m-4"
         >
         <FaTimes size={25} />
         </button>
@@ -24,7 +31,8 @@ const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
           <h1 className="text-3xl font-bold mb-4">Success!</h1>
           <p className="mb-4">Your tickets have been registered successfully.</p>
           <PiSealCheckFill size={75} className="text-green-500" />
-          <Button onClick={onClose} className="absolute top-20 right-0 m-4" >View Your Ticket</Button>
+          {/* View ticket */}
+          <Button onClick={handleViewTickets} className="absolute top-20 right-0 m-4" >View Your Ticket</Button>
         </div>
       </div>
     </div>

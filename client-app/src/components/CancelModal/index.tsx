@@ -50,7 +50,7 @@ const CancellationModal: React.FC<CancellationModalProps> = ({
                 className="inline-flex justify-center w-full rounded-md px-4 py-2 shadow-sm  sm:text-sm sm:leading-5"
                 color="error"
               >
-                Confirm, cancel my tickets
+                cancel my tickets
               </Button>
             </span>
             <span className="mt-3 flex w-full rounded-md shadow-sm sm:mt-0 sm:w-auto">

@@ -33,7 +33,7 @@ const EventRoutes: React.FC = () => {
       <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/event/:id" element={<EventPage />} />
       <Route path = "/event/:id/register/participant-info" element={<ParticipantInfoPage />} />
-      <Route path = "/ticket/" element={<TicketPage />} /> 
+      <Route path = "/ticket/:id" element={<TicketPage />} /> 
       <Route path = "/mytickets" element={<UserTicketPage />} /> 
       <Route path = '/payment' element = {<PaymentForm />} />
       <Route path="*" element={<WorkingInProgress />} />

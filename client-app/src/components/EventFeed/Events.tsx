@@ -57,8 +57,6 @@ const Events: React.FC = () => {
     
         return isInRange && matchesSearch;
     });
-    
-    
       
 
     return (

@@ -7,49 +7,20 @@ import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import QRCode from "qrcode.react";
 import CancellationModal from "../CancelModal";
-import { useSelector } from 'react-redux';
-import { selectUser } from '../../redux/userSlice';
-import { getEventsRegisteredByUser as getEventsRegisteredByUser } from '../../services/EventService';
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/userSlice";
+import { useNavigate,useLocation } from "react-router-dom";
+import { formatDateTime } from "../../services/utils";
+import { Participant } from "../ParticipantForm";
+import { deleteEventRegistration } from "../../services/RegisterEventService";
+
 
 const TicketInfoComponent: React.FC = () => {
+  const location = useLocation();
+  const registration = location.state?.registration;
+  const navigate = useNavigate();
   const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
   const [showConfirmModal, setShowConfirmModal] = React.useState(false);
-
-  const ticketInfo = {
-    orderId: "9280108829",
-    eventName: "DSU Holi event",
-    eventDate: "Tuesday, April 2, 2024 from 11:30 AM to 1:30 PM (ADT)",
-    location: "Halifax, NS",
-    // ticketType: 'General Admission',
-    contactInfo: {
-      firstName: "Aharnish",
-      lastName: "Solanki",
-      email: "aharnish.solanki@dal.ca",
-    },
-  };
-
-  const [registeredEvents, setRegisteredEvents] = useState<Event[]>([]);
-  const user = useSelector(selectUser); 
-
-  useEffect(() => {
-    const fetchRegisteredEvents = async () => {
-      if (user?.id) {
-        try {
-          const response = await getEventsRegisteredByUser(user.id);
-          if (response?.data.data) {
-            setRegisteredEvents(response.data.data);
-          } else {
-            // Handle the case where no data is returned or an error occurred
-          }
-        } catch (error) {
-          console.error("Error fetching registered events:", error);
-        }
-      }
-    };
-
-    fetchRegisteredEvents();
-  }, [user?.id]);
-
 
   const handlePrint = () => {
     window.print();
@@ -59,17 +30,27 @@ const TicketInfoComponent: React.FC = () => {
     setIsCancellationModalOpen(true);
   };
 
-  const handleCancel = () => {
+  const handleCancel = async () => {
     console.log("Cancellation confirmed");
     setIsCancellationModalOpen(false);
-    // Add logic to handle the actual cancellation here
+    try {
+      
+      const response = await deleteEventRegistration(registration._id);
+      navigate(`/mytickets`);
+      console.log("Cancellation Response:", response);
+      
+    } catch (error) {
+      console.error("Error canceling registration:", error);
+      
+    }
   };
+    
 
   const handleCloseCancellationModal = () => {
     setIsCancellationModalOpen(false);
   };
 
-  const qrCodeValue = `TicketID:${ticketInfo.orderId}`;
+  const qrCodeValue = `TicketID:${registration._id}`;
 
   return (
     <Container>
@@ -77,7 +58,7 @@ const TicketInfoComponent: React.FC = () => {
         <div className="bg-white p-6 rounded-lg shadow-lg">
           <div className="flex items-center justify-between mb-4">
             <Link
-              to="/all-tickets"
+              to="/mytickets"
               className="text-blue-600 font-bold hover:underline flex items-center ml-auto"
             >
               {" "}
@@ -90,12 +71,12 @@ const TicketInfoComponent: React.FC = () => {
               <div className="mb-4 sm:mb-0">
                 <h1 className="text-xl font-bold">Your Tickets for</h1>
                 <span className="text-3xl lg:text-5xl font-bold text-title-color">
-                  {ticketInfo.eventName}
+                  {registration.event.eventName}
                 </span>
               </div>
               <div className="flex flex-col items-center space-y-4">
                 <QRCode value={qrCodeValue} size={128} level={"H"} />
-                <span>Order #: {ticketInfo.orderId}</span>
+                <span>Reg Id#: {registration._id}</span>
               </div>
             </div>
           </div>
@@ -103,68 +84,111 @@ const TicketInfoComponent: React.FC = () => {
           <div className="pt-4">
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
               <div>
-                <p className="text-2xl mb-3">
+                <p className="text-2xl ml-3">
                   <strong>Contact Information</strong>
+                  <hr
+                    className="my-2 border-gray-300 mx-l"
+                    style={{ width: "85%" }}
+                  />
                 </p>
-                <div className="flex flex-col">
-                  <div className="flex mb-3">
-                    <div className="w-1/2 pr-2">
-                      <p className="mb-1 font-semibold">First Name</p>
-                      <p className="mb-1">{ticketInfo.contactInfo.firstName}</p>
-                    </div>
-                    <div className="w-1/2 pl-2">
-                      <p className="mb-1 font-semibold">Last Name</p>
-                      <p className="mb-1">{ticketInfo.contactInfo.lastName}</p>
-                    </div>
-                  </div>
-                  <p className="mb-1 font-semibold">Email</p>
-                  <p>{ticketInfo.contactInfo.email}</p>
+
+                <div className="pt-4">
+                  {registration.participants.map(
+                    (participant: Participant, index: number) => (
+                      <div
+                        key={index}
+                        className="flex flex-col mb-4  p-4 rounded-md"
+                      >
+                        <h3 className="font-bold mb-2">
+                          Participant {index + 1}
+                          <hr
+                            className="my-2 border-gray-300 mx-l"
+                            style={{ width: "70%" }}
+                          />
+                        </h3>
+
+                        <div className="flex">
+                          <div className="w-1/2 pr-2">
+                            <p className="mb-1 font-semibold">First Name</p>
+                            <p className="mb-1">{participant.firstName}</p>
+                          </div>
+                          <div className="w-1/2 pl-2">
+                            <p className="mb-1 font-semibold">Last Name</p>
+                            <p className="mb-1">{participant.lastName}</p>
+                          </div>
+                        </div>
+                        <div className="mt-2">
+                          <p className="font-semibold">Email</p>
+                          <p>{participant.email}</p>
+                        </div>
+                      </div>
+                    )
+                  )}
                 </div>
               </div>
               <div>
-                <p className="text-2xl mt-1 mb-2">
+                <p className="text-2xl mb-2">
                   <strong>Event Information</strong>
+                  <hr
+                    className="my-2 border-gray-300 mx-l"
+                    style={{ width: "75%" }}
+                  />
                 </p>
-                <p className="mb-1">{ticketInfo.eventDate}</p>
-                <p>{ticketInfo.location}</p>
+                <div className="flex flex-col">
+                  <div className="flex items-center mb-2">
+                    <span className="font-bold min-w-[80px]">From:</span>
+                    <span>
+                      {formatDateTime(registration.event.eventStartDateTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <span className="font-bold min-w-[80px]">To:</span>
+                    <span>
+                      {formatDateTime(registration.event.eventEndDateTime)}
+                    </span>
+                  </div>
+                  <div className="flex items-center mb-2">
+                    <span className="font-bold min-w-[80px]">Venue: </span>
+                    <p>{registration.event.details.venue}</p>
+                  </div>
+
+                  <div className="flex items-start mb-2">
+                    {" "}
+                    <span className="font-bold min-w-[80px]">About: </span>
+                    <p className="mb-0 mt-0 text-justify">
+                      {" "}
+                      {registration.event.details.description}
+                    </p>
+                  </div>
+                </div>
               </div>
             </div>
-             {/* {registeredEvents.map((event, index) => (
-        <div key={index} className="bg-white p-6 rounded-lg shadow-lg"> */}
-          {/* Map through registeredEvents to display ticket info */}
-          {/* Replace the static ticketInfo with the event object */}
-        
-          {/* <p className="mb-1">{event.date}</p>
-          <p>{event.location}</p> */}
-        </div>
-      {/* ))} */}
-            <div className="flex space-x-4">
-              <Button
-                onClick={handlePrint}
-                className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-              >
-                <FaPrint />
-                <span className="ml-2">Print Tickets</span>
-              </Button>
-              <Button
-                onClick={handleOpenCancellationModal}
-                className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
-                color="error"
-              >
-                <FaRegTimesCircle />
-                <span className="ml-2">Cancel Order</span>
-              </Button>
-            </div>
           </div>
-          
+          <div className="flex space-x-4">
+            <Button
+              onClick={handlePrint}
+              className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+            >
+              <FaPrint />
+              <span className="ml-2">Print Tickets</span>
+            </Button>
+            <Button
+              onClick={handleOpenCancellationModal}
+              className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+              color="error"
+            >
+              <FaRegTimesCircle />
+              <span className="ml-2">Cancel Tickets</span>
+            </Button>
+          </div>
         </div>
+      </div>
       {/* Cancellation Confirmation Modal */}
       <CancellationModal
         isOpen={isCancellationModalOpen}
         onCancel={handleCloseCancellationModal}
         onConfirm={handleCancel}
       />
-      
     </Container>
   );
 };

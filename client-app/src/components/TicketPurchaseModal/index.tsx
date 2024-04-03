@@ -60,7 +60,7 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
   const isAnyTicketSelected = ticketOptions.some(ticket => ticket.quantity > 0);
 
   useEffect(() => {
-    if (event && event.price) {
+    if (event) {
       // Updating ticketOptions based on the event data
       setTicketOptions([
         { type: "Adult", price: event.price, quantity: 0 },
@@ -102,7 +102,6 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     return calculateSubtotal() + calculateFees();
   };
 
-  // Modified onCheckout function
   const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
 
   const handleCheckout = () => {
@@ -189,9 +188,6 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
                 />
                 <h2 className="text-xl font-semibold mb-4">Order summary</h2>
                 <div className="border-b border-gray-300 mb-4">
-                  {/* {ticketOptions.map((ticket, index) => (
-                  <p key={index}>{ticket.quantity} x {ticket.type} - CA${(ticket.quantity * ticket.price).toFixed(2)}</p>
-                ))} */}
                   {ticketOptions.map((ticket, index) => (
                     <div key={index} className="py-2 border-b border-gray-300">
                       <div className="flex justify-between items-center">
@@ -205,14 +201,10 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
                     </div>
                   ))}
                 </div>
-                {/* <div className="flex justify-between mb-2">
-                <p>Subtotal: CA${calculateTotal()}</p> */}
                 <div className="flex justify-between mb-2">
                   <span>Subtotal</span>
                   <span>CA${calculateSubtotal().toFixed(2)}</span>
                 </div>
-                {/* 
-                <p>Total: CA${calculateTotal()}</p> */}
                 <div className="flex justify-between mb-2">
                   <span>Fees</span>
                   <span>CA${calculateFees().toFixed(2)}</span>
