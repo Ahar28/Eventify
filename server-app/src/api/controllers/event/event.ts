@@ -239,3 +239,32 @@ export const getEventsExcludingOrganizer = async (req: Request, res: Response) =
   }
 };
 
+
+export const getEventById = async (req: Request, res: Response) => {
+  debugger;
+  console.log("Get Event by ID");
+  const { eventId } = req.params;
+
+  try {
+    const EventbyId = await Event.findById(eventId);
+
+    if (!EventbyId) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Event retrieved successfully",
+      data: EventbyId,
+    });
+  } catch (error) {
+    console.error("Get Event Error:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while getting the event",
+    });
+  }
+};
