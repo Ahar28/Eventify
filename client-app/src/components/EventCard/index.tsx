@@ -55,7 +55,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <div className="flex flex-col gap-2 my-4 px-2">
         <h2 className="text-lg font-bold text-title-color">{event.name}</h2>
         <p className="text-sm text-gray-500">{event.location}</p>
-        <p className="text-xs font-medium text-gray-700">{event.description}</p>
+        <p className="text-xs font-medium text-gray-700">{event.description.length >= 80 ? `${event.description.substring(0, 80)}...` : event.description}</p>
       </div>
     </div>
   );
