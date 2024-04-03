@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from 'react';
 import SearchBar from './SearchBar';
 
@@ -19,12 +23,6 @@ const Front: React.FC = () => {
                         {searchBar && (
                             <form className="flex items-end gap-4 flex-wrap">
                                 <SearchBar />
-                                <button
-                                    type="submit"
-                                    className="bg-white px-2 py-3 w-24 font-bold uppercase text-sm text-black hover:text-white hover:bg-black hover:bg-opacity-50 rounded-md"
-                                >
-                                    Search
-                                </button>
                             </form>
                         )}
                         {!searchBar && (

@@ -1,7 +1,11 @@
-import React, { useState } from "react";
-import Container from "../Container";
-import { logo_2 } from "../../assets/home";
-import { Link } from "react-router-dom";
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
+import React, { useState } from 'react';
+import Container from '../Container';
+import { logo_2 } from '../../assets/home';
+import { Link } from 'react-router-dom';
 
 interface LinkData {
   name: string;

@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useEffect, useState } from 'react';
 import EventCard from '../EventCard/index';
 import SectionTitle from './SectionTitle';

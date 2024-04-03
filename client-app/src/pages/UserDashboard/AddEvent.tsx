@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from 'react';
 import Container from '../../components/Container';
 import SectionTitle from '../../components/Landing/SectionTitle';

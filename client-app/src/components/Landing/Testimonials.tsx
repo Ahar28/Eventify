@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React from "react";
 import Container from "../Container";
 import SectionTitle from "./SectionTitle";
