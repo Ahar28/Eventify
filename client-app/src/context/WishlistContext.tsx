@@ -18,6 +18,7 @@ interface Event {
 
 interface WishlistContextType {
   wishlist: Event[];
+  setWishlist: (events: Event[]) => void;
   addToWishlist: (event: Event) => void;
   removeFromWishlist: (id: string) => void;
 }
@@ -46,7 +47,7 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
     } catch (error) {
       console.error('Error adding to wishlist:', error);
     }
-  }, [wishlist, userId]);
+  }, [userId]);
 
   const removeFromWishlist = useCallback(async (id: string) => {
     try {
@@ -57,10 +58,10 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
     } catch (error) {
       console.error('Error removing from wishlist:', error);
     }
-  }, [wishlist, userId]);
+  }, [userId]);
 
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, setWishlist, addToWishlist, removeFromWishlist }}>
       {children}
     </WishlistContext.Provider>
   );

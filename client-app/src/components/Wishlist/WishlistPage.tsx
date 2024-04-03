@@ -21,7 +21,7 @@ const WishlistPage: React.FC = () => {
   const [events, setEvents] = useState<Event[]>([]);
   const user = useSelector(selectUser);
   const userId = user?.id;
-  const { wishlist } = useWishlist();
+  const { wishlist, setWishlist } = useWishlist();
   useEffect(() => {
     const fetchEvents = async () => {
       try {
@@ -36,6 +36,7 @@ const WishlistPage: React.FC = () => {
           image: event.titlePicture,
         }));
         setEvents(mappedEvents);
+        setWishlist(mappedEvents);
       } catch (error) {
         console.error("Error fetching wishlist events:", error);
       }
@@ -44,7 +45,7 @@ const WishlistPage: React.FC = () => {
     if (userId) {
       fetchEvents();
     }
-  }, [userId, wishlist]);
+  }, [setWishlist, userId, wishlist]);
 
   return (
     <Container>
