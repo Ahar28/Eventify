@@ -1,14 +1,22 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import loginImage from "../../assets/auth-background.jpg";
 import Container from "../../components/Container";
 import LoginForm from "../../components/Login";
 import SignUpForm from "../../components/SignUp";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordForm from "../../components/ForgotPassword";
 import ResetPasswordForm from "../../components/ResetPasswordForm";
 
 const Authentication: React.FC = () => {
   const location = useLocation();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    const validPaths = ["/auth/login", "/auth/register", "/auth/forgot-password", "/auth/reset-password"];
+    if (!validPaths.includes(location.pathname)) {
+      navigate("/auth/login");
+    }
+  }, [location, navigate]);
 
   const renderComponents = (location: any) => {
     console.log("location", location);
@@ -21,6 +29,8 @@ const Authentication: React.FC = () => {
         return <ForgotPasswordForm />;
       case "/auth/reset-password":
         return <ResetPasswordForm />;
+      default:
+        return <LoginForm />;
     }
   };
 
