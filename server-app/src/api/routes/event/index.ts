@@ -13,6 +13,7 @@ router.delete('/wishlist/remove/:userId', eventController.removeFromWishlist);
 router.get("/wishlist/:userId", eventController.getWishlistEvents);
 router.get("/events-registered-byuser/:userId",eventController.getEventsRegisteredByUser);
 
-router.get("/eventId/:eventId", eventController.getEventById);
+router.get("/event/:eventId", eventController.getEventById);
+router.get("/all", eventController.getAllEvents);
 
 export default router;

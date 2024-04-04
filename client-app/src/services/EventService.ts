@@ -93,4 +93,14 @@ interface WishlistData {
         return null;
     }    
 }
-  
+
+
+export async function getAllEventsService() {
+  try {
+      const response = await getData("/event/all");
+      return response.data;
+  } catch (error) {
+      console.error("Error getting all events:", error);
+      throw error;
+  }
+}

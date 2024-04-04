@@ -6,7 +6,7 @@ const ForgotPasswordForm: React.FC = () => {
   const [formData, setFormData] = useState({ email: "" });
   const [errors, setErrors] = useState({ email: "" });
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -20,7 +20,11 @@ const ForgotPasswordForm: React.FC = () => {
     if (!formData.email) {
       formIsValid = false;
       tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (
+      !/^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/.test(
+        formData.email
+      )
+    ) {
       formIsValid = false;
       tempErrors.email = "Email is not valid";
     }
@@ -36,7 +40,7 @@ const ForgotPasswordForm: React.FC = () => {
       const response = await sendVerificationLink(formData);
       if (response?.data) {
         if (response?.status === 200) {
-          navigate('/login');
+          navigate("/auth/login");
         }
       } else {
         e.stopPropagation();
@@ -59,7 +63,7 @@ const ForgotPasswordForm: React.FC = () => {
           Email
         </label>
         <input
-          type="email"
+          type="text"
           name="email"
           id="email"
           value={formData.email}
@@ -70,8 +74,8 @@ const ForgotPasswordForm: React.FC = () => {
           <p className="text-red-500 text-xs mt-1">{errors.email}</p>
         )}
       </div>
+      {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
       <div className="flex items-center justify-between mb-4">
-        {errorMsg && <p className="text-red-500 text-xs mt-1">{errorMsg}</p>}
         <button
           type="submit"
           className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover"
