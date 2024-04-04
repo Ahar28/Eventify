@@ -1,6 +1,6 @@
 /**
- * Author: Bhavisha Oza
- * Banner ID: B00935827
+ * Author: Bhavisha Oza, Parth Mehta
+ * Banner ID: B00935827, B00931931
  */
 import React, { useState, useEffect, ChangeEvent, FormEvent } from "react";
 import { useSelector, useDispatch } from "react-redux";

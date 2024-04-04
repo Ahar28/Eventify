@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import Badge from "../../models/Badge";
 import Registration from "../../models/Registration";
 

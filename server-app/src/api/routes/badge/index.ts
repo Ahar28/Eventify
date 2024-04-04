@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import express from "express";
 import badgeController from '../../controllers/badge/index';
 

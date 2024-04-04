@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IBadge extends Document {

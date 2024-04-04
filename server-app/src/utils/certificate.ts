@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import PDFDocument from 'pdfkit';
 import User from '../models/User';
 import Event from '../models/Event';

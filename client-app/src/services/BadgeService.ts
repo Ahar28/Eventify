@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import { getData } from "./utils";
 
 export const fetchUserBadges = async (userId: string) => {

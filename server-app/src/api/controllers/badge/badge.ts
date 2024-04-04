@@ -1,3 +1,7 @@
+/**
+ * Author: Parth Mehta
+ * Banner ID: B00931931
+ */
 import { Request, Response } from 'express';
 import { generateBadgeForUser } from '../../services/badge';
 import sendResponse from '../../../utils/response';
