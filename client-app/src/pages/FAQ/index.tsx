@@ -73,10 +73,11 @@ const FAQItem: React.FC<FAQItemProps> = ({ faq }) => {
     <div>
       <button
         onClick={() => setIsOpen(!isOpen)}
-        className={`w-full text-left p-4 rounded-md ${isOpen ? 'bg-blue-600 text-white' : 'bg-blue-200 text-blue-900'} transition duration-300 ease-in-out shadow-md hover:bg-blue-500 hover:text-white focus:outline-none`}
+        className={`w-full text-left p-4 rounded-md ${isOpen ? 'bg-button-primary text-white' : 'bg-blue-200 text-blue-900'} transition duration-300 ease-in-out shadow-md hover:bg-button-primary hover:text-white focus:outline-none`}
       >
         {faq.question}
       </button>
+
       {isOpen && (
         <div className="p-4 bg-blue-100 text-blue-900 rounded-md mt-2 shadow">
           {faq.answer}

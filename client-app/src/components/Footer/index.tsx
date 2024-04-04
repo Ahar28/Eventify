@@ -5,6 +5,8 @@ import React, { useState } from 'react';
 import Container from '../Container';
 import { logo_2 } from '../../assets/home';
 import { Link } from 'react-router-dom';
+import { toast } from 'react-toastify';
+import { emailSend } from '../../services/UserService';
 
 interface LinkData {
   name: string;
@@ -13,7 +15,6 @@ interface LinkData {
 
 const companyLinks: LinkData[] = [
   { name: "Events", to: "/events" },
-  { name: "About Us", to: "/about-us" },
   { name: "Contact Us", to: "/contact" },
   { name: "FAQs", to: "/faqs" },
 ];
@@ -36,17 +37,40 @@ const Footer: React.FC = () => {
     return emailRegex.test(email);
   };
 
-  const handleSubmit = (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
+  const handleSubmit = async (e: React.MouseEvent<HTMLButtonElement, MouseEvent>) => {
     e.preventDefault();
     if (!validateEmail(email)) {
       setError("Invalid email address.");
+      toast.error("Invalid email address."); 
       return;
     }
-    console.log("Form is valid:", email);
-    setEmail("");
-    setError("");
-    alert("Thank you for subscribing!");
+    
+    try {
+      const response = await emailSend({
+        email, 
+        subject:"Subscription with Eventify", 
+        body: "Thank you for subscribing to Eventify! Stay tuned for exciting events.",
+      })
+
+      if (response?.data) {
+        if (response?.status === 200) {
+          setEmail("");
+          setError("");
+          toast.success("Thank you for subscribing!");
+        }
+        else{
+          toast.error("Error subscribing. Please try again later.");
+        }
+      }
+      else{
+        toast.error("Error subscribing. Please try again later.");
+      }
+    } catch (error) {
+      console.error('Subscription error:', error);
+      toast.error("Error subscribing. Please try again later.");
+    }
   };
+
 
   return (
     <footer className="bg-[#212121] py-14 text-white">

@@ -5,6 +5,8 @@
 import React, { useState } from "react";
 import SectionTitle from "../../components/Landing/SectionTitle";
 import Container from "../../components/Container";
+import { emailSend } from "../../services/UserService";
+import { toast } from "react-toastify";
 
 type FormData = {
   name: string;
@@ -54,10 +56,36 @@ const ContactUs: React.FC = () => {
     return formIsValid;
   };
 
-  const handleSubmit = (e: React.FormEvent) => {
+  const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
     if (validateForm()) {
-      console.log("Form data submitted:", formData);
+      try {
+        const response = await emailSend({
+          email: formData.email, 
+          subject:"Contacting with Eventify", 
+          body: "Thank you for contacting with Eventify! Our representative will contact you soon.",
+        })
+  
+        if (response?.data) {
+          if (response?.status === 200) {
+            setErrors({
+              name: "",
+              email: "",
+              message: "",
+            });
+            toast.success("Thank you for contacting!");
+          }
+          else{
+            toast.error("Error in contacting. Please try again later.");
+          }
+        }
+        else{
+          toast.error("Error contacting. Please try again later.");
+        }
+      } catch (error) {
+        console.error('Contacting error:', error);
+        toast.error("Error contacting. Please try again later.");
+      }
     }
   };
 
