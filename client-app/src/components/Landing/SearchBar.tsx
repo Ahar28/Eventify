@@ -50,7 +50,7 @@ const SearchBar: React.FC = () => {
   };
 
   const handleClick = (eventId: any) => {
-    navigate(`/events/${eventId}`);
+    navigate(`/event/${eventId}`);
   };
 
   const formatDate = (dateString: string) => {
@@ -69,7 +69,7 @@ const SearchBar: React.FC = () => {
         onChange={(e) => setSearchText(e.target.value)}
         onKeyDown={(e) => e.key === 'Enter' && handleSearch()}
         onFocus={() => setFocusBox(true)}
-        onBlur={() => setFocusBox(false)}
+     
         className="bg-white bg-opacity-50 focus:bg-opacity-100 border-[1px] border-white outline-none px-4 py-2 rounded-md sm:w-[500px] w-[300px] placeholder-white"
       />
       {focusBox && (
