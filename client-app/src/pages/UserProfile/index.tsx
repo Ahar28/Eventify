@@ -96,7 +96,7 @@ const UserProfile = () => {
   };
 
     const handleCertificateDownload = (eventId: any) => {
-        const downloadUrl = `${REACT_APP_BASE_URL}event/certificate/${user.id}/${eventId}`;
+        const downloadUrl = `${REACT_APP_BASE_URL}/event/certificate/${user.id}/${eventId}`;
         window.open(downloadUrl, '_blank');
     };
 
@@ -189,8 +189,8 @@ const UserProfile = () => {
                                 name="badge"
                                 value={formData.badge}
                                 onChange={handleInputChange}
-                                disabled={!editMode}
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2"
+                                disabled={true}
+                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
                             />
                         </div>
                         <div>
