@@ -11,45 +11,45 @@ import { fetchUserBadges } from '../../services/BadgeService';
 import { fetchParticipatoryEvents } from '../../services/EventService';
 
 const UserProfile = () => {
-    const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
-    const user = useSelector(selectUser);
-    const dispatch = useDispatch();
-    const [editMode, setEditMode] = useState(false);
-    const [formData, setFormData] = useState({
-        firstName: user.firstName || '',
-        lastName: user.lastName || '',
-        email: user.email || '',
-        profilePicture: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&size=128`,
-        bio: user.bio || '',
-        badge: '',
-        participatoryEvents: [],
-    });
-    const [tempFormData, setTempFormData] = useState({ ...formData }); // Temporary form data state
-    const [loading, setLoading] = useState(false);
-    const [error, setError] = useState('');
+  const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
+  const user = useSelector(selectUser);
+  const dispatch = useDispatch();
+  const [editMode, setEditMode] = useState(false);
+  const [formData, setFormData] = useState({
+    firstName: user.firstName || '',
+    lastName: user.lastName || '',
+    email: user.email || '',
+    profilePicture: `https://ui-avatars.com/api/?name=${user.firstName}+${user.lastName}&size=128`,
+    bio: user.bio || '',
+    badge: '',
+    participatoryEvents: [],
+  });
+  const [tempFormData, setTempFormData] = useState({ ...formData }); // Temporary form data state
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
 
-    useEffect(() => {
-        if (user) {
-            fetchUserBadges(user.id)
-                .then(badgeData => {
-                    const badgeType = badgeData?.data?.badgeType || 'No Badge';
-                    setFormData(updatedFormData => ({
-                        ...updatedFormData,
-                        badge: badgeType,
-                    }));
-                })
-                .catch(error => console.error('Fetching badges failed:', error));
+  useEffect(() => {
+    if (user) {
+      fetchUserBadges(user.id)
+        .then(badgeData => {
+          const badgeType = badgeData?.data?.badgeType || 'No Badge';
+          setFormData(updatedFormData => ({
+            ...updatedFormData,
+            badge: badgeType,
+          }));
+        })
+        .catch(error => console.error('Fetching badges failed:', error));
 
-            fetchParticipatoryEvents(user.id)
-                .then(eventsData => {
-                    setFormData(updatedFormData => ({
-                        ...updatedFormData,
-                        participatoryEvents: eventsData.data || [],
-                    }));
-                })
-                .catch(err => console.error(err));
-        }
-    }, [user]);
+      fetchParticipatoryEvents(user.id)
+        .then(eventsData => {
+          setFormData(updatedFormData => ({
+            ...updatedFormData,
+            participatoryEvents: eventsData.data || [],
+          }));
+        })
+        .catch(err => console.error(err));
+    }
+  }, [user]);
 
   const handleInputChange = (
     e: ChangeEvent<HTMLInputElement | HTMLTextAreaElement>
@@ -95,10 +95,10 @@ const UserProfile = () => {
     setEditMode(false);
   };
 
-    const handleCertificateDownload = (eventId: any) => {
-        const downloadUrl = `${REACT_APP_BASE_URL}/event/certificate/${user.id}/${eventId}`;
-        window.open(downloadUrl, '_blank');
-    };
+  const handleCertificateDownload = (eventId: any) => {
+    const downloadUrl = `${REACT_APP_BASE_URL}/event/certificate/${user.id}/${eventId}`;
+    window.open(downloadUrl, '_blank');
+  };
 
   return (
     <Container>
@@ -107,8 +107,28 @@ const UserProfile = () => {
           <img
             src={formData.profilePicture}
             alt="Profile"
-            className="w-40 h-40 object-cover rounded-full border-2 border-gray-300"
+            className="w-40 h-40 object-cover rounded-full border-2 border-gray-300 mb-4"
           />
+          {formData.badge && formData.badge !== 'No Badge' && (
+            <div className="flex flex-cols mt-3">
+              <div className="bg-white shadow-lg rounded-lg p-5 border border-gray-200 flex items-center justify-center">
+                <div className="w-1/2">
+                  {formData.badge === 'Bronze Attendee' && (
+                    <i className="fa-sharp fa-solid fa-medal fa-5x" style={{ color: '#a05822' }} />
+                  )}
+                  {formData.badge === 'Silver Attendee' && (
+                    <i className="fa-sharp fa-solid fa-medal fa-5x" style={{ color: '#a9b0b4' }} />
+                  )}
+                  {formData.badge === 'Gold Attendee' && (
+                    <i className="fa-sharp fa-solid fa-medal fa-5x" style={{ color: '#d4af37' }} />
+                  )}
+                </div>
+                <div className="w-1/2 pt-1 font-semibold text-center">
+                  {formData.badge}
+                </div>
+              </div>
+            </div>
+          )}
         </div>
         <div className="w-full md:w-2/3">
           <h2 className="text-2xl font-semibold mb-4">User Profile</h2>
@@ -181,29 +201,17 @@ const UserProfile = () => {
                 className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
               />
             </div>
-                        <div className="mb-4">
-                            <label htmlFor="badges" className="block text-md font-medium text-gray-700">Badge</label>
-                            <input
-                                type="text"
-                                id="badge"
-                                name="badge"
-                                value={formData.badge}
-                                onChange={handleInputChange}
-                                disabled={true}
-                                className="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2 cursor-not-allowed"
-                            />
-                        </div>
-                        <div>
-                            <label htmlFor="badges" className="block text-md font-medium text-gray-700">Participatory Events</label>
-                            <div className="mt-2">
-                                {formData.participatoryEvents.length > 0 ? formData.participatoryEvents.map((event: { _id: string, eventName: string }) => (
-                                    <div key={event._id} className="mb-4 p-4 border rounded-lg">
-                                        <h4 className="font-semibold">{event.eventName}</h4>
-                                        <button onClick={() => handleCertificateDownload(event._id)} className="mt-2 text-blue-500 hover:text-blue-700">Download Certificate</button>
-                                    </div>
-                                )) : <p>No participatory events found.</p>}
-                            </div>
-                        </div>
+            <div>
+              <label htmlFor="badges" className="block text-md font-medium text-gray-700">Participatory Events</label>
+              <div className="mt-2">
+                {formData.participatoryEvents.length > 0 ? formData.participatoryEvents.map((event: { _id: string, eventName: string }) => (
+                  <div key={event._id} className="mb-4 p-4 border rounded-lg">
+                    <h4 className="font-semibold">{event.eventName}</h4>
+                    <button onClick={() => handleCertificateDownload(event._id)} className="mt-2 text-blue-500 hover:text-blue-700">Download Certificate</button>
+                  </div>
+                )) : <p>No participatory events found.</p>}
+              </div>
+            </div>
             {editMode ? (
               <div className="flex justify-between">
                 <button
