@@ -9,10 +9,11 @@ import QRCode from "qrcode.react";
 import CancellationModal from "../CancelModal";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { formatDateTime } from "../../services/utils";
 import { Participant } from "../ParticipantForm";
 import { deleteEventRegistration } from "../../services/RegisterEventService";
+import './index.css';
 
 
 const TicketInfoComponent: React.FC = () => {
@@ -34,17 +35,17 @@ const TicketInfoComponent: React.FC = () => {
     console.log("Cancellation confirmed");
     setIsCancellationModalOpen(false);
     try {
-      
+
       const response = await deleteEventRegistration(registration._id);
       navigate(`/mytickets`);
       console.log("Cancellation Response:", response);
-      
+
     } catch (error) {
       console.error("Error canceling registration:", error);
-      
+
     }
   };
-    
+
 
   const handleCloseCancellationModal = () => {
     setIsCancellationModalOpen(false);
@@ -66,99 +67,101 @@ const TicketInfoComponent: React.FC = () => {
             </Link>
           </div>
 
-          <div className="bg-gray-100 p-6 rounded-md">
-            <div className="flex flex-col sm:flex-row justify-between items-start">
-              <div className="mb-4 sm:mb-0">
-                <h1 className="text-xl font-bold">Your Tickets for</h1>
-                <span className="text-3xl lg:text-5xl font-bold text-title-color">
-                  {registration.event.eventName}
-                </span>
-              </div>
-              <div className="flex flex-col items-center space-y-4">
-                <QRCode value={qrCodeValue} size={128} level={"H"} />
-                <span>Reg Id#: {registration._id}</span>
-              </div>
-            </div>
-          </div>
-
-          <div className="pt-4">
-            <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
-              <div>
-                <p className="text-2xl ml-3">
-                  <strong>Contact Information</strong>
-                  <hr
-                    className="my-2 border-gray-300 mx-l"
-                    style={{ width: "85%" }}
-                  />
-                </p>
-
-                <div className="pt-4">
-                  {registration.participants.map(
-                    (participant: Participant, index: number) => (
-                      <div
-                        key={index}
-                        className="flex flex-col mb-4  p-4 rounded-md"
-                      >
-                        <h3 className="font-bold mb-2">
-                          Participant {index + 1}
-                          <hr
-                            className="my-2 border-gray-300 mx-l"
-                            style={{ width: "70%" }}
-                          />
-                        </h3>
-
-                        <div className="flex">
-                          <div className="w-1/2 pr-2">
-                            <p className="mb-1 font-semibold">First Name</p>
-                            <p className="mb-1">{participant.firstName}</p>
-                          </div>
-                          <div className="w-1/2 pl-2">
-                            <p className="mb-1 font-semibold">Last Name</p>
-                            <p className="mb-1">{participant.lastName}</p>
-                          </div>
-                        </div>
-                        <div className="mt-2">
-                          <p className="font-semibold">Email</p>
-                          <p>{participant.email}</p>
-                        </div>
-                      </div>
-                    )
-                  )}
+          <div id="ticketContent">
+            <div className="bg-gray-100 p-6 rounded-md">
+              <div className="flex flex-col sm:flex-row justify-between items-start">
+                <div className="mb-4 sm:mb-0">
+                  <h1 className="text-xl font-bold">Your Tickets for</h1>
+                  <span className="text-3xl lg:text-5xl font-bold text-title-color">
+                    {registration.event.eventName}
+                  </span>
+                </div>
+                <div className="flex flex-col items-center space-y-4">
+                  <QRCode value={qrCodeValue} size={128} level={"H"} />
+                  <span>Reg Id#: {registration._id}</span>
                 </div>
               </div>
-              <div>
-                <p className="text-2xl mb-2">
-                  <strong>Event Information</strong>
-                  <hr
-                    className="my-2 border-gray-300 mx-l"
-                    style={{ width: "75%" }}
-                  />
-                </p>
-                <div className="flex flex-col">
-                  <div className="flex items-center mb-2">
-                    <span className="font-bold min-w-[80px]">From:</span>
-                    <span>
-                      {formatDateTime(registration.event.eventStartDateTime)}
-                    </span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="font-bold min-w-[80px]">To:</span>
-                    <span>
-                      {formatDateTime(registration.event.eventEndDateTime)}
-                    </span>
-                  </div>
-                  <div className="flex items-center mb-2">
-                    <span className="font-bold min-w-[80px]">Venue: </span>
-                    <p>{registration.event.details.venue}</p>
-                  </div>
+            </div>
 
-                  <div className="flex items-start mb-2">
-                    {" "}
-                    <span className="font-bold min-w-[80px]">About: </span>
-                    <p className="mb-0 mt-0 text-justify">
+            <div className="pt-4">
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-4 my-4">
+                <div>
+                  <p className="text-2xl ml-3">
+                    <strong>Contact Information</strong>
+                    <hr
+                      className="my-2 border-gray-300 mx-l"
+                      style={{ width: "85%" }}
+                    />
+                  </p>
+
+                  <div className="pt-4">
+                    {registration.participants.map(
+                      (participant: Participant, index: number) => (
+                        <div
+                          key={index}
+                          className="flex flex-col mb-4  p-4 rounded-md"
+                        >
+                          <h3 className="font-bold mb-2">
+                            Participant {index + 1}
+                            <hr
+                              className="my-2 border-gray-300 mx-l"
+                              style={{ width: "70%" }}
+                            />
+                          </h3>
+
+                          <div className="flex">
+                            <div className="w-1/2 pr-2">
+                              <p className="mb-1 font-semibold">First Name</p>
+                              <p className="mb-1">{participant.firstName}</p>
+                            </div>
+                            <div className="w-1/2 pl-2">
+                              <p className="mb-1 font-semibold">Last Name</p>
+                              <p className="mb-1">{participant.lastName}</p>
+                            </div>
+                          </div>
+                          <div className="mt-2">
+                            <p className="font-semibold">Email</p>
+                            <p>{participant.email}</p>
+                          </div>
+                        </div>
+                      )
+                    )}
+                  </div>
+                </div>
+                <div>
+                  <p className="text-2xl mb-2">
+                    <strong>Event Information</strong>
+                    <hr
+                      className="my-2 border-gray-300 mx-l"
+                      style={{ width: "75%" }}
+                    />
+                  </p>
+                  <div className="flex flex-col">
+                    <div className="flex items-center mb-2">
+                      <span className="font-bold min-w-[80px]">From:</span>
+                      <span>
+                        {formatDateTime(registration.event.eventStartDateTime)}
+                      </span>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <span className="font-bold min-w-[80px]">To:</span>
+                      <span>
+                        {formatDateTime(registration.event.eventEndDateTime)}
+                      </span>
+                    </div>
+                    <div className="flex items-center mb-2">
+                      <span className="font-bold min-w-[80px]">Venue: </span>
+                      <p>{registration.event.details.venue}</p>
+                    </div>
+
+                    <div className="flex items-start mb-2">
                       {" "}
-                      {registration.event.details.description}
-                    </p>
+                      <span className="font-bold min-w-[80px]">About: </span>
+                      <p className="mb-0 mt-0 text-justify">
+                        {" "}
+                        {registration.event.details.description}
+                      </p>
+                    </div>
                   </div>
                 </div>
               </div>
