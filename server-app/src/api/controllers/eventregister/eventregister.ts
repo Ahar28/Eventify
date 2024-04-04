@@ -1,7 +1,10 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import { Request, Response } from "express";
 import Registration from "../../../models/Registration";
 import sendResponse from "../../../utils/response";
-import mongoose from "mongoose";
 
 export const createEventRegistration = async (req: Request, res: Response) => {
     const { userId, eventId, participants } = req.body;
