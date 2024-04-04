@@ -3,7 +3,7 @@ import EventCard from '../EventCard/index';
 import Container from '../Container';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getEventsExcludeOrganizer } from '../../services/EventService';
+import { getEventsExcludeOrganizer, getAllEventsService  } from '../../services/EventService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
 import { useLocation } from 'react-router-dom';
@@ -34,7 +34,11 @@ const Events: React.FC = () => {
 
 
     useEffect(() => {
-        fetchEventsExcludeOrganizer(user).then(setEvents);
+        if (user?.id) {
+            fetchEventsExcludeOrganizer(user).then(setEvents);
+        } else {
+            fetchAllEvents().then(setEvents);
+        }
     }, [user]);
 
     useEffect(() => {
@@ -150,5 +154,32 @@ export async function fetchEventsExcludeOrganizer(user: { id: string; }): Promis
     }
 }
 
+export async function fetchAllEvents(): Promise<any[]> {
+    try {
+        const response = await getAllEventsService(); 
+        console.log(response);
+        if (response?.data) {
+            let mappedEvents = response.data.map((event: any) => ({
+                id: event._id, 
+                name: event.eventName,
+                date: event.eventStartDateTime, 
+                location: event.details.venue, 
+                description: event.details.description,
+                image: event.titlePicture, 
+                topic: event.topic,
+                categories: event.categories,
+            }));
+
+            console.log("All Events:", mappedEvents);
+            return mappedEvents;
+        } else {
+            console.error('Failed to fetch all events:', response.message);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching all events:', error);
+        return [];
+    }
+}
 
 export default Events;

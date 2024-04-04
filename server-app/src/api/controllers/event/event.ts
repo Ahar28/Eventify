@@ -241,7 +241,6 @@ export const getEventsExcludingOrganizer = async (req: Request, res: Response) =
 
 
 export const getEventById = async (req: Request, res: Response) => {
-  debugger;
   console.log("Get Event by ID");
   const { eventId } = req.params;
 
@@ -265,6 +264,23 @@ export const getEventById = async (req: Request, res: Response) => {
     return sendResponse(res, 500, {
       success: false,
       message: "Server error while getting the event",
+    });
+  }
+};
+
+export const getAllEvents = async (req: Request, res: Response) => {
+  try {
+    const events = await Event.find();
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Events retrieved successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Error retrieving all events:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while retrieving all events",
     });
   }
 };

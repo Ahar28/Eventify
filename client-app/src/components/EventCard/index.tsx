@@ -24,7 +24,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const isWishlisted = wishlist.some(e => e.id === event.id);
 
   const handleClick = () => {
-    navigate(`/event/${event.id}`);
+    if(user?.id) {
+      navigate(`/event/${event.id}`);
+    }
+    else {
+      navigate('/auth/login');
+    }
   };
 
   const toggleWishlist = async (e: React.MouseEvent) => {
