@@ -1,4 +1,3 @@
-import axios from "axios";
 import { getData } from "./utils";
 
 export const fetchUserBadges = async (userId: string) => {

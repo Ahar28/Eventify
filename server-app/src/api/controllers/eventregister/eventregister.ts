@@ -86,7 +86,6 @@ export const createEventRegistration = async (req: Request, res: Response) => {
             return sendResponse(res, 404, { success: false, message: 'User not found' });
         }
 
-        console.log("Fetching participatory events for:", user.email);
         const query = {
             participants: {
                 $elemMatch: { email: user.email }
@@ -94,11 +93,9 @@ export const createEventRegistration = async (req: Request, res: Response) => {
         };
         const registrations = await Registration.find(query).exec();
 
-        console.log("Registrations:", registrations);
 
         const eventIds = registrations.map(registration => registration.event);
         const events = await Event.find({ '_id': { $in: eventIds } });
-        console.log("Events:", events);
 
         return sendResponse(res, 200, {
             success: true,
@@ -106,7 +103,6 @@ export const createEventRegistration = async (req: Request, res: Response) => {
             data: events
         });
     } catch (error) {
-        console.error('Error fetching participatory events:', error);
         return sendResponse(res, 500, {
             success: false,
             message: 'Internal server error while fetching participatory events'

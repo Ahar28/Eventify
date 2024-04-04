@@ -14,7 +14,6 @@ export const generateAndDownloadCertificate = async (req: Request, res: Response
             return res.status(404).send("User or event not found.");
         }
 
-        console.log("Generating certificate for:", user.firstName, user.lastName, event.eventName, event.eventStartDateTime.toDateString());
         const doc = new PDFDocument({ size: 'A4', layout: 'landscape' });
         res.setHeader('Content-Type', 'application/pdf');
         res.setHeader('Content-Disposition', `attachment; filename="certificate-${userId}-${eventId}.pdf"`);
@@ -61,10 +60,10 @@ export const generateAndDownloadCertificate = async (req: Request, res: Response
         doc.font('Helvetica-Oblique')
             .fontSize(18)
             .fillColor('#444444')
-            .text(`held on ${event.eventStartDateTime.toDateString()}`, 0, 390, { align: 'center', width: doc.page.width })
+            .text(`held on ${event.eventStartDateTime.toDateString()}.`, 0, 390, { align: 'center', width: doc.page.width })
             .moveDown(0.5)
 
-        const image_path = "C:\\Users\\parth\\Downloads\\OIP.png"
+        const image_path = "server-app/signature.png"
         doc.image(image_path, doc.page.width - 185, doc.page.height - 150, { align: 'center', width: 100 });
 
         doc.moveTo(doc.page.width - 90, doc.page.height - 100)
@@ -77,7 +76,6 @@ export const generateAndDownloadCertificate = async (req: Request, res: Response
         doc.end();
 
     } catch (error) {
-        console.error('Certificate Generation Error:', error);
         res.status(500).send("An error occurred while generating the certificate.");
     }
 };

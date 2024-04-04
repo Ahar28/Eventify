@@ -103,12 +103,15 @@ export async function getAllEventsService() {
       console.error("Error getting all events:", error);
       throw error;
   }
-    }
 }
 
 
-// Add TRY and CATCH blocks to the following functions
 export const fetchParticipatoryEvents = async (userId: string) => {
-    const response = await getData(`/register/participation/${userId}`);
-    return response.data;
+    try {
+        const response = await getData(`/register/participation/${userId}`);
+        return response.data;
+    } catch (error) {
+        console.error('Error getting participatory events:', error);
+        throw error;
+    }
 };
