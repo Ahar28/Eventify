@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useState } from "react";
 import { registerUser } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
@@ -41,8 +45,7 @@ const SignUpForm: React.FC = () => {
       tempErrors.firstName = "First name is required";
     } else if (!nameRegex.test(formData.firstName)) {
       formIsValid = false;
-      tempErrors.firstName =
-        "Numbers / special characters not allowed";
+      tempErrors.firstName = "Numbers / special characters not allowed";
     }
 
     if (!formData.lastName) {
@@ -50,8 +53,7 @@ const SignUpForm: React.FC = () => {
       tempErrors.lastName = "Last name is required";
     } else if (!nameRegex.test(formData.lastName)) {
       formIsValid = false;
-      tempErrors.lastName =
-        "Numbers / special characters not allowed";
+      tempErrors.lastName = "Numbers / special characters not allowed";
     }
 
     const emailRegex =
