@@ -11,7 +11,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
 import { getEventsRegisteredByUser as getEventsRegisteredByUser } from "../../services/EventService";
 import { useNavigate } from "react-router-dom";
-import { error } from "console";
+
 
 interface TicketRegistration {
   _id: string;
@@ -40,8 +40,6 @@ const UserTickets = () => {
           const response = await getEventsRegisteredByUser(user.id);
           if (response?.data.data) {
             setRegisteredEvents(response.data.data);
-          } else {
-            throw(error);
           }
         } catch (error) {
           console.error("Error fetching registered events:", error);

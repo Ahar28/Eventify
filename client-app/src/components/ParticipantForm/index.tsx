@@ -12,7 +12,6 @@ import { useNavigate } from "react-router-dom";
 import { selectUser, user as USER } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 import { toast } from 'react-toastify';
-import { error } from "console";
 
 export interface Participant {
   firstName: string;
@@ -173,8 +172,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
             setShowSuccessModal(true);
             notify();
           }
-        } else {
-          throw(error)
         }
       } catch (error) {
         console.error("Registration failed:", error);
