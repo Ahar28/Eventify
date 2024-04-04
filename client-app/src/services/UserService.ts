@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import { postData, putData } from "./utils";
 
 export async function loginUser(userData: any) {
@@ -48,7 +52,10 @@ export async function resetPassword(userData: any) {
 
 export async function updateUser(userId: string, userData: any) {
   try {
-    const response = await putData(JSON.stringify(userData), "/user/update/" + userId);
+    const response = await putData(
+      JSON.stringify(userData),
+      "/user/update/" + userId
+    );
     return response;
   } catch (error) {
     console.error("Error updating user: ", error);

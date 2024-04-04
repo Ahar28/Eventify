@@ -1,3 +1,3 @@
-import { createEventRegistration, deleteEventRegistration } from "./eventregister";
+import { createEventRegistration, deleteEventRegistration, getParticipatoryEvents } from "./eventregister";
 
-export default { createEventRegistration, deleteEventRegistration};
+export default { createEventRegistration, deleteEventRegistration, getParticipatoryEvents};
