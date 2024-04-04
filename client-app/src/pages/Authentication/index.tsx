@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useEffect, useState } from "react";
 import loginImage from "../../assets/auth-background.jpg";
 import Container from "../../components/Container";
@@ -12,7 +16,12 @@ const Authentication: React.FC = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    const validPaths = ["/auth/login", "/auth/register", "/auth/forgot-password", "/auth/reset-password"];
+    const validPaths = [
+      "/auth/login",
+      "/auth/register",
+      "/auth/forgot-password",
+      "/auth/reset-password",
+    ];
     if (!validPaths.includes(location.pathname)) {
       navigate("/auth/login");
     }
