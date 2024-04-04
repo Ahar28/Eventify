@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import express from "express";
 const router = express.Router();
 import auth from "./auth";
