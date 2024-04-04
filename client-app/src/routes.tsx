@@ -39,13 +39,13 @@ const EventRoutes: React.FC = () => {
       <Route path="/faqs" element={<FAQPage />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/events" element={<Eventfeed />} />
-      <Route path="/event/:id" element={<EventPage />} />
       <Route path="/social/*" element={<WorkingInProgress />} />
       <Route path="*" element={<NotFoundPage />} />
 
       {/* Private Routes */}
       <Route path="dashboard" element={<PrivateRoute><UserDashboard /></PrivateRoute>} />
       <Route path="dashboard/add-event" element={<PrivateRoute><AddEvent /></PrivateRoute>} />
+      <Route path="/event/:id" element={<PrivateRoute><EventPage /></PrivateRoute>} />
       <Route path="/profile" element={<PrivateRoute><UserProfile /></PrivateRoute>} />
       <Route path="/wishlist" element={<PrivateRoute><Wishlist /></PrivateRoute>} />
       <Route path="/calendar" element={<PrivateRoute><Calendar /></PrivateRoute>} />
