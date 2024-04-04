@@ -2,6 +2,7 @@
  * Author: Parth Mehta
  * Banner ID: B00931931
  */
+import path from "path";
 import PDFDocument from 'pdfkit';
 import User from '../models/User';
 import Event from '../models/Event';
@@ -67,7 +68,7 @@ export const generateAndDownloadCertificate = async (req: Request, res: Response
             .text(`held on ${event.eventStartDateTime.toDateString()}.`, 0, 390, { align: 'center', width: doc.page.width })
             .moveDown(0.5)
 
-        const image_path = "server-app/signature.png"
+        const image_path = path.join(__dirname, "signature.png")
         doc.image(image_path, doc.page.width - 185, doc.page.height - 150, { align: 'center', width: 100 });
 
         doc.moveTo(doc.page.width - 90, doc.page.height - 100)
