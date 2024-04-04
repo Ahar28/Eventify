@@ -25,7 +25,7 @@ export const createEventRegistration = async (req: Request, res: Response) => {
         status: "PENDING", 
         registrationDate: new Date(),
         paymentStatus: "PENDING", 
-        amountPaid: 0, // Update with actual amount after payment process
+        amountPaid: 0, 
       });
   
       await registration.save();
