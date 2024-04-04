@@ -1,3 +1,6 @@
+/**
+ * Author: Riyaben Pareshkumar Patel (B00926204)
+ */
 
 import React, { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import { selectUser } from '../redux/userSlice';

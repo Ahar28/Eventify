@@ -1,3 +1,7 @@
+/**
+ * Author: Riyaben Pareshkumar Patel (B00926204)
+ */
+
 import React from 'react';
 import { useWishlist } from '../../context/WishlistContext';
 import EventCard from '../../components/EventCard';

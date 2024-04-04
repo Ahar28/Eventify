@@ -1,3 +1,7 @@
+/**
+ * Author: Riyaben Pareshkumar Patel (B00926204)
+ */
+
 import React, { useState, useEffect } from 'react';
 import EventCard from '../EventCard/index';
 import Container from '../Container';
