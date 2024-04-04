@@ -2,8 +2,6 @@ import {TicketRegistration} from "../components/ParticipantForm";
 import { deleteData, postData } from "./utils";
 import { json } from "stream/consumers";
 
-const API_URL = "http://localhost:8000/api";
-
 export async function createEventRegistration(eventData: TicketRegistration) {
     try {
         const response = await postData(JSON.stringify(eventData), "/register/create");
