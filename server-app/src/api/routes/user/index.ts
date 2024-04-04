@@ -7,5 +7,6 @@ import userController from "../../controllers/user/index";
 const router = express.Router();
 
 router.put("/update/:userId", userController.updateUser);
+router.post("/send-email", userController.sendEmail);
 
 export default router;

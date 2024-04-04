@@ -6,6 +6,8 @@ import Container from '../Container';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
 import { getEventsByOrganizer, getEventsRegisteredByUser, getEventsbyId } from '../../services/EventService';
+import { useNavigate } from 'react-router-dom';
+
 
 const localizer = momentLocalizer(moment);
 
@@ -26,9 +28,32 @@ const eventStyleGetter = (event: Event) => {
   };
 }
 
+const Legend = () => (
+  <div className="flex justify-center items-center gap-4 my-4">
+    <div className="flex items-center gap-2">
+      <div className="w-4 h-4 bg-[#1b5785]"></div>
+      <span>My Events</span>
+    </div>
+    <div className="flex items-center gap-2">
+      <div className="w-4 h-4 bg-[#31572c]"></div>
+      <span>Registered and Paid</span>
+    </div>
+    <div className="flex items-center gap-2">
+      <div className="w-4 h-4 bg-[#d90429]"></div>
+      <span>Registered but Not Paid</span>
+    </div>
+  </div>
+);
+
+
 const CustomCalendar: React.FC = () => {
+  const navigate = useNavigate();
   const [events, setEvents] = useState<Event[]>([]);
   const user = useSelector(selectUser);
+
+  const handleEventSelect = (event: Event) => {
+    navigate(`/event/${event.id}`); 
+  };
 
   useEffect(() => {
     const fetchAndFormatEvents = async () => {
@@ -39,7 +64,8 @@ const CustomCalendar: React.FC = () => {
           title: event.eventName,
           start: new Date(event.eventStartDateTime),
           end: new Date(event.eventEndDateTime),
-          color: '#1b5785', 
+          color: '#1b5785',
+          source: 'created', 
         }));
   
         const registrationResponse = await getEventsRegisteredByUser(user.id);
@@ -54,6 +80,7 @@ const CustomCalendar: React.FC = () => {
               start: new Date(registration.event.eventStartDateTime),
               end: new Date(registration.event.eventEndDateTime),
               color: registration.paymentStatus === "PAID" ? '#31572c' : '#d90429', 
+              source: 'registered',
             };
           }
           return null;
@@ -70,26 +97,24 @@ const CustomCalendar: React.FC = () => {
 
   return (
     <Container>
-      <div style={{
-        height: '600px',
-        padding: '20px',
-        maxWidth: '100%',
-        margin: '0 auto'
-      }}>
-        <Calendar
-          localizer={localizer}
-          events={events}
-          startAccessor="start"
-          endAccessor="end"
-          eventPropGetter={eventStyleGetter}
-          views={['month', 'week', 'day']}
-          defaultView="month"
-          step={60}
-          showMultiDayTimes
-          defaultDate={new Date()}
-          style={{ height: '100%', width: '100%' }}
-        />
-
+      <div style={{ maxWidth: '100%', margin: '0 auto' }}>
+        <Legend /> 
+        <div style={{ height: '600px', padding: '20px' }}>
+          <Calendar
+            localizer={localizer}
+            events={events}
+            startAccessor="start"
+            endAccessor="end"
+            eventPropGetter={eventStyleGetter}
+            views={['month', 'week', 'day']}
+            defaultView="month"
+            step={60}
+            showMultiDayTimes
+            defaultDate={new Date()}
+            style={{ height: '100%', width: '100%' }}
+            onSelectEvent={handleEventSelect}
+          />
+        </div>
       </div>
     </Container>
   );
