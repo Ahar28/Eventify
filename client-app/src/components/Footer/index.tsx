@@ -12,7 +12,7 @@ interface LinkData {
 }
 
 const companyLinks: LinkData[] = [
-  { name: "Events", to: "/about-us" },
+  { name: "Events", to: "/events" },
   { name: "About Us", to: "/about-us" },
   { name: "Contact Us", to: "/contact" },
   { name: "FAQs", to: "/faqs" },
