@@ -12,6 +12,7 @@ const stripe = new Stripe(process.env.STRIPE_PUB_KEY as string, {
 
 export const makePayment = async (req: any, res: any) => {
   const { amount, paymentMethod } = req.body;
+  console.log("REQ:", req);
 
   try {
     const paymentIntent = await stripe.paymentIntents.create({

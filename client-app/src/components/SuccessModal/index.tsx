@@ -12,8 +12,8 @@ interface SuccessModalProps {
 const SuccessModal: React.FC<SuccessModalProps> = ({ onClose }) => {
   const navigate = useNavigate();
   const handleViewTickets = () => {
-    navigate('/mytickets');
     onClose();
+    navigate('/mytickets');
   };
 
   return (

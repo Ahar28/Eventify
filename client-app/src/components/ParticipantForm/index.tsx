@@ -7,6 +7,7 @@ import { createEventRegistration } from "../../services/RegisterEventService";
 import { useNavigate } from "react-router-dom";
 import { selectUser, user as USER } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
 
 export interface Participant {
   firstName: string;
@@ -73,6 +74,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
   const [participants, setParticipants] = useState<Participant[]>([]);
   const navigate = useNavigate();
   const [errors, setErrors] = useState<ParticipantError[]>([]);
+  const notify = () => toast.success("Event registered successfully!");
 
   const [userId, setUserId] = useState({
     id: "",
@@ -91,7 +93,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
   // Generating initial participants based on ticket quantities
   React.useEffect(() => {
     const initialParticipants: Participant[] = [];
-    
+
     const initialErrors: ParticipantError[] = [];
 
     Object.entries(ticketQuantities).forEach(([type, quantity]) => {
@@ -149,10 +151,16 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
       };
 
       try {
-        const response = await createEventRegistration(registrationData);
+        let response;
+        if (eventdetails?.isPaidEvent) {
+          navigate('/payment', { state: { registrationData, eventdetails, amount: calculateSubtotal() } })
+        } else {
+          response = await createEventRegistration(registrationData);
+        }
         if (response?.data) {
           if (response?.status === 200) {
             setShowSuccessModal(true);
+            notify();
           }
         } else {
           // Handle the error
