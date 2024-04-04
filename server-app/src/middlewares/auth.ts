@@ -1,16 +1,16 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import { Request, Response, NextFunction } from "express";
 import jwt from "jsonwebtoken";
 import User from "../models/User";
 import sendResponse from "../utils/response";
 
-const authenticateUser = async (
-  req: any,
-  res: any,
-  next: NextFunction
-) => {
+const authenticateUser = async (req: any, res: any, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
-    console.log(authHeader)
+    console.log(authHeader);
     const token = authHeader?.split(" ")[1];
 
     if (!token) {
@@ -51,11 +51,7 @@ const authenticateUser = async (
   }
 };
 
-const authenticateAdmin = async (
-  req: any,
-  res: any,
-  next: NextFunction
-) => {
+const authenticateAdmin = async (req: any, res: any, next: NextFunction) => {
   try {
     const authHeader = req.headers.authorization;
     const token = authHeader?.split(" ")[1];
