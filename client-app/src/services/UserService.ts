@@ -62,3 +62,16 @@ export async function updateUser(userId: string, userData: any) {
     return null;
   }
 }
+
+export async function emailSend(emailData: any) {
+  try {
+    const response = await postData(
+      JSON.stringify(emailData),
+      "/user/send-email/"
+    );
+    return response;
+  } catch (error) {
+    console.error("Error Sending email: ", error);
+    return null;
+  }
+}
