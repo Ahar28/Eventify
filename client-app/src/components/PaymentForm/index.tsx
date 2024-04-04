@@ -6,7 +6,7 @@ import { useLocation, useNavigate } from 'react-router-dom';
 import { createEventRegistration } from '../../services/RegisterEventService';
 import SuccessModal from '../SuccessModal';
 import { toast } from 'react-toastify';
-
+const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
 function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
@@ -45,7 +45,8 @@ function PaymentForm() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:8000/api/payment/pay', {
+            // const response = await axios.post('http://localhost:8000/api/payment/pay', {
+                const response = await axios.post(REACT_APP_BASE_URL+'/payment/pay', {
                 amount: parseInt(paymentSummary.amount),
                 paymentMethod: paymentMethod!.id,
             });

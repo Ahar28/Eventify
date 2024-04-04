@@ -4,6 +4,7 @@
 
 import {TicketRegistration} from "../components/ParticipantForm";
 import { deleteData, postData } from "./utils";
+import { json } from "stream/consumers";
 
 export async function createEventRegistration(eventData: TicketRegistration) {
     try {
