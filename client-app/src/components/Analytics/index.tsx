@@ -106,22 +106,21 @@ const AnalyticsComponent = () => {
   };
 
   return (
-    <div
-      style={{
-        display: "flex",
-        justifyContent: "center",
-        alignItems: "center",
-      }}
-    >
-      <h2>Event Category Distribution</h2>
-      <div style={{ width: "400px", height: "400px" }}>
-        <Doughnut data={pieData} />
+    <div className="flex flex-col md:flex-row justify-center items-center space-y-4 md:space-y-0 md:space-x-8 p-4">
+      <div className="text-center">
+        <h2 className="text-lg font-semibold">Event Category Distribution</h2>
+        <div className="w-full flex justify-center">
+          <div className="w-72 h-72 md:w-80 md:h-80">
+            <Doughnut data={pieData} />
+          </div>
+        </div>
       </div>
 
-      <div style={{ width: "800px", height: "400px" }}>
+      <div className="w-full max-w-4xl">
         <Line data={lineData} />
       </div>
     </div>
+
   );
 };
 
