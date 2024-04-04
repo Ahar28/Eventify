@@ -1,26 +1,25 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import { FaPrint, FaRegTimesCircle } from "react-icons/fa";
 import Button from "../UI/Button";
 import Container from "../Container";
-import { error } from "console";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import QRCode from "qrcode.react";
 import CancellationModal from "../CancelModal";
-import { useSelector } from "react-redux";
-import { selectUser } from "../../redux/userSlice";
-import { useNavigate,useLocation } from "react-router-dom";
+import { useNavigate, useLocation } from "react-router-dom";
 import { formatDateTime } from "../../services/utils";
 import { Participant } from "../ParticipantForm";
 import { deleteEventRegistration } from "../../services/RegisterEventService";
-
 
 const TicketInfoComponent: React.FC = () => {
   const location = useLocation();
   const registration = location.state?.registration;
   const navigate = useNavigate();
   const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
 
   const handlePrint = () => {
     window.print();
@@ -34,17 +33,13 @@ const TicketInfoComponent: React.FC = () => {
     console.log("Cancellation confirmed");
     setIsCancellationModalOpen(false);
     try {
-      
       const response = await deleteEventRegistration(registration._id);
       navigate(`/mytickets`);
       console.log("Cancellation Response:", response);
-      
     } catch (error) {
       console.error("Error canceling registration:", error);
-      
     }
   };
-    
 
   const handleCloseCancellationModal = () => {
     setIsCancellationModalOpen(false);

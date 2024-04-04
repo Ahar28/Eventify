@@ -89,13 +89,6 @@ interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
     timeZone?: string;
   }
   
-  /**
-   * Formats the date and time according to the given options.
-   * 
-   * @param {string} dateTime The date-time string to format.
-   * @param {DateTimeFormatOptions} options Options to control the formatting.
-   * @returns {string} The formatted date-time string.
-   */
   export function formatDateTime(dateTime: string, options: DateTimeFormatOptions = {}): string {
     const defaultOptions: DateTimeFormatOptions = {
       year: 'numeric',
@@ -114,4 +107,3 @@ interface DateTimeFormatOptions extends Intl.DateTimeFormatOptions {
   }
   
   export default formatDateTime;
-  

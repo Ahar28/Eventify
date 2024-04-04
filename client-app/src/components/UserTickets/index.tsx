@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import Container from "../Container";
 import QRCode from "qrcode.react";
@@ -7,6 +11,7 @@ import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
 import { getEventsRegisteredByUser as getEventsRegisteredByUser } from "../../services/EventService";
 import { useNavigate } from "react-router-dom";
+import { error } from "console";
 
 interface TicketRegistration {
   _id: string;
@@ -24,9 +29,7 @@ interface TicketRegistration {
 }
 
 const UserTickets = () => {
-  const [registeredEvents, setRegisteredEvents] = useState<
-    TicketRegistration[]
-  >([]);
+  const [registeredEvents, setRegisteredEvents] = useState<TicketRegistration[]>([]);
   const user = useSelector(selectUser);
   const navigate = useNavigate();
 
@@ -38,7 +41,7 @@ const UserTickets = () => {
           if (response?.data.data) {
             setRegisteredEvents(response.data.data);
           } else {
-            // yet to Handle the case where no data is returned or an error occurred
+            throw(error);
           }
         } catch (error) {
           console.error("Error fetching registered events:", error);
@@ -92,7 +95,10 @@ const UserTickets = () => {
                     className="mt-8"
                   />
                   <span>Registration ID: {registration._id}</span>
-                  <Button className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center" onClick={()=>handleTicketSelection(registration)}>
+                  <Button
+                    className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
+                    onClick={() => handleTicketSelection(registration)}
+                  >
                     <span className="">View Ticket</span>
                   </Button>
                 </div>

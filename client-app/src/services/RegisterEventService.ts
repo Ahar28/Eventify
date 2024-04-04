@@ -1,8 +1,9 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import {TicketRegistration} from "../components/ParticipantForm";
 import { deleteData, postData } from "./utils";
-import { json } from "stream/consumers";
-
-const API_URL = "http://localhost:8000/api";
 
 export async function createEventRegistration(eventData: TicketRegistration) {
     try {
@@ -13,7 +14,6 @@ export async function createEventRegistration(eventData: TicketRegistration) {
         return null;
     }
 }
-
 
 export const deleteEventRegistration = async (registrationId: string) => {
     try {
