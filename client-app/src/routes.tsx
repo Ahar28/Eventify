@@ -16,9 +16,7 @@ import PaymentForm from "./components/PaymentForm";
 import UserProfile from "./pages/UserProfile";
 import TicketPage from "./pages/Ticket";
 import UserTicketPage from "./pages/UserTickets";
-
 import AnalyticsPage from "./pages/Analytics";
-// import AddEvent from './pages/UserDashboard/AddEvent';
 
 const EventRoutes: React.FC = () => {
   return (

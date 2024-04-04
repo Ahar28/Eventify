@@ -5,6 +5,7 @@
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../../services/UserService";
+import { toast } from 'react-toastify';
 
 const ResetPasswordForm: React.FC = () => {
   const navigate = useNavigate();
@@ -19,6 +20,7 @@ const ResetPasswordForm: React.FC = () => {
   });
   const location = useLocation();
   const userId = location.search.split("=")[1];
+  const notify = () => toast.success("Password changes successfully.");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -63,6 +65,7 @@ const ResetPasswordForm: React.FC = () => {
       if (response?.data) {
         if (response?.status === 200) {
           navigate("/auth/login");
+          notify();
         } else {
           e.stopPropagation();
           setErrorMsg("Something went wrong!");

@@ -5,12 +5,14 @@
 import React, { useState } from "react";
 import { sendVerificationLink } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
+import { toast } from 'react-toastify';
 
 const ForgotPasswordForm: React.FC = () => {
   const [formData, setFormData] = useState({ email: "" });
   const [errors, setErrors] = useState({ email: "" });
   const navigate = useNavigate();
   const [errorMsg, setErrorMsg] = useState("");
+  const notify = () => toast.success("Verification link sent to your email.");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -45,6 +47,7 @@ const ForgotPasswordForm: React.FC = () => {
       if (response?.data) {
         if (response?.status === 200) {
           navigate("/auth/login");
+          notify();
         }
       } else {
         e.stopPropagation();

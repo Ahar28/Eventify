@@ -2,7 +2,7 @@
  * Author: Keyur Pradipbhai Khant
  * Banner ID: B00935171
  */
-import React, { useState } from "react";
+import React, { useEffect, useRef, useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../Container";
 import { logo } from "../../assets/home";
@@ -32,6 +32,7 @@ const Navbar: React.FC = () => {
   const user = useSelector(selectUser);
   const dispatch = useDispatch();
   const navigate = useNavigate();
+  const dropdownRef: any = useRef(null);
 
   const handleSignOut = () => {
     dispatch(logout());
@@ -42,6 +43,24 @@ const Navbar: React.FC = () => {
     localStorage.removeItem('id');
     navigate('/');
   }
+
+  useEffect(() => {
+    function handleClickOutside(event: any) {
+      if (dropdownRef.current && !dropdownRef.current.contains(event.target)) {
+        setIsDropdownOpen(false);
+      }
+    }
+
+    document.addEventListener("mousedown", handleClickOutside);
+    return () => {
+      document.removeEventListener("mousedown", handleClickOutside);
+    };
+  }, [dropdownRef]);
+
+  const handleProfileClick = () => {
+    setIsDropdownOpen(false);
+    navigate('/profile');
+  };
 
   return (
     <nav className="py-2 z-40">
@@ -71,14 +90,14 @@ const Navbar: React.FC = () => {
           {user ? (
             <div className="hidden md:block relative">
               <button
-                onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                onClick={() => setIsDropdownOpen(prevIsDropdownOpen => !prevIsDropdownOpen)}
                 className="bg-button-primary hover:bg-button-primary-hover text-white px-4 py-1 rounded-md text-sm"
               >
                 {user.firstName + ' ' + user.lastName}
               </button>
               {isDropdownOpen && (
-                <div className="absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-md shadow-xl z-20">
-                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">Profile</Link>
+                <div ref={dropdownRef} className="absolute right-0 mt-2 py-2 w-48 bg-gray-100 rounded-md shadow-xl z-20">
+                  <Link to="/profile" onClick={handleProfileClick} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200">Profile</Link>
                   <Link onClick={handleSignOut} className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-200" to={""}>Logout</Link>
                 </div>
               )}
@@ -118,16 +137,16 @@ const Navbar: React.FC = () => {
               {user ? (
                 <>
                   <button
-                    onClick={() => setIsDropdownOpen(!isDropdownOpen)}
+                    onClick={() => setIsDropdownOpen(prevIsDropdownOpen => !prevIsDropdownOpen)}
                     className="bg-button-primary text-white flex justify-between items-center w-full px-3 py-2 rounded-md text-base font-medium"
                   >
                     {user.firstName + ' ' + user.lastName}
                     <i className={`fas fa-chevron-${isDropdownOpen ? 'up' : 'down'}`}></i>
                   </button>
                   {isDropdownOpen && (
-                    <div className="bg-gray-100 rounded-md">
+                    <div ref={dropdownRef} className="bg-gray-100 rounded-md">
                       <Link
-                        to="/profile"
+                        to="/profile" onClick={handleProfileClick}
                         className="block text-md hover:bg-gray-200 px-3 py-2"
                       >
                         Profile
