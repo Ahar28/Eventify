@@ -1,6 +1,5 @@
 /**
- * Author: Keyur Pradipbhai Khant
- * Banner ID: B00935171
+ * Author: Keyur Pradipbhai Khant (B00935171)
  */
 import React, { useState } from 'react';
 import Container from '../Container';

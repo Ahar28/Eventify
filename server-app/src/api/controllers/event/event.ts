@@ -269,7 +269,6 @@ export const getEventsRegisteredByUser = async (req: Request, res: Response) => 
 };
 
 export const getEventById = async (req: Request, res: Response) => {
-  console.log("Get Event by ID");
   const { eventId } = req.params;
 
   try {

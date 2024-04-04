@@ -1,3 +1,6 @@
+/**
+ * Author: Riyaben Pareshkumar Patel (B00926204)
+ */
 
 import React, { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import { selectUser } from '../redux/userSlice';
@@ -41,7 +44,6 @@ export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }
     const fetchEvents = async () => {
       try {
         const response = await getWishlistEvents(userId);
-        console.log(response);
         const mappedEvents = response.data.map((event: any) => ({
           id: event._id,
           name: event.eventName,

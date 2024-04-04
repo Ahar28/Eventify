@@ -7,6 +7,7 @@ import { createEventRegistration } from "../../services/RegisterEventService";
 import { useNavigate } from "react-router-dom";
 import { selectUser, user as USER } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
+import { toast } from 'react-toastify';
 
 export interface Participant {
   firstName: string;
@@ -73,6 +74,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
   const [participants, setParticipants] = useState<Participant[]>([]);
   const navigate = useNavigate();
   const [errors, setErrors] = useState<ParticipantError[]>([]);
+  const notify = () => toast.success("Event registered successfully!");
 
   const [userId, setUserId] = useState({
     id: "",
@@ -91,7 +93,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
   // Generating initial participants based on ticket quantities
   React.useEffect(() => {
     const initialParticipants: Participant[] = [];
-    
+
     const initialErrors: ParticipantError[] = [];
 
     Object.entries(ticketQuantities).forEach(([type, quantity]) => {
@@ -118,14 +120,22 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
     const updatedErrors: ParticipantError[] = participants.map(
       (participant) => {
         return {
-          firstName: participant.firstName ? "" : "First name is required",
-          lastName: participant.lastName ? "" : "Last name is required",
-          email: participant.email.match(/\S+@\S+\.\S+/)
+          firstName: participant.firstName.match(/^[A-Za-z ]+$/)
+            ? ""
+            : "Numbers / special characters not allowed",
+          lastName: participant.lastName.match(/^[A-Za-z ]+$/)
+            ? ""
+            : "Numbers / special characters not allowed",
+          email: participant.email.match(
+            /^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/
+          )
             ? ""
             : "Email is invalid",
         };
       }
     );
+
+    console.log("UPDATE:", updatedErrors);
 
     setErrors(updatedErrors);
     return !updatedErrors.some(
@@ -149,10 +159,16 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
       };
 
       try {
-        const response = await createEventRegistration(registrationData);
+        let response;
+        if (eventdetails?.isPaidEvent) {
+          navigate('/payment', { state: { registrationData, eventdetails, amount: calculateSubtotal() } })
+        } else {
+          response = await createEventRegistration(registrationData);
+        }
         if (response?.data) {
           if (response?.status === 200) {
             setShowSuccessModal(true);
+            notify();
           }
         } else {
           // Handle the error
@@ -197,29 +213,36 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
                 <div key={index}>
                   <h2 className="text-xl font-bold">Attendee {index + 1}</h2>
                   {/* First Name and Last Name on the same line */}
-                  <div className="grid grid-cols-1 md:grid-cols-2 gap-4 mb-4">
-                    <input
-                      type="text"
-                      name="FirstName"
-                      id="firstName"
-                      value={participant.firstName}
-                      onChange={(e) =>
-                        handleInputChange(index, "firstName", e.target.value)
-                      }
-                      className="border border-gray-300 text-md block w-full p-2.5 mt-6"
-                      placeholder="First Name"
-                    />
-                    <input
-                      type="text"
-                      name="LastName"
-                      id="lastName"
-                      value={participant.lastName}
-                      onChange={(e) =>
-                        handleInputChange(index, "lastName", e.target.value)
-                      }
-                      className="border border-gray-300 text-md block w-full p-2.5 mt-6"
-                      placeholder="Last Name"
-                    />
+                  <div className="flex gap-4 mb-4">
+                    <div className="w-1/2">
+                      <input
+                        type="text"
+                        name="FirstName"
+                        id="firstName"
+                        value={participant.firstName}
+                        onChange={(e) =>
+                          handleInputChange(index, "firstName", e.target.value)
+                        }
+                        className="border border-gray-300 text-md block w-full p-2.5 mt-6"
+                        placeholder="First Name"
+                      />
+                      {errors[index].firstName && <p className="text-red-500 text-xs mt-1">{errors[index].firstName}</p>}
+                    </div>
+
+                    <div className="w-1/2">
+                      <input
+                        type="text"
+                        name="LastName"
+                        id="lastName"
+                        value={participant.lastName}
+                        onChange={(e) =>
+                          handleInputChange(index, "lastName", e.target.value)
+                        }
+                        className="border border-gray-300 text-md block w-full p-2.5 mt-6"
+                        placeholder="Last Name"
+                      />
+                      {errors[index].lastName && <p className="text-red-500 text-xs mt-1">{errors[index].lastName}</p>}
+                    </div>
                   </div>
 
                   <input
@@ -233,6 +256,7 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
                     className="border border-gray-300 text-md block w-full p-2.5 mt-6"
                     placeholder="Email"
                   />
+                  {errors[index].email && <p className="text-red-500 text-xs mt-1">{errors[index].email}</p>}
                 </div>
               ))}
               {/* <Button type="submit" variant="contained" color="primary">Submit</Button> */}

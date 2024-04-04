@@ -5,42 +5,54 @@ import { json } from "stream/consumers";
 const API_URL = "http://localhost:8000/api";
 
 export async function createEvent(eventData: Event) {
-    try {
-        const response = await postData(JSON.stringify(eventData), "/event/create");
-        return response;
-    } catch (error) {
-        console.error("Error adding event:", error);
-        return null;
-    }
+  try {
+    const response = await postData(JSON.stringify(eventData), "/event/create");
+    return response;
+  } catch (error) {
+    console.error("Error adding event:", error);
+    return null;
+  }
 }
 
 export async function getEventsByOrganizer(organizerId: string) {
-    try {
-        const response = await getData("/event/organizer/" + organizerId);
-        return response;
-    } catch (error) {
-        console.error("Error getting event:", error);
-        return null;
-    }
+  try {
+    const response = await getData("/event/organizer/" + organizerId);
+    return response;
+  } catch (error) {
+    console.error("Error getting event:", error);
+    return null;
+  }
+}
+
+export async function getEventData() {
+  try {
+    const response = await getData("/event/event-data");
+    return response.data;
+  } catch (error) {
+    console.error("Error getting event analytics:", error);
+    return null;
+  }
 }
 
 export async function getEventsExcludeOrganizer(organizerId: string) {
-    try {
-        const response = await getData("/event/events-exclude-organizer/" + organizerId);
-        return response;
-    } catch (error) {
-        console.error("Error getting event:", error);
-        return null;
-    }
+  try {
+    const response = await getData(
+      "/event/events-exclude-organizer/" + organizerId
+    );
+    return response;
+  } catch (error) {
+    console.error("Error getting event:", error);
+    return null;
+  }
 }
 
 export async function getEventsRegisteredByUser(userId: string) {
   try {
-      const response = await getData("/event/events-registered-byuser/" + userId);
-      return response;
+    const response = await getData("/event/events-registered-byuser/" + userId);
+    return response;
   } catch (error) {
-      console.error("Error getting events:", error);
-      return null;
+    console.error("Error getting events:", error);
+    return null;
   }
 }
 
@@ -94,14 +106,13 @@ interface WishlistData {
     }
 }
 
-
 export async function getAllEventsService() {
   try {
-      const response = await getData("/event/all");
-      return response.data;
+    const response = await getData("/event/all");
+    return response.data;
   } catch (error) {
-      console.error("Error getting all events:", error);
-      throw error;
+    console.error("Error getting all events:", error);
+    throw error;
   }
 }
 

@@ -17,25 +17,35 @@ import UserProfile from "./pages/UserProfile";
 import TicketPage from "./pages/Ticket";
 import UserTicketPage from "./pages/UserTickets";
 
+import AnalyticsPage from "./pages/Analytics";
+// import AddEvent from './pages/UserDashboard/AddEvent';
 
 const EventRoutes: React.FC = () => {
   return (
     <Routes>
-      <Route path= "/" element={<Landing />} />
-      <Route path= "/auth/*" element={<Authentication />} />
-      <Route path= "dashboard" element={<UserDashboard />} />
-      <Route path= 'dashboard/add-event' element={<AddEvent/>}/>
-      <Route path= "/faqs" element={<FAQPage />} />
-      <Route path= "/contact" element={<ContactUs />} />
+      <Route path="/" element={<Landing />} />
+      <Route path="/auth/*" element={<Authentication />} />
+      <Route path="dashboard" element={<UserDashboard />} />
+      <Route path="dashboard/add-event" element={<AddEvent />} />
+      <Route path="/faqs" element={<FAQPage />} />
+      <Route path="/contact" element={<ContactUs />} />
       <Route path="/profile" element={<UserProfile />} />
-      <Route path = "/events" element = {<Eventfeed />} />
-      <Route path = "/wishlist" element = {<Wishlist />} />
-      <Route path = "/calendar" element = {<Calendar />} />
-      <Route path = "/event/:id" element={<EventPage />} />
-      <Route path = "/event/:id/register/participant-info" element={<ParticipantInfoPage />} />
-      <Route path = "/ticket/:id" element={<TicketPage />} /> 
-      <Route path = "/mytickets" element={<UserTicketPage />} /> 
-      <Route path = '/payment' element = {<PaymentForm />} />
+      <Route path="/events" element={<Eventfeed />} />
+      <Route path="/wishlist" element={<Wishlist />} />
+      <Route path="/calendar" element={<Calendar />} />
+      <Route path="/event/:id" element={<EventPage />} />
+      <Route
+        path="/event/:id/register/participant-info"
+        element={<ParticipantInfoPage />}
+      />
+      <Route path="/ticket/:id" element={<TicketPage />} />
+      <Route path="/mytickets" element={<UserTicketPage />} />
+      <Route path="/payment" element={<PaymentForm />} />
+      <Route path="/analytics" element={<AnalyticsPage />} />
+      <Route
+        path="/events/:id/register/participant-info"
+        element={<ParticipantInfoPage />}
+      />
       <Route path="*" element={<WorkingInProgress />} />
     </Routes>
   );

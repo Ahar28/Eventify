@@ -10,6 +10,7 @@ import { Link } from 'react-router-dom';
 import { getEventsByOrganizer } from '../../services/EventService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
+import Analytics from '../Analytics';
 
 const UserDashboard: React.FC = () => {
     const [events, setEvents] = useState<any[]>([]);
@@ -39,6 +40,11 @@ const UserDashboard: React.FC = () => {
                             <p>No events created yet.</p>
                         </div>
                     )}
+                </div>
+
+                <div className='justify-between items-center my-8'>
+                    <h2 className="text-xl font-bold">Your Analytics</h2>
+                    <Analytics />
                 </div>
                 <CreateEventProcedure />
             </div>
