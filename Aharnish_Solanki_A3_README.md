@@ -6,6 +6,8 @@
 * *GitLab individual URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Aharnish?ref_type=heads
 * *GitLab group URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
 
+## Frontend URL : https://eventify-csci5709.vercel.app/
+## Backend  URL : https://eventify-2f9d.onrender.com/
 
 ## Authors
 * [Aharnish Maheshbhai Solanki](ah910744@dal.ca) - *Full Stack Developer*
