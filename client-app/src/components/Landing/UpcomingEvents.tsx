@@ -9,7 +9,7 @@ import Container from '../Container';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
-import { fetchEventsExcludeOrganizer } from '../EventFeed/Events'
+import { fetchAllEvents, fetchEventsExcludeOrganizer } from '../EventFeed/Events'
 
 interface Event {
     id: string;
@@ -28,9 +28,12 @@ const TopUpcomingEvents: React.FC = () => {
     const user = useSelector(selectUser);
 
     useEffect(() => {
-        fetchEventsExcludeOrganizer(user).then(setEvents);
+        if (user?.id) {
+            fetchEventsExcludeOrganizer(user).then(setEvents);
+        } else {
+            fetchAllEvents().then(setEvents);
+        }
     }, [user]);
-
     
 
     const handleDiscoverEventsClick = () => {
@@ -47,7 +50,7 @@ const TopUpcomingEvents: React.FC = () => {
                         <EventCard key={event.id} event={event} />
                     ))}
                 </div>
-                <div className="flex justify-center">
+                <div className="flex justify-center mt-5">
                     <button
                         onClick={handleDiscoverEventsClick}
                         className="bg-button-primary text-white py-2 px-16 rounded-full text-lg font-medium hover:bg-button-primary-hover transition duration-300 ease-in-out w-full sm:w-auto"
