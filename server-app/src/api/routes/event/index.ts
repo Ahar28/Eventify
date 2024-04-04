@@ -1,6 +1,7 @@
 import express from "express";
 import eventController from "../../controllers/event";
 import { authenticateUser } from "../../../middlewares/auth";
+import { generateAndDownloadCertificate } from "../../../utils/certificate";
 import eventAnalyticsController from "../../controllers/analytics";
 const router = express.Router();
 
@@ -15,6 +16,7 @@ router.get(
 router.post("/wishlist/add", eventController.addToWishlist);
 router.delete("/wishlist/remove/:userId", eventController.removeFromWishlist);
 router.get("/wishlist/:userId", eventController.getWishlistEvents);
+router.get("/certificate/:userId/:eventId", generateAndDownloadCertificate);
 router.get(
   "/events-registered-byuser/:userId",
   eventController.getEventsRegisteredByUser
