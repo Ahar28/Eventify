@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import { Request, Response } from "express";
 import User from "../../../models/User";
 import sendResponse from "../../../utils/response";
@@ -15,7 +19,7 @@ export const updateUser = async (
   try {
     const { userId } = req.params;
     const { firstName, lastName, bio } = req.body;
-  
+
     const user = await User.findById(userId);
     if (!user) {
       return sendResponse(res, 404, {
