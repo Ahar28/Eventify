@@ -47,7 +47,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
 
   const navigate = useNavigate();
 
-  const { wishlist } = useWishlist();
+  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
   const isWishlisted = wishlist.some(e => e.id === event?._id);
 
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -55,16 +55,21 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [showShareModal, setShowShareModal] = useState(false);
   const urlToShare = window.location.href;
 
-
-  // const toggleWishlist = () => {
-  //   if(event){
-  //     if (isWishlisted) {
-  //     removeFromWishlist(event?._id);
-  //     } else {
-  //     addToWishlist(event);
-  //     }
-  //   }
-  // };
+  const toggleWishlist = async (e: React.MouseEvent) => {
+    e.stopPropagation();
+    if (isWishlisted) {
+      removeFromWishlist(eventId as string);
+    } else {
+      addToWishlist({
+        id: event?._id as string,
+        name: event?.eventName as string,
+        date: event?.eventStartDateTime as any,
+        location: event?.details.venue as string,
+        description: event?.details.description as string,
+        image: event?.titlePicture as string
+      });
+    }
+  };
 
   useEffect(() => {
     if (eventId) {
@@ -104,7 +109,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
               </h1>
               <div className="flex items-center space-x-2">
                 <button
-                  // onClick={toggleWishlist}
+                  onClick={toggleWishlist}
                   className="ml-2 text-red-500 flex items-center"
                 >
                   <div style={{ padding: "0 px 5px" }}>
