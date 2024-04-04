@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useState } from "react";
 import signUpImage from "../../assets/home/front_world.jpg";
 

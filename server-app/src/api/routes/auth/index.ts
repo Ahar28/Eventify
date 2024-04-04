@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import express from "express";
 import authController from "../../controllers/auth/index";
 const router = express.Router();

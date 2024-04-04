@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
 import { Request, Response } from "express";
@@ -66,7 +70,7 @@ export const login = async (
         lastName: user.lastName,
         role: user.role,
         userId: user._id,
-        bio: user.bio
+        bio: user.bio,
       },
     });
   } catch (error) {
