@@ -84,6 +84,7 @@ interface WishlistData {
     }
 }
 
+// Add TRY and CATCH blocks to the following functions
 export const fetchParticipatoryEvents = async (userId: string) => {
     const response = await getData(`/register/participation/${userId}`);
     return response.data;
