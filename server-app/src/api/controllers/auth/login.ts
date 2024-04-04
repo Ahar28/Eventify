@@ -4,6 +4,9 @@ import { Request, Response } from "express";
 import sendResponse from "../../../utils/response";
 import User from "../../../models/User";
 import { sendEmail } from "../../../utils/mailer";
+import dotenv from "dotenv";
+dotenv.config();
+const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL;
 
 interface LoginRequestBody {
   email: string;
@@ -129,7 +132,8 @@ export const sendVerificationLink = async (req: Request, res: Response) => {
       });
     }
 
-    const verificationUrl = `http://localhost:3000/auth/reset-password?id=${user._id}`;
+    // const verificationUrl = `http://localhost:3000/auth/reset-password?id=${user._id}`;
+    const verificationUrl =  BASE_FRONTEND_URL + `/auth/reset-password?id=${user._id}`;
 
     const emailSent = await sendEmail(
       user.email,

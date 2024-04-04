@@ -5,6 +5,7 @@
 import dotenv from "dotenv";
 import Stripe from "stripe";
 dotenv.config();
+const BASE_FRONTEND_URL = process.env.BASE_FRONTEND_URL;
 
 const stripe = new Stripe(process.env.STRIPE_PUB_KEY as string, {
   apiVersion: "2023-10-16",
@@ -20,7 +21,8 @@ export const makePayment = async (req: any, res: any) => {
       currency: "cad",
       confirm: true,
       confirmation_method: "automatic",
-      return_url: "http://localhost:3000/dashboard",
+      // return_url: "http://localhost:3000/dashboard",
+      return_url: BASE_FRONTEND_URL+"/dashboard",
       payment_method: paymentMethod,
     });
 
