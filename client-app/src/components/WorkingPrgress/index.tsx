@@ -1,6 +1,9 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 /* eslint-disable jsx-a11y/alt-text */
 import React from 'react';
-import img from '../../assets/working-progress.svg';
 
 const WorkingInProgress: React.FC = () => {
     return (

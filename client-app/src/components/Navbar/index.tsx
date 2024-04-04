@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from "react";
 import { Link, useNavigate } from "react-router-dom";
 import Container from "../Container";
@@ -14,6 +18,7 @@ interface NavLinkData {
 const navLinks: NavLinkData[] = [
   { name: "Home", to: "/" },
   { name: "Events", to: "/events" },
+  { name: "Tickets", to: "/mytickets", requireAuth: true },
   { name: "Dashboard", to: "/dashboard", requireAuth: true },
   { name: "Calendar", to: "/calendar", requireAuth: true },
   { name: "Wishlist", to: "/wishlist", requireAuth: true },
@@ -97,7 +102,7 @@ const Navbar: React.FC = () => {
         </div>
 
         {isOpen && (
-          <div className="md:hidden transition-all" id="mobile-menu">
+          <div className="md:hidden absolute top-16 left-0 w-full bg-white shadow-lg z-50 transition-all" id="mobile-menu">
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-black">
               {navLinks.map((link) => (
                 (!link.requireAuth || user) && (

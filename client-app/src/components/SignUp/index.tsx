@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useState } from "react";
 import { registerUser } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
@@ -18,7 +22,7 @@ const SignUpForm: React.FC = () => {
     confirmPassword: "",
   });
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -35,27 +39,42 @@ const SignUpForm: React.FC = () => {
     };
     let formIsValid = true;
 
+    const nameRegex = /^[a-zA-Z]+$/;
     if (!formData.firstName) {
       formIsValid = false;
       tempErrors.firstName = "First name is required";
+    } else if (!nameRegex.test(formData.firstName)) {
+      formIsValid = false;
+      tempErrors.firstName = "Numbers / special characters not allowed";
     }
 
     if (!formData.lastName) {
       formIsValid = false;
       tempErrors.lastName = "Last name is required";
+    } else if (!nameRegex.test(formData.lastName)) {
+      formIsValid = false;
+      tempErrors.lastName = "Numbers / special characters not allowed";
     }
 
+    const emailRegex =
+      /^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/;
     if (!formData.email) {
       formIsValid = false;
       tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (!emailRegex.test(formData.email)) {
       formIsValid = false;
       tempErrors.email = "Email is not valid";
     }
 
+    const passwordRegex =
+      /^(?=.*[a-zA-Z])(?=.*[0-9])(?=.*[!@#$%^&*])[a-zA-Z0-9!@#$%^&*]{8,}$/;
     if (!formData.password) {
       formIsValid = false;
       tempErrors.password = "Password is required";
+    } else if (!passwordRegex.test(formData.password)) {
+      formIsValid = false;
+      tempErrors.password =
+        "At least 8 characters long and contain alphanumeric and special characters";
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -73,7 +92,7 @@ const SignUpForm: React.FC = () => {
       const response = await registerUser(formData);
       if (response?.data) {
         if (response?.status === 200) {
-          navigate('/auth/login');
+          navigate("/auth/login");
         } else {
           setErrorMsg("Something went wrong!");
         }
@@ -135,7 +154,7 @@ const SignUpForm: React.FC = () => {
           Email
         </label>
         <input
-          type="email"
+          type="text"
           name="email"
           id="email"
           value={formData.email}

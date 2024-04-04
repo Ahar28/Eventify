@@ -3,9 +3,10 @@ import EventCard from '../EventCard/index';
 import Container from '../Container';
 import DatePicker from 'react-datepicker';
 import 'react-datepicker/dist/react-datepicker.css';
-import { getEventsExcludeOrganizer } from '../../services/EventService';
+import { getEventsExcludeOrganizer, getAllEventsService  } from '../../services/EventService';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
+import { useLocation } from 'react-router-dom';
 
 interface Event {
     id: string;
@@ -27,10 +28,31 @@ const Events: React.FC = () => {
     const [events, setEvents] = useState<Event[]>([]);
 
     const user = useSelector(selectUser);
+    const location = useLocation();
+
+    const noEventsMessage = searchQuery.length > 0 ? "No events match your search criteria." : "No events found.";
+
 
     useEffect(() => {
-        fetchEventsExcludeOrganizer(user).then(setEvents);
+        if (user?.id) {
+            fetchEventsExcludeOrganizer(user).then(setEvents);
+        } else {
+            fetchAllEvents().then(setEvents);
+        }
     }, [user]);
+
+    useEffect(() => {
+        const queryParams = new URLSearchParams(location.search);
+        const search = queryParams.get('search');
+        const topic = queryParams.get('topic');
+        if (search) {
+            setSearchQuery(decodeURIComponent(search));
+        }
+        else if (topic) {
+            setSearchQuery('');
+            setSearchQuery(decodeURIComponent(topic));
+        }
+    }, [location]);
 
     useEffect(() => {
         window.scrollTo(0, 0);
@@ -48,17 +70,14 @@ const Events: React.FC = () => {
     
         const isInRange = (!startDateTime || eventDate >= startDateTime) && (!endDateTime || eventDate <= endDateTime);
     
-        const matchesSearch = event.name.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.location.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        event.description.toLowerCase().includes(searchQuery.toLowerCase()) ||
-        (event.topic && event.topic.toLowerCase().includes(searchQuery.toLowerCase())) ||
-        (event.categories && event.categories.some(category => category.toLowerCase().includes(searchQuery.toLowerCase())));
-
+        const matchesSearch = (event.name?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.location?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.description?.toLowerCase().includes(searchQuery.toLowerCase()) || false) ||
+        (event.topic ? event.topic.toLowerCase().includes(searchQuery.toLowerCase()) : false) ||
+        (event.categories ? event.categories.some(category => category?.toLowerCase().includes(searchQuery.toLowerCase())) : false);
     
         return isInRange && matchesSearch;
     });
-    
-    
       
 
     return (
@@ -92,13 +111,15 @@ const Events: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 mt-8">
+            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 my-8">
                     {filteredEvents.length > 0 ? (
                         filteredEvents.map((event) => (
                             <EventCard key={event.id} event={event} />
                         ))
                     ) : (
-                        <p style={{ textAlign: 'center', fontSize: '20px', color: '#666', width: '100%' }}>No events found.</p>
+                        <p style={{ textAlign: 'center', fontSize: '20px', color: '#666', width: '100%' }}>
+                        {noEventsMessage}
+                    </p>
                     )}
             </div>
         </Container>
@@ -111,7 +132,7 @@ export async function fetchEventsExcludeOrganizer(user: { id: string; }): Promis
     const data = await response.data;
         console.log(data);
         if (response?.data) {
-            const mappedEvents = data.data.map((event: any) => ({
+            let mappedEvents = data.data.map((event: any) => ({
                 id: event._id, 
                 name: event.eventName,
                 date: event.eventStartDateTime, 
@@ -119,7 +140,8 @@ export async function fetchEventsExcludeOrganizer(user: { id: string; }): Promis
                 description: event.details.description,
                 image: event.titlePicture, 
             }));
-            console.log("Excluded Organizer Events:", mappedEvents);
+
+            console.log("Filtered Organizer Events:", mappedEvents);
             return mappedEvents;
         } else {
             console.error('Failed to fetch events:', data.message);
@@ -132,5 +154,32 @@ export async function fetchEventsExcludeOrganizer(user: { id: string; }): Promis
     }
 }
 
+export async function fetchAllEvents(): Promise<any[]> {
+    try {
+        const response = await getAllEventsService(); 
+        console.log(response);
+        if (response?.data) {
+            let mappedEvents = response.data.map((event: any) => ({
+                id: event._id, 
+                name: event.eventName,
+                date: event.eventStartDateTime, 
+                location: event.details.venue, 
+                description: event.details.description,
+                image: event.titlePicture, 
+                topic: event.topic,
+                categories: event.categories,
+            }));
+
+            console.log("All Events:", mappedEvents);
+            return mappedEvents;
+        } else {
+            console.error('Failed to fetch all events:', response.message);
+            return [];
+        }
+    } catch (error) {
+        console.error('Error fetching all events:', error);
+        return [];
+    }
+}
 
 export default Events;

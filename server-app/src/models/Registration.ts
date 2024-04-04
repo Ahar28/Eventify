@@ -26,7 +26,8 @@ const registrationSchema: Schema = new Schema(
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,
-      ref: "Event",
+      // ref: "Event",
+      ref: "events",
       required: true,
     },
     registrationDate: {

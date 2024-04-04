@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
-import { FaHeart, FaRegHeart, FaUser, FaShareAlt, FaCalendarAlt, FaMapMarkedAlt} from "react-icons/fa";
+import { FaHeart, FaRegHeart, FaUser, FaShareAlt, FaCalendarAlt, FaMapMarkedAlt } from "react-icons/fa";
 import { useWishlist } from "../../context/WishlistContext";
 import Container from "../Container";
 import Button from "../UI/Button";
@@ -11,41 +11,39 @@ import { getEventsbyId } from '../../services/EventService';
 
 
 interface EventDetails {
-    details: {
-      description: string;
-      venue: string;
-      additionalInfo?: string;
-    };
-    _id: string;
-    eventName: string;
-    organizer: string; 
-    titlePicture: string;
-    pictures: string[];
-    topic: string;
-    categories: string[];
-    eventStartDateTime: string;
-    eventEndDateTime: string;
-    isActive: boolean;
-    isPaidEvent: boolean;
-    price: number;
-    createdAt: string;
-    updatedAt: string;
-  }
+  details: {
+    description: string;
+    venue: string;
+    additionalInfo?: string;
+  };
+  _id: string;
+  eventName: string;
+  organizer: string;
+  titlePicture: string;
+  pictures: string[];
+  topic: string;
+  categories: string[];
+  eventStartDateTime: string;
+  eventEndDateTime: string;
+  isActive: boolean;
+  isPaidEvent: boolean;
+  price: number;
+  createdAt: string;
+  updatedAt: string;
+}
 
 interface EventDetailsProps {
   eventId: string | undefined;
 }
 
+// eslint-disable-next-line @typescript-eslint/no-redeclare
 const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
-  console.log( "ahar ",eventId);
   const [event, setEvent] = useState<EventDetails | null>();
   console.log("event", event);
-  const [isLoading, setIsLoading] = useState(true);
-  const [error, setError] = useState("");
 
   const navigate = useNavigate();
 
-  const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
+  const { wishlist } = useWishlist();
   const isWishlisted = wishlist.some(e => e.id === event?._id);
 
   const [showTicketModal, setShowTicketModal] = useState(false);
@@ -64,12 +62,12 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   //   }
   // };
 
-useEffect(() => {
+  useEffect(() => {
     if (eventId) {
-        fetchEventById(eventId).then(setEvent);
-        console.log("event useeffect ", event);
+      fetchEventById(eventId).then(setEvent);
+      console.log("event useeffect ", event);
     }
-}, [eventId]);
+  }, [event, eventId]);
 
 
   useEffect(() => {
@@ -90,11 +88,10 @@ useEffect(() => {
     setShowTicketModal(false);
   };
 
- 
   return (
     <Container>
       <div className="relative bg-white shadow-lg rounded-lg p-8 my-5 mx-auto max-w-7xl">
-         <ImageCarousel images={event?.titlePicture} /> 
+        <ImageCarousel images={event?.titlePicture} />
         <div className="flex flex-col lg:flex-row -mx-4 mt-4">
           <div className="w-full lg:w-2/3 px-4">
             <div className="flex justify-between items-start">
@@ -183,8 +180,8 @@ useEffect(() => {
               >
                 Register
               </Button>
-              {/* </TicketPurchaseModal */} 
-               <TicketPurchaseModal
+              {/* </TicketPurchaseModal */}
+              <TicketPurchaseModal
                 isOpen={showTicketModal}
                 onClose={() => setShowTicketModal(false)}
                 onCheckout={handleCheckout}
@@ -198,14 +195,13 @@ useEffect(() => {
   );
 };
 
-export async function fetchEventById(eventId: string): Promise<any| null> {
+export async function fetchEventById(eventId: string): Promise<any | null> {
   try {
     const response = await getEventsbyId(eventId);
-    console.log(response.data);
-    const data = await response.data.data;
-    console.log("response is ", response);
     if (response?.data) {
-
+      const data = response.data.data;
+      // Setting price to 0 if isPaidEvent is false or if price is not available
+      const price = !data.isPaidEvent || data.price === undefined ? 0 : data.price;
       console.log("response.data  :", response.data);
       const event = {
         details: data.details,
@@ -220,12 +216,11 @@ export async function fetchEventById(eventId: string): Promise<any| null> {
         eventEndDateTime: data.eventEndDateTime,
         isActive: data.isActive,
         isPaidEvent: data.isPaidEvent,
-        price: data.price,
+        price: price,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };
 
-      console.log("Event Details ahar 3 :", event);
       return event;
     } else {
       console.error('Failed to fetch event:', response.message);

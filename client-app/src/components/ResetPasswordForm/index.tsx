@@ -1,10 +1,14 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useState } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { resetPassword } from "../../services/UserService";
 
 const ResetPasswordForm: React.FC = () => {
   const navigate = useNavigate();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
   const [formData, setFormData] = useState({
     password: "",
     confirmPassword: "",
@@ -31,6 +35,14 @@ const ResetPasswordForm: React.FC = () => {
     if (!formData.password) {
       formIsValid = false;
       tempErrors.password = "Password is required";
+    } else if (
+      !/^(?=.*[A-Za-z])(?=.*\d)(?=.*[@$!%*#?&])[A-Za-z\d@$!%*#?&]{8,}$/.test(
+        formData.password
+      )
+    ) {
+      formIsValid = false;
+      tempErrors.password =
+        "Password must be at least 8 characters long and contain a letter, a number, and a special character";
     }
 
     if (formData.password !== formData.confirmPassword) {
@@ -46,11 +58,11 @@ const ResetPasswordForm: React.FC = () => {
     e.preventDefault();
     if (validateForm()) {
       console.log("Form data submitted:", formData);
-      const userData = { userId: userId, newPassword: formData.password }
+      const userData = { userId: userId, newPassword: formData.password };
       const response = await resetPassword(userData);
       if (response?.data) {
         if (response?.status === 200) {
-          navigate('/auth/login');
+          navigate("/auth/login");
         } else {
           e.stopPropagation();
           setErrorMsg("Something went wrong!");

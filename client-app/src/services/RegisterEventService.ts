@@ -13,3 +13,14 @@ export async function createEventRegistration(eventData: TicketRegistration) {
         return null;
     }
 }
+
+
+export const deleteEventRegistration = async (registrationId: string) => {
+    try {
+      const response = await deleteData(`/register/delete/${registrationId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error cancelling the registration:', error);
+      throw error;
+    }
+  };

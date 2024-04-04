@@ -8,7 +8,7 @@ import { useNavigate } from "react-router-dom";
 import { selectUser, user as USER } from "../../redux/userSlice";
 import { useSelector, useDispatch } from "react-redux";
 
-interface Participant {
+export interface Participant {
   firstName: string;
   lastName: string;
   email: string;

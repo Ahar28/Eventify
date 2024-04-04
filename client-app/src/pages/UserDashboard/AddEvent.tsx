@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from 'react';
 import Container from '../../components/Container';
 import SectionTitle from '../../components/Landing/SectionTitle';
@@ -5,6 +9,7 @@ import { createEvent } from '../../services/EventService';
 import { useNavigate } from 'react-router-dom';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
+import { toast } from 'react-toastify';
 
 export interface EventDetails {
     description: string;
@@ -29,7 +34,6 @@ export interface Event {
 
 const AddEvent = () => {
     const user = useSelector(selectUser);
-    console.log(user);
     const [eventData, setEventData] = useState({
         eventName: '',
         organizer: user.id,
@@ -50,7 +54,7 @@ const AddEvent = () => {
     const [errors, setErrors] = useState({} as any);
     const [errorMsg, setErrorMsg] = useState('');
     const navigate = useNavigate();
-
+    const notify = () => toast.success("Event created successfully!");
 
     const handleChange = (e: any) => {
         const { name, value, type, checked } = e.target;
@@ -197,6 +201,7 @@ const AddEvent = () => {
             const response = await createEvent(event);
             if (response?.data) {
                 if (response?.status === 200) {
+                    notify();
                     navigate('/dashboard');
                 } else {
                     setErrorMsg("Something went wrong!");

@@ -34,6 +34,16 @@ export async function getEventsExcludeOrganizer(organizerId: string) {
     }
 }
 
+export async function getEventsRegisteredByUser(userId: string) {
+  try {
+      const response = await getData("/event/events-registered-byuser/" + userId);
+      return response;
+  } catch (error) {
+      console.error("Error getting events:", error);
+      return null;
+  }
+}
+
 interface WishlistData {
     userId: string;
     eventId: string;
@@ -76,13 +86,26 @@ interface WishlistData {
     try {
       console.log("server");
       console.log("Event ID: ", eventId);
-        const response = await getData("/event/" + eventId);
+        const response = await getData("/event/event/" + eventId);
         return response;
     } catch (error) {
         console.error("Error getting event:", error);
         return null;
     }
 }
+
+
+export async function getAllEventsService() {
+  try {
+      const response = await getData("/event/all");
+      return response.data;
+  } catch (error) {
+      console.error("Error getting all events:", error);
+      throw error;
+  }
+    }
+}
+
 
 // Add TRY and CATCH blocks to the following functions
 export const fetchParticipatoryEvents = async (userId: string) => {
