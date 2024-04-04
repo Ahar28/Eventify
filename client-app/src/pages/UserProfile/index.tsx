@@ -11,6 +11,7 @@ import { fetchUserBadges } from '../../services/BadgeService';
 import { fetchParticipatoryEvents } from '../../services/EventService';
 
 const UserProfile = () => {
+    const REACT_APP_BASE_URL = process.env.REACT_APP_BASE_URL;
     const user = useSelector(selectUser);
     const dispatch = useDispatch();
     const [editMode, setEditMode] = useState(false);
@@ -95,7 +96,7 @@ const UserProfile = () => {
   };
 
     const handleCertificateDownload = (eventId: any) => {
-        const downloadUrl = `http://localhost:8000/api/event/certificate/${user.id}/${eventId}`;
+        const downloadUrl = `${REACT_APP_BASE_URL}event/certificate/${user.id}/${eventId}`;
         window.open(downloadUrl, '_blank');
     };
 
