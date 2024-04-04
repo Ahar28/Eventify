@@ -142,7 +142,7 @@ The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/
 
 
 - <!---Why---> [3] & [5] reference was taken for Code because I wanted an container.
-- <!---How---> The code in [3] was implemented by using the Container and flex component of Material UI.
+- <!---How---> The code in [3] was implemented by using the Container and flex component of Tailwind CSS.
 - <!---How---> [3]'s Code was modified  to have specific styling properties such as Shadow, Border,Padding and Margin. 
 
 - <!---Why---> [4]'s reference was used as I wanted to use the icons before the text.
