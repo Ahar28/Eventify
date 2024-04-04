@@ -18,7 +18,7 @@ interface NavLinkData {
 const navLinks: NavLinkData[] = [
   { name: "Home", to: "/" },
   { name: "Events", to: "/events" },
-  { name: "Tickets", to: "/mytickets" },
+  { name: "Tickets", to: "/mytickets", requireAuth: true },
   { name: "Dashboard", to: "/dashboard", requireAuth: true },
   { name: "Calendar", to: "/calendar", requireAuth: true },
   { name: "Wishlist", to: "/wishlist", requireAuth: true },

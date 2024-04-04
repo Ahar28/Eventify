@@ -4,16 +4,6 @@ import { useNavigate } from "react-router-dom";
 import Button from "../UI/Button";
 import Container from "../Container";
 
-//   interface Event {
-//   id: string;
-//   name: string;
-//   organizer: string;
-//   date: string;
-//   location: string;
-//   description: string;
-//   image: string;
-// }
-
 interface EventDetails {
   details: {
     description: string;
@@ -51,7 +41,7 @@ interface TicketPurchaseModalProps {
 }
 
 const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClose, onCheckout, event, }) => {
-  
+
   const navigate = useNavigate();
 
   const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([]);
@@ -122,7 +112,7 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     navigate(`/event/${event?._id}/register/participant-info`, {
       state: { ticketQuantities, ticketOptions, event },
     });
-    
+
     setShowTicketModal(false); // to close the modal on checkout
   };
 
