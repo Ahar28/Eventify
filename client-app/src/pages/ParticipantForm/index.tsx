@@ -39,7 +39,6 @@ const ParticipantInfoPage: React.FC = () => {
   
   //const { ticketQuantities } = location.state as { ticketQuantities: { [type: string]: number }};
   const { ticketQuantities, ticketOptions, event } = location.state as { ticketQuantities: { [type: string]: number }, ticketOptions: TicketOption[], event: EventDetails};
-  debugger;
 
   return (
 

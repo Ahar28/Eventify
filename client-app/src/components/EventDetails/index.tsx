@@ -67,7 +67,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
       fetchEventById(eventId).then(setEvent);
       console.log("event useeffect ", event);
     }
-  }, [event, eventId]);
+  }, [eventId]);
 
 
   useEffect(() => {

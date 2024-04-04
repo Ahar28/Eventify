@@ -41,7 +41,6 @@ export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }
     const fetchEvents = async () => {
       try {
         const response = await getWishlistEvents(userId);
-        console.log(response);
         const mappedEvents = response.data.map((event: any) => ({
           id: event._id,
           name: event.eventName,

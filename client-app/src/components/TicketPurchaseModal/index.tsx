@@ -78,18 +78,9 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     );
   };
 
-  // Function to calculate fees
-  const calculateFees = () => {
-    const fees = ticketOptions.reduce(
-      (fees, ticket) => fees + ticket.price * ticket.quantity * 0.15,
-      0
-    );
-    return fees;
-  };
-
   // Function to calculate total
   const calculateTotal = () => {
-    return calculateSubtotal() + calculateFees();
+    return calculateSubtotal();
   };
 
   const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
@@ -194,10 +185,6 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
                 <div className="flex justify-between mb-2">
                   <span>Subtotal</span>
                   <span>CA${calculateSubtotal().toFixed(2)}</span>
-                </div>
-                <div className="flex justify-between mb-2">
-                  <span>Fees</span>
-                  <span>CA${calculateFees().toFixed(2)}</span>
                 </div>
                 <div className="flex justify-between mb-2 font-semibold">
                   <span>Total</span>

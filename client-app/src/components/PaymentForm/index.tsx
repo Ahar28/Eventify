@@ -2,16 +2,24 @@ import React, { useState } from 'react';
 import { useStripe, useElements, CardElement } from '@stripe/react-stripe-js';
 import axios from 'axios';
 import Container from '../Container';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { createEventRegistration } from '../../services/RegisterEventService';
+import SuccessModal from '../SuccessModal';
+import { toast } from 'react-toastify';
 
 function PaymentForm() {
     const stripe = useStripe();
     const elements = useElements();
     const [error, setError] = useState<string | null>(null);
     const [loading, setLoading] = useState(false);
+    const data = useLocation();
+    const [showSuccessModal, setShowSuccessModal] = useState(false);
+    const navigate = useNavigate();
+    const notify = () => toast.success("Event registered successfully!");
 
     const paymentSummary = {
-        description: "Event Registration Fee",
-        amount: "100.00",
+        description: data.state.eventdetails?.eventName || '',
+        amount: data.state.amount || 0,
     };
 
     const handleSubmit = async (event: React.FormEvent<HTMLFormElement>) => {
@@ -37,14 +45,21 @@ function PaymentForm() {
                 return;
             }
 
-            const response = await axios.post('http://localhost:8000/api/payment', {
-                amount: 1000, // Amount in cents
-                paymentMethodId: paymentMethod!.id,
+            const response = await axios.post('http://localhost:8000/api/payment/pay', {
+                amount: parseInt(paymentSummary.amount),
+                paymentMethod: paymentMethod!.id,
             });
 
             if (response.data.success) {
-                console.log('Payment successful:', response.data);
-                // Handle successful payment here
+                const res = await createEventRegistration(data.state.registrationData);
+                if (res?.data) {
+                    if (res?.status === 200) {
+                        setShowSuccessModal(true);
+                        notify();
+                    }
+                } else {
+                    navigate('/events');
+                }
             } else {
                 setError('Payment failed');
             }
@@ -53,6 +68,11 @@ function PaymentForm() {
         } finally {
             setLoading(false);
         }
+    };
+
+    const closeModal = () => {
+        setShowSuccessModal(false);
+        navigate("/events");
     };
 
     return (
@@ -89,6 +109,7 @@ function PaymentForm() {
                         >
                             {loading ? 'Processing…' : 'Pay Now'}
                         </button>
+                        {showSuccessModal && <SuccessModal onClose={closeModal} />}
                     </form>
                 </div>
             </div>

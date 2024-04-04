@@ -39,7 +39,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
                     className={index === current ? 'opacity-100' : 'opacity-0'}
                 >
                     {index === current && (
-                        <img src={image} alt="Event Slide" className="w-full object-cover rounded-lg" style={{ width: '1100px', height: '500px' }} />
+                        <img src={image} alt="Event Slide" className="w-full object-cover rounded-lg" style={{ width: '1200px', height: '500px' }} />
                     )}
                 </div>
             ))}
