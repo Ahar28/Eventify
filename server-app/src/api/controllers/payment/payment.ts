@@ -21,7 +21,6 @@ export const makePayment = async (req: any, res: any) => {
       currency: "cad",
       confirm: true,
       confirmation_method: "automatic",
-      // return_url: "http://localhost:3000/dashboard",
       return_url: BASE_FRONTEND_URL+"/dashboard",
       payment_method: paymentMethod,
     });
