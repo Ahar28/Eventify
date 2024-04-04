@@ -78,8 +78,8 @@ const Events: React.FC = () => {
     
         return isInRange && matchesSearch;
     });
-    
-    
+      
+
     return (
         <Container>
             <div className="flex justify-between items-center flex-wrap gap-4 mb-8">

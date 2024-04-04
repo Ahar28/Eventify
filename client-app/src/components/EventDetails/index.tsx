@@ -201,11 +201,11 @@ useEffect(() => {
 export async function fetchEventById(eventId: string): Promise<any| null> {
   try {
     const response = await getEventsbyId(eventId);
-    console.log(response.data);
     const data = await response.data.data;
-    console.log("response is ", response);
     if (response?.data) {
-
+      const data = response.data.data;
+      // Setting price to 0 if isPaidEvent is false or if price is not available
+      const price = !data.isPaidEvent || data.price === undefined ? 0 : data.price;
       console.log("response.data  :", response.data);
       const event = {
         details: data.details,
@@ -220,12 +220,11 @@ export async function fetchEventById(eventId: string): Promise<any| null> {
         eventEndDateTime: data.eventEndDateTime,
         isActive: data.isActive,
         isPaidEvent: data.isPaidEvent,
-        price: data.price,
+        price: price,
         createdAt: data.createdAt,
         updatedAt: data.updatedAt,
       };
 
-      console.log("Event Details ahar 3 :", event);
       return event;
     } else {
       console.error('Failed to fetch event:', response.message);

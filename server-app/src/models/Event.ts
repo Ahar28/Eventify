@@ -4,7 +4,7 @@
  */
 import mongoose, { Document, Schema } from "mongoose";
 
-interface IEvent extends Document {
+export interface IEvent extends Document {
   eventName: string;
   organizer: mongoose.Schema.Types.ObjectId;
   titlePicture: string;
@@ -78,6 +78,6 @@ const eventSchema: Schema = new Schema(
   { timestamps: true }
 );
 
-const Event = mongoose.model<IEvent>("events", eventSchema);
+const Event = mongoose.model<IEvent>('events', eventSchema);
 
 export default Event;

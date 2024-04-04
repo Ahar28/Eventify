@@ -1,10 +1,10 @@
 import React from 'react';
-import Ticket from '../../components/Ticket';
+import TicketInfoComponent from '../../components/Ticket'; 
 
 const TicketPage: React.FC = () => {
     return (
         <main>
-            <Ticket />
+            <TicketInfoComponent />
         </main>
     );
 }

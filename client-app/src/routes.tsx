@@ -12,9 +12,11 @@ import Calendar from "./components/Calendar/Calendar";
 import AddEvent from "./pages/UserDashboard/AddEvent";
 import EventPage from "./pages/EventDetails";
 import ParticipantInfoPage from "./pages/ParticipantForm";
-import TicketPage from "./pages/Ticket";
 import PaymentForm from "./components/PaymentForm";
 import UserProfile from "./pages/UserProfile";
+import TicketPage from "./pages/Ticket";
+import UserTicketPage from "./pages/UserTickets";
+
 
 const EventRoutes: React.FC = () => {
   return (
@@ -31,8 +33,8 @@ const EventRoutes: React.FC = () => {
       <Route path = "/calendar" element = {<Calendar />} />
       <Route path = "/event/:id" element={<EventPage />} />
       <Route path = "/event/:id/register/participant-info" element={<ParticipantInfoPage />} />
-      <Route path = "/ticket" element={<TicketPage />} /> 
-      {/* <Route path="/ticket/:id" element={<TicketPage />} /> */}
+      <Route path = "/ticket/:id" element={<TicketPage />} /> 
+      <Route path = "/mytickets" element={<UserTicketPage />} /> 
       <Route path = '/payment' element = {<PaymentForm />} />
       <Route path="*" element={<WorkingInProgress />} />
     </Routes>
