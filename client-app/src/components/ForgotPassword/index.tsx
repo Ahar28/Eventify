@@ -1,3 +1,7 @@
+/**
+ * Author: Bhavisha Oza
+ * Banner ID: B00935827
+ */
 import React, { useState } from "react";
 import { sendVerificationLink } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
