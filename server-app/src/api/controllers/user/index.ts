@@ -2,8 +2,9 @@
  * Author: Bhavisha Oza
  * Banner ID: B00935827
  */
-import { updateUser } from "./user";
+import { updateUser, sendEmail } from "./user";
 
 export default {
   updateUser,
+  sendEmail,
 };

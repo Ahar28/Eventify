@@ -8,6 +8,7 @@ import { FaHeart, FaRegHeart } from 'react-icons/fa';
 import { useWishlist } from "../../context/WishlistContext";
 import { useSelector } from "react-redux";
 import { selectUser } from "../../redux/userSlice";
+import { toast } from 'react-toastify';
 
 interface EventCardProps {
   event: {
@@ -39,9 +40,19 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const toggleWishlist = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isWishlisted) {
-      await removeFromWishlist(event.id);
+      try {
+        await removeFromWishlist(event.id);
+        toast.success("Removed from wishlist");
+      } catch (error) {
+        toast.error("Error removing from wishlist");
+      }
     } else {
-      await addToWishlist(event);
+      try {
+        await addToWishlist(event);
+        toast.success("Added to wishlist");
+      } catch (error) {
+        toast.error("Error adding to wishlist");
+      }
     }
   };
 
