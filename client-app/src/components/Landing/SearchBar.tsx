@@ -4,7 +4,7 @@
 import React, { useEffect, useState } from 'react';
 import { useSelector } from 'react-redux';
 import { selectUser } from '../../redux/userSlice';
-import { fetchEventsExcludeOrganizer } from '../EventFeed/Events';
+import { fetchAllEvents, fetchEventsExcludeOrganizer } from '../EventFeed/Events';
 import { useNavigate } from 'react-router-dom';
 import random from '../../assets/random.png';
 
@@ -39,6 +39,9 @@ const SearchBar: React.FC = () => {
     if (user) {
       fetchEventsExcludeOrganizer(user).then(setEvents);
     }
+    else{
+      fetchAllEvents().then(setEvents);
+    }
   }, [user]);
 
   const handleSearch = () => {
@@ -50,7 +53,12 @@ const SearchBar: React.FC = () => {
   };
 
   const handleClick = (eventId: any) => {
-    navigate(`/event/${eventId}`);
+    if(user){
+      navigate(`/event/${eventId}`);
+    }
+    else{
+      navigate('/auth/login');
+    }
   };
 
   const formatDate = (dateString: string) => {
