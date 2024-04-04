@@ -1,5 +1,6 @@
 import { Request, Response } from "express";
 import Event from "../../../models/Event";
+import Registration from "../../../models/Registration";
 import sendResponse from "../../../utils/response";
 import User  from "../../../models/User";
 import mongoose from "mongoose";
@@ -239,3 +240,75 @@ export const getEventsExcludingOrganizer = async (req: Request, res: Response) =
   }
 };
 
+export const getEventsRegisteredByUser = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  if (!userId || !mongoose.Types.ObjectId.isValid(userId)) {
+    return sendResponse(res, 400, {
+      success: false,
+      message: "A valid logged-in user ID is required",
+    });
+  }
+
+  try {
+    const events = await Registration.find({
+      user:new mongoose.Types.ObjectId(userId),
+    }).populate('event');
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Events retrieved successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Error retrieving events:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while retrieving events",
+    });
+  }
+};
+
+export const getEventById = async (req: Request, res: Response) => {
+  console.log("Get Event by ID");
+  const { eventId } = req.params;
+
+  try {
+    const EventbyId = await Event.findById(eventId);
+
+    if (!EventbyId) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "Event not found",
+      });
+    }
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Event retrieved successfully",
+      data: EventbyId,
+    });
+  } catch (error) {
+    console.error("Get Event Error:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while getting the event",
+    });
+  }
+};
+
+export const getAllEvents = async (req: Request, res: Response) => {
+  try {
+    const events = await Event.find();
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Events retrieved successfully",
+      data: events,
+    });
+  } catch (error) {
+    console.error("Error retrieving all events:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while retrieving all events",
+    });
+  }
+};

@@ -1,9 +1,8 @@
 
-import React, { createContext, useContext, ReactNode, useState, useCallback } from 'react';
+import React, { createContext, useContext, ReactNode, useState, useCallback, useEffect } from 'react';
 import { selectUser } from '../redux/userSlice';
 import { useSelector } from 'react-redux';
-import axios from 'axios';
-import { addToWishlistService, removeFromWishlistService } from '../services/EventService';
+import { addToWishlistService, getWishlistEvents, removeFromWishlistService } from '../services/EventService';
 
 interface Event {
   id: string;
@@ -18,6 +17,7 @@ interface Event {
 
 interface WishlistContextType {
   wishlist: Event[];
+  setWishlist: (events: Event[]) => void;
   addToWishlist: (event: Event) => void;
   removeFromWishlist: (id: string) => void;
 }
@@ -32,10 +32,34 @@ export const useWishlist = (): WishlistContextType => {
   return context;
 };
 
-export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) => {
+export const WishlistProvider: React.FC<{ children: ReactNode }> = ({ children }) => {
   const [wishlist, setWishlist] = useState<Event[]>([]);
   const user = useSelector(selectUser);
   const userId = user?.id;
+
+  useEffect(() => {
+    const fetchEvents = async () => {
+      try {
+        const response = await getWishlistEvents(userId);
+        console.log(response);
+        const mappedEvents = response.data.map((event: any) => ({
+          id: event._id,
+          name: event.eventName,
+          date: event.eventStartDateTime,
+          location: event.details.venue,
+          description: event.details.description,
+          image: event.titlePicture,
+        }));
+        setWishlist(mappedEvents);
+      } catch (error) {
+        console.error("Error fetching wishlist events:", error);
+      }
+    };
+
+    if (userId) {
+      fetchEvents();
+    }
+  }, [setWishlist, userId, wishlist]);
 
   const addToWishlist = useCallback(async (event: Event) => {
     try {
@@ -46,7 +70,7 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
     } catch (error) {
       console.error('Error adding to wishlist:', error);
     }
-  }, [wishlist, userId]);
+  }, [userId]);
 
   const removeFromWishlist = useCallback(async (id: string) => {
     try {
@@ -57,10 +81,10 @@ export const WishlistProvider: React.FC<{children: ReactNode}> = ({ children }) 
     } catch (error) {
       console.error('Error removing from wishlist:', error);
     }
-  }, [wishlist, userId]);
+  }, [userId]);
 
   return (
-    <WishlistContext.Provider value={{ wishlist, addToWishlist, removeFromWishlist }}>
+    <WishlistContext.Provider value={{ wishlist, setWishlist, addToWishlist, removeFromWishlist }}>
       {children}
     </WishlistContext.Provider>
   );

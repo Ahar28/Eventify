@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import dotenv from "dotenv";
 import Stripe from "stripe";
 dotenv.config();
@@ -15,8 +19,8 @@ export const makePayment = async (req: any, res: any) => {
       currency: "cad",
       confirm: true,
       confirmation_method: "automatic",
-      return_url: "http://localhost:3000/dashboard", 
-      payment_method: paymentMethod
+      return_url: "http://localhost:3000/dashboard",
+      payment_method: paymentMethod,
     });
 
     res.status(200).json({

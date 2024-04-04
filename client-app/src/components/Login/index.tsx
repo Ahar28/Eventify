@@ -1,3 +1,7 @@
+/**
+ * Author: Keyur Pradipbhai Khant
+ * Banner ID: B00935171
+ */
 import React, { useState } from "react";
 import { loginUser } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
@@ -9,7 +13,7 @@ const LoginForm: React.FC = () => {
   const [errors, setErrors] = useState({ email: "", password: "" });
   const navigate = useNavigate();
   const dispatch = useDispatch();
-  const [errorMsg, setErrorMsg] = useState('');
+  const [errorMsg, setErrorMsg] = useState("");
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
     const { name, value } = e.target;
@@ -23,7 +27,11 @@ const LoginForm: React.FC = () => {
     if (!formData.email) {
       formIsValid = false;
       tempErrors.email = "Email is required";
-    } else if (!/\S+@\S+\.\S+/.test(formData.email)) {
+    } else if (
+      !/^[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*@[a-zA-Z0-9]+([._-]?[a-zA-Z0-9]+)*\.[a-zA-Z]{2,}$/.test(
+        formData.email
+      )
+    ) {
       formIsValid = false;
       tempErrors.email = "Email is not valid";
     }
@@ -52,15 +60,15 @@ const LoginForm: React.FC = () => {
               firstName: userData.firstName,
               lastName: userData.lastName,
               id: userData.userId,
-              bio: userData.bio
+              bio: userData.bio,
             })
-          )
-          localStorage.setItem('token', userData.token);
-          localStorage.setItem('email', userData.email);
-          localStorage.setItem('firstName', userData.firstName);
-          localStorage.setItem('lastName', userData.lastName);
-          localStorage.setItem('id', userData.userId);
-          navigate('/');
+          );
+          localStorage.setItem("token", userData.token);
+          localStorage.setItem("email", userData.email);
+          localStorage.setItem("firstName", userData.firstName);
+          localStorage.setItem("lastName", userData.lastName);
+          localStorage.setItem("id", userData.userId);
+          navigate("/");
         } else {
           e.stopPropagation();
           setErrorMsg("Something went wrong!");
@@ -86,7 +94,7 @@ const LoginForm: React.FC = () => {
           Email
         </label>
         <input
-          type="email"
+          type="text"
           name="email"
           id="email"
           value={formData.email}

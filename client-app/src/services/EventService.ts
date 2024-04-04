@@ -1,4 +1,3 @@
-import axios from "axios";
 import { Event } from "../pages/UserDashboard/AddEvent";
 import { deleteData, getData, postData } from "./utils";
 import { json } from "stream/consumers";
@@ -61,6 +60,16 @@ export async function getEventsExcludeOrganizer(organizerId: string) {
   }
 }
 
+export async function getEventsRegisteredByUser(userId: string) {
+  try {
+    const response = await getData("/event/events-registered-byuser/" + userId);
+    return response;
+  } catch (error) {
+    console.error("Error getting events:", error);
+    return null;
+  }
+}
+
 interface WishlistData {
   userId: string;
   eventId: string;
@@ -105,3 +114,24 @@ export const getWishlistEvents = async (userId: string) => {
     throw error;
   }
 };
+export async function getEventsbyId(eventId: string) {
+  try {
+    console.log("server");
+    console.log("Event ID: ", eventId);
+    const response = await getData("/event/eventId" + eventId);
+    return response;
+  } catch (error) {
+    console.error("Error getting event:", error);
+    return null;
+  }
+}
+
+export async function getAllEventsService() {
+  try {
+    const response = await getData("/event/all");
+    return response.data;
+  } catch (error) {
+    console.error("Error getting all events:", error);
+    throw error;
+  }
+}

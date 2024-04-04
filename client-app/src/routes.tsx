@@ -14,6 +14,9 @@ import EventPage from "./pages/EventDetails";
 import ParticipantInfoPage from "./pages/ParticipantForm";
 import PaymentForm from "./components/PaymentForm";
 import UserProfile from "./pages/UserProfile";
+import TicketPage from "./pages/Ticket";
+import UserTicketPage from "./pages/UserTickets";
+
 import AnalyticsPage from "./pages/Analytics";
 // import AddEvent from './pages/UserDashboard/AddEvent';
 
@@ -27,11 +30,17 @@ const EventRoutes: React.FC = () => {
       <Route path="/faqs" element={<FAQPage />} />
       <Route path="/contact" element={<ContactUs />} />
       <Route path="/profile" element={<UserProfile />} />
-      <Route path="/payment" element={<PaymentForm />} />
       <Route path="/events" element={<Eventfeed />} />
       <Route path="/wishlist" element={<Wishlist />} />
       <Route path="/calendar" element={<Calendar />} />
-      <Route path="/events/:id" element={<EventPage />} />
+      <Route path="/event/:id" element={<EventPage />} />
+      <Route
+        path="/event/:id/register/participant-info"
+        element={<ParticipantInfoPage />}
+      />
+      <Route path="/ticket/:id" element={<TicketPage />} />
+      <Route path="/mytickets" element={<UserTicketPage />} />
+      <Route path="/payment" element={<PaymentForm />} />
       <Route path="/analytics" element={<AnalyticsPage />} />
       <Route
         path="/events/:id/register/participant-info"

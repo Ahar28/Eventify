@@ -24,7 +24,12 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   const isWishlisted = wishlist.some(e => e.id === event.id);
 
   const handleClick = () => {
-    navigate(`/events/${event.id}`, { state: { event } });
+    if(user?.id) {
+      navigate(`/event/${event.id}`);
+    }
+    else {
+      navigate('/auth/login');
+    }
   };
 
   const toggleWishlist = async (e: React.MouseEvent) => {
@@ -42,9 +47,9 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
   };
 
   return (
-    <div className="h-[550px] w-[320px] cursor-pointer" onClick={handleClick}>
+    <div className="h-[350px] w-[320px] cursor-pointer" onClick={handleClick}>
       <div className="relative rounded-xl overflow-hidden">
-        <img src={event.image} alt={event.name} />
+        <img src={event.image} alt={event.name} style={{ width: '500px', height: '200px' }}/>
         <div className="absolute top-4 right-4 flex items-center bg-white text-black rounded-full py-2 px-4 text-xs font-semibold">
           <span>{formatDate(event.date)}</span>
           {user && <button onClick={toggleWishlist} className="ml-2 text-red-500 flex items-center">
@@ -55,7 +60,7 @@ const EventCard: React.FC<EventCardProps> = ({ event }) => {
       <div className="flex flex-col gap-2 my-4 px-2">
         <h2 className="text-lg font-bold text-title-color">{event.name}</h2>
         <p className="text-sm text-gray-500">{event.location}</p>
-        <p className="text-xs font-medium text-gray-700">{event.description}</p>
+        <p className="text-xs font-medium text-gray-700">{event.description.length >= 80 ? `${event.description.substring(0, 80)}...` : event.description}</p>
       </div>
     </div>
   );
