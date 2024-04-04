@@ -3,7 +3,7 @@
  * Banner ID: B00935171
  */
 import React, { useEffect, useRef, useState } from "react";
-import { Link, useNavigate } from "react-router-dom";
+import { Link, NavLink, useNavigate } from "react-router-dom";
 import Container from "../Container";
 import { logo } from "../../assets/home";
 import { useDispatch, useSelector } from "react-redux";
@@ -74,13 +74,15 @@ const Navbar: React.FC = () => {
               <div className="ml-10 flex items-baseline space-x-4">
                 {navLinks.map((link) => (
                   (!link.requireAuth || user) && (
-                    <Link
+                    <NavLink
                       key={link.name}
-                      className="hover:bg-button-primary hover:text-white px-3 py-2 rounded-md text-sm font-medium"
                       to={link.to}
+                      className={({ isActive }) =>
+                        `hover:bg-button-primary hover:text-white px-3 py-2 rounded-md text-sm font-medium ${isActive ? 'bg-button-primary text-white' : 'text-gray-700'}`
+                      }
                     >
                       {link.name}
-                    </Link>
+                    </NavLink>
                   )
                 ))}
               </div>
@@ -125,13 +127,15 @@ const Navbar: React.FC = () => {
             <div className="px-2 pt-2 pb-3 space-y-1 sm:px-3 text-black">
               {navLinks.map((link) => (
                 (!link.requireAuth || user) && (
-                  <Link
+                  <NavLink
                     key={link.name}
                     to={link.to}
-                    className="hover:bg-button-primary hover:text-white block px-3 py-2 rounded-md text-base font-medium"
+                    className={({ isActive }) =>
+                      `hover:bg-button-primary hover:text-white block px-3 py-2 rounded-md text-base font-medium ${isActive ? 'bg-button-primary text-white' : 'text-gray-700'}`
+                    }
                   >
                     {link.name}
-                  </Link>
+                  </NavLink>
                 )
               ))}
               {user ? (
