@@ -33,6 +33,14 @@ Eventify application is deployed on Netlify.
 
 [git.cs.dal.ca/asolanki/csci-5709_grp-10](https://git.cs.dal.ca/asolanki/csci-5709_grp-10)
 
+### Important Note
+
+Stripe Payment Gateway is running on testing mode. Hence, please use below Card details:
+
+* **Card Number:** 4242 4242 4242 4242
+
+User can use any future nearby expiry date and CVV.
+
 ## Getting Started
 
 To get started with Eventify, follow these simple steps:
