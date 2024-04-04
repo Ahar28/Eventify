@@ -19,11 +19,11 @@ const companyLinks: LinkData[] = [
 ];
 
 const connectLinks: LinkData[] = [
-  { name: "Twitter", to: "/twitter" },
-  { name: "Facebook", to: "/facebook" },
-  { name: "Instagram", to: "/facebook" },
-  { name: "Linkedin", to: "/linkedin" },
-  { name: "Youtube", to: "/youtube" },
+  { name: "Twitter", to: "/social/twitter" },
+  { name: "Facebook", to: "/social/facebook" },
+  { name: "Instagram", to: "/social/facebook" },
+  { name: "Linkedin", to: "/social/linkedin" },
+  { name: "Youtube", to: "/social/youtube" },
 ];
 
 const Footer: React.FC = () => {

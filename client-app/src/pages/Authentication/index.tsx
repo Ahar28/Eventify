@@ -2,18 +2,21 @@
  * Author: Bhavisha Oza
  * Banner ID: B00935827
  */
-import React, { useEffect, useState } from "react";
+import React, { useEffect } from "react";
 import loginImage from "../../assets/auth-background.jpg";
 import Container from "../../components/Container";
 import LoginForm from "../../components/Login";
 import SignUpForm from "../../components/SignUp";
-import { useLocation, useNavigate } from "react-router-dom";
+import { Navigate, useLocation, useNavigate } from "react-router-dom";
 import ForgotPasswordForm from "../../components/ForgotPassword";
 import ResetPasswordForm from "../../components/ResetPasswordForm";
+import { useSelector } from "react-redux";
+import { selectUser } from "../../redux/userSlice";
 
 const Authentication: React.FC = () => {
   const location = useLocation();
   const navigate = useNavigate();
+  const user = useSelector(selectUser);
 
   useEffect(() => {
     const validPaths = [
@@ -31,15 +34,15 @@ const Authentication: React.FC = () => {
     console.log("location", location);
     switch (location.pathname) {
       case "/auth/login":
-        return <LoginForm />;
+        return user ? <Navigate to="/" /> : <LoginForm />;
       case "/auth/register":
-        return <SignUpForm />;
+        return user ? <Navigate to="/" /> : <SignUpForm />;
       case "/auth/forgot-password":
-        return <ForgotPasswordForm />;
+        return user ? <Navigate to="/" /> : <ForgotPasswordForm />;
       case "/auth/reset-password":
-        return <ResetPasswordForm />;
+        return user ? <Navigate to="/" /> : <ResetPasswordForm />;
       default:
-        return <LoginForm />;
+        return user ? <Navigate to="/" /> : <LoginForm />;
     }
   };
 
