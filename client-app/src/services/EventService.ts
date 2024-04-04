@@ -2,8 +2,6 @@ import { Event } from "../pages/UserDashboard/AddEvent";
 import { deleteData, getData, postData } from "./utils";
 import { json } from "stream/consumers";
 
-const API_URL = "http://localhost:8000/api";
-
 export async function createEvent(eventData: Event) {
   try {
     const response = await postData(JSON.stringify(eventData), "/event/create");
