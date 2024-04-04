@@ -86,7 +86,7 @@ interface WishlistData {
     try {
       console.log("server");
       console.log("Event ID: ", eventId);
-        const response = await getData("/event/eventId" + eventId);
+        const response = await getData("/event/event/" + eventId);
         return response;
     } catch (error) {
         console.error("Error getting event:", error);
