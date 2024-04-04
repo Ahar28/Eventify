@@ -1971,3 +1971,66 @@ Welcome to the official course repository for CSCI 5709. This README provides or
         2. Authenticated Netlify with Github to access repositories in our GitHub.
         3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
         [[20]]https://vercel.com/
+
+# Author - [ Dharven Dosi ]
+
+# CSCI 5709 Assignment 3
+
+* *Date Created*: April 3, 2024
+* *Last Modification Date*: April 03, 2024
+* *Assignment (Project) URL*: https://eventify-csci5709.vercel.app/
+* *GitLab individual URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Aharnish?ref_type=heads
+* *GitLab group URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
+
+
+## Authors
+* [Dharven Doshi]
+
+## Built With
+* [NodeJS](https://nodejs.org/en) - A cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser
+* [ExpressJS](https://expressjs.com/) -  A back end web application framework for building RESTful APIs with Node.js
+* [ReactJS](https://react.dev/) - A free and open-source front-end JavaScript library for building user interfaces based on components
+* [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database program.
+* [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom user interfaces.
+
+## Feature and its related tasks developed by Dharven Doshi
+### Feature:
+* Event Dashboard
+* Analytics
+### Related Tasks:
+* Display Event details on dashboard
+* Displaying event analytics
+* Event Analytics are graphs based on database
+
+## List of files authored by Dharven Doshi
+### Frontend
+* client-app\src\components\Analytics\Analytics.tsx
+* client-app\src\components\Analytics\index.ts
+* client-app\src\pages\Analytics\index.tsx
+* client-app\src\routes.tsx
+* client-app\src\services\EventService.ts
+
+### Backend
+* server-app\src\api\routes\event\index.ts
+* server-app\src\api\controllers\analytics\analytics.ts
+* server-app\src\api\controllers\analytics\index.ts
+
+
+## Deployment
+
+### Frontend
+
+To deploy our project environment, We have used __Vercel__. The steps we followed for the deployment are as follows:
+
+1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
+2. Authenticated Netlify with Github to access repositories in our GitHub.
+3. Configured the deployement settings, such as root folder, build comand, environment variables
+[[19]]https://render.com/
+### Backend
+
+To deploy the project environment, We have used __Render__. The steps for backend deployment are as mentioned:
+
+1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
+2. Authenticated Netlify with Github to access repositories in our GitHub.
+3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
+[[20]]https://vercel.com/
