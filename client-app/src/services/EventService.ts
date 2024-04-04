@@ -57,8 +57,53 @@ export async function getEventsRegisteredByUser(userId: string) {
 }
 
 interface WishlistData {
-  userId: string;
-  eventId: string;
+    userId: string;
+    eventId: string;
+  }
+  
+  export const addToWishlistService = async (userId: string, eventId: string) => {
+    try {
+        const data = {userId, eventId};
+      const response = await postData(JSON.stringify(data), "/event/wishlist/add");
+
+      return response.data;
+    } catch (error) {
+      console.error('Error adding to wishlist:', error);
+      throw error;
+    }
+  };
+  
+
+  export const removeFromWishlistService = async (userId: string, eventId: string) => {
+    try {
+      const response = await deleteData(`/event/wishlist/remove/${userId}`, { eventId });
+      return response.data;
+    } catch (error) {
+      console.error('Error removing from wishlist:', error);
+      throw error;
+    }
+  };
+  
+  export const getWishlistEvents = async (userId: string) => {
+    try {
+      const response = await getData(`/event/wishlist/${userId}`);
+      return response.data;
+    } catch (error) {
+      console.error('Error getting wishlist events:', error);
+      throw error;
+    }
+  };
+
+  export async function getEventsbyId(eventId: string) {
+    try {
+      console.log("server");
+      console.log("Event ID: ", eventId);
+        const response = await getData("/event/event/" + eventId);
+        return response;
+    } catch (error) {
+        console.error("Error getting event:", error);
+        return null;
+    }    
 }
 
 export const addToWishlistService = async (userId: string, eventId: string) => {
