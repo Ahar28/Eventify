@@ -1,3 +1,7 @@
+/**
+ * Authors: Keyur Pradipbhai Khant (B00935171), Riyaben Pareshkumar Patel (B00926204)
+ */
+
 import React, { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart } from 'react-icons/fa';

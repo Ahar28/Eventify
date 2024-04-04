@@ -1,3 +1,7 @@
+/**
+ * Author: Riyaben Pareshkumar Patel (B00926204)
+ */
+
 import { Request, Response } from 'express';
 import sendResponse from '../../../utils/response';
 import Wishlist from '../../../models/Wishlist';

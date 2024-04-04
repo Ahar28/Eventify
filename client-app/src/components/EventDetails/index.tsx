@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import { useNavigate } from "react-router-dom";
 import { FaHeart, FaRegHeart, FaUser, FaShareAlt, FaCalendarAlt, FaMapMarkedAlt } from "react-icons/fa";

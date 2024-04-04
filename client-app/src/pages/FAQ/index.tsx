@@ -1,6 +1,5 @@
 /**
- * Author: Keyur Pradipbhai Khant
- * Banner ID: B00935171
+ * Author: Keyur Pradipbhai Khant (B00935171), Riyaben Pareshkumar Patel (B00926204)
  */
 import React, { useState } from 'react';
 import SectionTitle from '../../components/Landing/SectionTitle';
