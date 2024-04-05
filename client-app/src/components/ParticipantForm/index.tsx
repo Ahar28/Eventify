@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import Container from "../Container";
 import SectionTitle from "../../components/Landing/SectionTitle";
@@ -90,7 +94,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
 
   const [showSuccessModal, setShowSuccessModal] = useState(false);
 
-  // Generating initial participants based on ticket quantities
   React.useEffect(() => {
     const initialParticipants: Participant[] = [];
 
@@ -147,7 +150,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
     e.preventDefault();
 
     if (validateForm()) {
-      // Constructing the registration data
       const registrationData: TicketRegistration = {
         userId: user.id,
         eventId: eventdetails._id,
@@ -170,8 +172,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
             setShowSuccessModal(true);
             notify();
           }
-        } else {
-          // Handle the error
         }
       } catch (error) {
         console.error("Registration failed:", error);
@@ -184,20 +184,16 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
     navigate("/events");
   };
 
-  // Calculate subtotal
   const calculateSubtotal = () => {
     const validTickets = ticketOptions.filter(
       (ticket) => ticketQuantities[ticket.type] > 0
     );
 
-    // Calculating the subtotal for valid tickets
     const subtotal = validTickets.reduce((total, ticket) => {
-      // condition to ensure quantity is a number to avoid NaN results
       const quantity = Number(ticketQuantities[ticket.type]) || 0;
       return total + ticket.price * quantity;
     }, 0);
 
-    //to ensure that the subtotal is not NaN; and return 0 if it is
     return isNaN(subtotal) ? 0 : subtotal;
   };
 
@@ -212,7 +208,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
               {participants.map((participant, index) => (
                 <div key={index}>
                   <h2 className="text-xl font-bold">Attendee {index + 1}</h2>
-                  {/* First Name and Last Name on the same line */}
                   <div className="flex gap-4 mb-4">
                     <div className="w-1/2">
                       <input
@@ -259,7 +254,6 @@ const ParticipantForm: React.FC<ParticipantFormProps> = ({
                   {errors[index].email && <p className="text-red-500 text-xs mt-1">{errors[index].email}</p>}
                 </div>
               ))}
-              {/* <Button type="submit" variant="contained" color="primary">Submit</Button> */}
               <button
                 type="submit"
                 className="inline-flex justify-center py-3 px-6 border border-transparent shadow-sm text-sm font-medium rounded-md text-white bg-button-primary hover:bg-button-primary-hover"

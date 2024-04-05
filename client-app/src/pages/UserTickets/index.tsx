@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React from 'react';
 import UserTickets from "../../components/UserTickets";
 

@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import { FaTimes } from "react-icons/fa";
 import { useNavigate } from "react-router-dom";
@@ -36,22 +40,21 @@ interface TicketPurchaseModalProps {
   isOpen: boolean;
   onClose: () => void;
   onCheckout: () => void;
-  // event: Event ;
   event: EventDetails | null | undefined;
 }
 
-const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClose, onCheckout, event, }) => {
-
-  const navigate = useNavigate();
-
-  const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([]);
-
-  // condition to check if the  ticket quantity is greater than 0
-  const isAnyTicketSelected = ticketOptions.some(ticket => ticket.quantity > 0);
+const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({
+  isOpen, onClose, onCheckout, event,}) => {
+    
+    const navigate = useNavigate();
+    const [ticketOptions, setTicketOptions] = useState<TicketOption[]>([]);
+    const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
+  const isAnyTicketSelected = ticketOptions.some(
+    (ticket) => ticket.quantity > 0
+  );
 
   useEffect(() => {
     if (event) {
-      // Updating ticketOptions based on the event data
       setTicketOptions([
         { type: "Adult", price: event.price, quantity: 0 },
         { type: "Teen (above 12 yrs)", price: event.price / 2, quantity: 0 },
@@ -59,7 +62,6 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     }
   }, [event]);
 
-  // Function to update the quantity of tickets
   const updateQuantity = (index: number, delta: number) => {
     setTicketOptions((currentTickets) =>
       currentTickets.map((ticket, i) =>
@@ -70,7 +72,6 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     );
   };
 
-  // Function to calculate subtotal
   const calculateSubtotal = () => {
     return ticketOptions.reduce(
       (total, ticket) => total + ticket.price * ticket.quantity,
@@ -78,35 +79,28 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
     );
   };
 
-  // Function to calculate total
   const calculateTotal = () => {
     return calculateSubtotal();
   };
 
-  const [showTicketModal, setShowTicketModal] = useState<boolean>(true);
 
   const handleCheckout = () => {
-
     if (!isAnyTicketSelected) {
-      // Optionally, alert the user or handle this case as needed
       console.log("Please select at least one ticket to proceed.");
-      return; // Exit the function if no tickets are selected
+      return; 
     }
 
-    // Preparing the ticketQuantities object to pass to ParticipantInfoPage
     const ticketQuantities = ticketOptions.reduce((acc, { type, quantity }) => {
       if (quantity > 0) acc[type] = quantity;
       return acc;
     }, {} as { [type: string]: number });
 
-    // Navigate to ParticipantInfoPage with state
     navigate(`/event/${event?._id}/register/participant-info`, {
       state: { ticketQuantities, ticketOptions, event },
     });
 
-    setShowTicketModal(false); // to close the modal on checkout
+    setShowTicketModal(false);
   };
-
 
   if (!isOpen) return null;
 
@@ -117,17 +111,15 @@ const TicketPurchaseModal: React.FC<TicketPurchaseModalProps> = ({ isOpen, onClo
           className="relative bg-white rounded-lg shadow-xl m-auto my-0 sm:w-4/5 lg:w-3/4 xl:w-1/2  h-4/5 max-h-4/5 overflow-auto"
           style={{ width: "1200px", height: "600px" }}
         >
-          {/* Close Button */}
           <button
             onClick={onClose}
-            className="absolute top-0 right-0 m-4" // to Position it absolutely to the top-right of its relative parent
+            className="absolute top-0 right-0 m-4" 
           >
             <FaTimes size={18} />
           </button>
           <div className="flex flex-col lg:flex-row h-full">
             {/* Ticket selection area (2/3 width) */}
             <div className="w-full lg:w-2/3 border-r p-8 overflow-auto">
-              {/* <h1 className="text-xl font-bold text-gray-900 mb-4">{event.name}</h1> */}
               <h1 className="text-xl font-bold text-gray-900 mb-4 relative pb-2">
                 <span className="pr-4">{event?.eventName}</span>
                 <span className="absolute bottom-0 left-0 w-full h-1 bg-gray-300"></span>

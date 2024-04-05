@@ -27,7 +27,7 @@ Eventify is a comprehensive event management system designed to simplify and enh
 
 Eventify application is deployed on Netlify.
 
-[remarkable-torte-09a5d1.netlify.app](https://remarkable-torte-09a5d1.netlify.app/)
+[eventify-csci5709.vercel.app/](https://eventify-csci5709.vercel.app/)
 
 ## GitLab URL
 
@@ -295,7 +295,7 @@ User can user pre-defined credentials if they want:
 - Event creation page (Dashboard > Add Event)
 - Payment Gateway (Events > Register paid events > Payment Gateway)
 
-## List of files authored by Sushank Saini
+## List of files authored by Keyur Pradipbhai Khant
 
 ### Frontend
 

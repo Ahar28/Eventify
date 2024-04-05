@@ -1,3 +1,6 @@
+/**
+ * Authors: Keyur Pradipbhai Khant (Banner ID: B00935171), Aharnish Maheshbhai SOlanki (Banner ID: B00933563) 
+ */
 import mongoose, { Document, Schema } from "mongoose";
 
 interface IRegistration extends Document {
@@ -26,7 +29,6 @@ const registrationSchema: Schema = new Schema(
     },
     event: {
       type: mongoose.Schema.Types.ObjectId,
-      // ref: "Event",
       ref: "events",
       required: true,
     },

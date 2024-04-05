@@ -24,6 +24,7 @@
     "@types/yup": "^0.32.0",
     "axios": "^1.6.8",
     "chart.js": "^4.4.2",
+    "console-browserify": "^1.2.0",
     "date-fns": "^3.6.0",
     "formik": "^2.4.5",
     "moment": "^2.30.1",

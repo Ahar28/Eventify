@@ -1,4 +1,7 @@
-// CancellationConfirmationModal.jsx
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React from "react";
 import Button from "../UI/Button";
 
@@ -21,7 +24,6 @@ const CancellationModal: React.FC<CancellationModalProps> = ({
         <div className="fixed inset-0 transition-opacity">
           <div className="absolute inset-0 bg-gray-500 opacity-75"></div>
         </div>
-        {/* This element is to trick the browser into centering the modal contents. */}
         <span className="hidden sm:inline-block sm:align-middle sm:h-screen"></span>
         &#8203;
         <div
