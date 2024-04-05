@@ -34,13 +34,13 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
       {imageList.map((image, index) => (
         <div
           key={index}
-          className={index === current ? "opacity-100" : "opacity-0"}
+          className={`${index === current ? "opacity-100" : "opacity-0"} transition-opacity duration-300 ease-in-out`}
         >
           {index === current && (
             <img
               src={image}
               alt="Event Slide"
-              className="w-full object-cover rounded-lg"
+              className="w-full object-cover rounded-lg hover:scale-105 transition-transform duration-300 ease-in-out"
               style={{ width: "1300px", height: "500px" }}
             />
           )}

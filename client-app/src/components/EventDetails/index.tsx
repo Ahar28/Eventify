@@ -2,8 +2,16 @@
  * Author: Aharnish Solanki (B00933563)
  */
 import React, { useState, useEffect } from "react";
-import {FaHeart,FaRegHeart,FaUser,FaShareAlt,FaCalendarAlt,FaMapMarkedAlt,} from "react-icons/fa";
-import { FcAbout } from "react-icons/fc";
+import {
+  FaHeart,
+  FaRegHeart,
+  FaUser,
+  FaShareAlt,
+  FaCalendarAlt,
+  FaMapMarkedAlt,
+  FaLink,
+} from "react-icons/fa";
+import { FcAbout,FcCalendar } from "react-icons/fc";
 import { useWishlist } from "../../context/WishlistContext";
 import Container from "../Container";
 import Button from "../UI/Button";
@@ -18,6 +26,7 @@ interface EventDetails {
   details: {
     description: string;
     venue: string;
+    link?: string;
     additionalInfo?: string;
   };
   _id: string;
@@ -72,6 +81,8 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
 
   useEffect(() => {
     if (eventId) {
+      const event12 = fetchEventById(eventId);
+      console.log("event12", event12);
       fetchEventById(eventId).then(setEvent);
       console.log("event useeffect ", event);
     }
@@ -158,7 +169,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                   <p className="text-2xl">
                     <strong>Date and Time</strong>
                   </p>
-                  <FaCalendarAlt size={25} className="mr-2 ml-2" />
+                  <FcCalendar size={25} className="mr-2 ml-2" />
                 </div>
 
                 <hr
@@ -182,21 +193,45 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                     </span>
                   </div>
                 </div>
-
-                <div className="flex items-center mx-3 mb-2">
-                  <p className="text-2xl mr-4">
-                    <strong>Venue</strong>
-                  </p>
-                  <FaMapMarkedAlt size={25} className="mr-2" />
-                </div>
-                <hr
-                  className="my-1 border-gray-300 mx-l ml-3 mb-4"
-                  style={{ width: "17%" }}
-                />
-
-                <p className="text-gray-900  ml-3 text-xl mb-4">
-                  {event?.details?.venue}
-                </p>
+                {event?.details?.venue ? (
+                  <div>
+                    <div className="flex items-center mx-3 mb-2">
+                      <p className="text-2xl mr-4">
+                        <strong>Venue</strong>
+                      </p>
+                      <FaMapMarkedAlt size={25} className="mr-2" />
+                    </div>
+                    <hr
+                      className="my-1 border-gray-300 mx-l ml-3 mb-4"
+                      style={{ width: "17%" }}
+                    />
+                    <p className="text-gray-900 ml-3 text-xl mb-4">
+                      {event?.details?.venue}
+                    </p>
+                  </div>
+                ) : event?.details?.link ? (
+                  <div>
+                    <div className="flex items-center mx-3 mb-2">
+                      <p className="text-2xl mr-4">
+                        <strong>Link</strong>
+                      </p>
+                      <FaLink size={20} className="mr-2" />
+                    </div>
+                    <hr
+                      className="my-1 border-gray-300 mx-l ml-3 mb-4"
+                      style={{ width: "17%" }}
+                    />
+                    <p className="text-gray-900 ml-3 text-xl mb-4">
+                      <a
+                        href={event?.details?.link}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                      >
+                        {event?.details?.link}
+                      </a>
+                    </p>
+                  </div>
+                ) : null}
 
                 <div className="flex flex-col lg:flex-row -mx-4 mt-4"></div>
 
