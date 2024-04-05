@@ -19,6 +19,7 @@ import ImageCarousel from "../ImageCarousel";
 import ShareModal from "../ShareModal";
 import TicketPurchaseModal from "../TicketPurchaseModal";
 import { getEventsbyId } from "../../services/EventService";
+import { getUserNamebyId } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import formatDateTime from "../../services/utils";
 
@@ -52,6 +53,7 @@ interface EventDetailsProps {
 // eslint-disable-next-line @typescript-eslint/no-redeclare
 const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [event, setEvent] = useState<EventDetails | null>();
+  const [userName, setuserName] = useState();
   console.log("event", event);
 
   const navigate = useNavigate();
@@ -81,12 +83,14 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
 
   useEffect(() => {
     if (eventId) {
-      const event12 = fetchEventById(eventId);
-      console.log("event12", event12);
       fetchEventById(eventId).then(setEvent);
       console.log("event useeffect ", event);
     }
   }, [eventId]);
+
+  useEffect(() => {
+      const username = fetchUserNameById(event?.organizer ?? '').then(setuserName);
+  });
 
   useEffect(() => {
     if (showTicketModal) {
@@ -208,7 +212,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                   style={{ width: "26%" }}
                 />
                 <p className="text-xl text-gray-900  ml-3 mb-4">
-                  {event?.organizer}
+                 {userName}
                 </p>
 
                 {/* Date and Time */}
@@ -333,5 +337,24 @@ export async function fetchEventById(eventId: string): Promise<any | null> {
     return null;
   }
 }
+
+export async function fetchUserNameById(userId: string ): Promise<any | null> {
+  try {
+    const response = await getUserNamebyId(userId);
+    console.log("user name response", response);
+    if (response?.data) {
+      const UserName = response.data.data;
+    
+      return UserName;
+    } else {
+      console.error("Failed to fetch username:", response.message);
+      return null;
+    }
+  } catch (error) {
+    console.error("Error fetching username:", error);
+    return null;
+  }
+}
+
 
 export default EventDetails;

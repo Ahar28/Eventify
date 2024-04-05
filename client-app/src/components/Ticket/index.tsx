@@ -100,7 +100,7 @@ if (registration.event.details.venue) {
                 </div>
                 <div className="flex flex-col items-center space-y-4">
                   <QRCode value={qrCodeValue} size={128} level={"H"} />
-                  <span>Reg Id#: {registration._id}</span>
+                  <span>Reg ID#: {registration._id}</span>
                 </div>
               </div>
             </div>

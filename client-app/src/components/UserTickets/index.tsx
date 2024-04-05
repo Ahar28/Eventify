@@ -93,7 +93,7 @@ const UserTickets = () => {
                     level={"H"}
                     className="mt-8"
                   />
-                  <span>Registration ID: {registration._id}</span>
+                  <span>Reg ID#: {registration._id}</span>
                   <Button
                     className="bg-blue-500 hover:bg-blue-700 text-white font-bold py-2 px-4 rounded inline-flex items-center"
                     onClick={() => handleTicketSelection(registration)}
