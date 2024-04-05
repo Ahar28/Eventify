@@ -30,6 +30,7 @@ const Events: React.FC = () => {
     const [dateRange, setDateRange] = useState<[Date | null, Date | null]>([null, null]);
     const [startDate, endDate] = dateRange;
     const [events, setEvents] = useState<Event[]>([]);
+    const [isLoading, setIsLoading] = useState(false);
 
     const user = useSelector(selectUser);
     const location = useLocation();
@@ -38,11 +39,19 @@ const Events: React.FC = () => {
 
 
     useEffect(() => {
+        const fetchEvents = async () => {
+        setIsLoading(true); 
         if (user?.id) {
-            fetchEventsExcludeOrganizer(user).then(setEvents);
+            const fetchedEvents = await fetchEventsExcludeOrganizer(user);
+            setEvents(fetchedEvents);
         } else {
-            fetchAllEvents().then(setEvents);
+            const allEvents = await fetchAllEvents();
+            setEvents(allEvents);
         }
+        setIsLoading(false); 
+    };
+
+    fetchEvents();
     }, [user]);
 
     useEffect(() => {
@@ -115,17 +124,26 @@ const Events: React.FC = () => {
                     </button>
                 </div>
             </div>
-            <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 my-8">
+            {isLoading ? (
+                <div style={{ textAlign: 'center', width: '100%' }}>
+                    <p className="text-xl font-semibold text-gray-600 mt-5">Loading events...</p>
+                </div>
+            ) : (
+                <div className="grid xl:grid-cols-4 lg:grid-cols-3 md:grid-cols-2 grid-cols-1 place-items-center lg:gap-14 gap-4 my-8">
                     {filteredEvents.length > 0 ? (
                         filteredEvents.map((event) => (
                             <EventCard key={event.id} event={event} />
                         ))
                     ) : (
-                        <p style={{ textAlign: 'center', fontSize: '20px', color: '#666', width: '100%' }}>
-                        {noEventsMessage}
-                    </p>
+                        <div style={{ textAlign: 'center', width: '100%' }}>
+                            <p className="text-xl font-semibold text-gray-600 mt-5">
+                                {noEventsMessage}
+                            </p>
+                        </div>
+
                     )}
-            </div>
+                </div>
+            )}
         </Container>
     );
 };

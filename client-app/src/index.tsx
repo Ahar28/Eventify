@@ -11,6 +11,7 @@ import { PersistGate } from "redux-persist/integration/react";
 import {
   persistStore
 } from "redux-persist";
+import ScrollToTop from './hoc/ScrollToTop';
 
 const root = ReactDOM.createRoot(
   document.getElementById('root') as HTMLElement
@@ -21,7 +22,9 @@ root.render(
       <PersistGate loading={null} persistor={persistStore(store)}>
         <WishlistProvider>
           <BrowserRouter>
-            <App />
+            <ScrollToTop>
+              <App />
+            </ScrollToTop>
           </BrowserRouter>
         </WishlistProvider>
       </PersistGate>

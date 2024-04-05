@@ -5,6 +5,7 @@
 import { Request, Response } from "express";
 import User from "../../../models/User";
 import sendResponse from "../../../utils/response";
+import { sendEmail as emailSender } from "../../../utils/mailer";
 
 interface UpdateRequestBody {
   firstName?: string;
@@ -49,6 +50,39 @@ export const updateUser = async (
     return sendResponse(res, 500, {
       success: false,
       message: "Failed to update user",
+    });
+  }
+};
+
+
+export const sendEmail= async (
+  req: Request<{ email: string,subject: string, body: string}, {}>,
+  res: Response
+) => {
+  try {
+    const { email, subject, body } = req.body;
+
+    if (!email || !body) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "Email or body not found",
+      });
+    }
+
+    emailSender(email, subject, body)
+
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Email sent successfully",
+      data: {
+        email: email,
+      },
+    });
+  } catch (error) {
+    console.error("Email send error:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Failed to send email",
     });
   }
 };
