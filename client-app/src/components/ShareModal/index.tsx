@@ -97,7 +97,7 @@ const ShareModal = ({
             type="text"
             readOnly
             value={url}
-            className="input w-full border mr-2"
+            className="input w-full border mr-2 "
           />
           <Button onClick={copyToClipboard} className="copy-btn">
             Copy

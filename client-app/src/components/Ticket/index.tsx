@@ -18,7 +18,6 @@ import { Participant } from "../ParticipantForm";
 import { deleteEventRegistration } from "../../services/RegisterEventService";
 import './index.css';
 
-
 const TicketInfoComponent: React.FC = () => {
   const location = useLocation();
   const registration = location.state?.registration;
@@ -37,17 +36,13 @@ const TicketInfoComponent: React.FC = () => {
     console.log("Cancellation confirmed");
     setIsCancellationModalOpen(false);
     try {
-
       const response = await deleteEventRegistration(registration._id);
       navigate(`/mytickets`);
       console.log("Cancellation Response:", response);
-
     } catch (error) {
       console.error("Error canceling registration:", error);
-
     }
   };
-
 
   const handleCloseCancellationModal = () => {
     setIsCancellationModalOpen(false);

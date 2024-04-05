@@ -2,7 +2,8 @@
  * Author: Aharnish Solanki (B00933563)
  */
 import React, { useState, useEffect } from "react";
-import {FaHeart, FaRegHeart, FaUser, FaShareAlt, FaCalendarAlt, FaMapMarkedAlt} from "react-icons/fa";
+import {FaHeart,FaRegHeart,FaUser,FaShareAlt,FaCalendarAlt,FaMapMarkedAlt,} from "react-icons/fa";
+import { FcAbout } from "react-icons/fc";
 import { useWishlist } from "../../context/WishlistContext";
 import Container from "../Container";
 import Button from "../UI/Button";
@@ -10,6 +11,8 @@ import ImageCarousel from "../ImageCarousel";
 import ShareModal from "../ShareModal";
 import TicketPurchaseModal from "../TicketPurchaseModal";
 import { getEventsbyId } from "../../services/EventService";
+import { useNavigate } from "react-router-dom";
+import formatDateTime from "../../services/utils";
 
 interface EventDetails {
   details: {
@@ -45,7 +48,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const navigate = useNavigate();
 
   const { wishlist, addToWishlist, removeFromWishlist } = useWishlist();
-  const isWishlisted = wishlist.some(e => e.id === event?._id);
+  const isWishlisted = wishlist.some((e) => e.id === event?._id);
 
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
@@ -62,7 +65,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
         date: event?.eventStartDateTime as any,
         location: event?.details.venue as string,
         description: event?.details.description as string,
-        image: event?.titlePicture as string
+        image: event?.titlePicture as string,
       });
     }
   };
@@ -88,34 +91,35 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
 
   return (
     <Container>
-      <div className="relative bg-white shadow-lg rounded-lg p-8 my-5 mx-auto max-w-7xl">
-        <ImageCarousel images={event?.titlePicture} />
-        <div className="flex flex-col lg:flex-row -mx-4 mt-4">
-          <div className="w-full lg:w-2/3 px-4">
-            <div className="flex justify-between items-start">
-              <h1 className="text-3xl lg:text-5xl font-bold text-title-color mb-3">
+      <div className="relative bg-white shadow-lg rounded-lg p-6 my-5 mx-auto max-w-7xl">
+        <div className="mb-2">
+          <div className="bg-gray-100 rounded-lg p-6 flex flex-col justify-between">
+            <div className="flex flex-col lg:flex-row justify-between">
+              <h1 className="text-3xl lg:text-5xl font-bold text-title-color mb-4 lg:mb-0">
                 {event?.eventName}
               </h1>
-              <div className="flex items-center space-x-2">
+
+              <div className="flex-grow"></div>
+
+              <div className="flex items-end lg:items-center space-x-2">
                 <button
                   onClick={toggleWishlist}
-                  className="ml-2 text-red-500 flex items-center"
+                  className="text-red-500 flex items-center"
                 >
-                  <div style={{ padding: "0 px 5px" }}>
-                    {isWishlisted ? (
-                      <FaHeart size={30} />
-                    ) : (
-                      <FaRegHeart size={25} />
-                    )}
-                  </div>
+                  {isWishlisted ? (
+                    <FaHeart size={30} />
+                  ) : (
+                    <FaRegHeart size={25} />
+                  )}
                 </button>
                 <Button
                   onClick={() => setShowShareModal(true)}
                   className="text-blue-500 hover:text-blue-700 text-2xl lg:text-3xl"
                   aria-label="Share Event"
                 >
-                  <FaShareAlt size={25}></FaShareAlt>
+                  <FaShareAlt size={18} />
                 </Button>
+                {/* Share Modal */}
                 <ShareModal
                   url={urlToShare}
                   isOpen={showShareModal}
@@ -123,68 +127,125 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                 />
               </div>
             </div>
-            <div className="mb-3 flex items-center">
-              <div style={{ padding: "15px" }}>
-                <FaUser size={25}></FaUser>
-              </div>
-              <span className="text-lg text-gray-700 font-bold">
-                Organized by:
-              </span>
-              <p className="text-gray-900 font-semibold ml-2">
-                {event?.organizer}
-              </p>
+            <div className="mt-4">
+              <ImageCarousel images={event?.titlePicture} />
             </div>
-            <div className="mb-3 flex items-center">
-              <div style={{ padding: "15px" }}>
-                <FaCalendarAlt size={25}></FaCalendarAlt>
-              </div>
-              <span className="text-lg text-gray-700 font-bold">
-                Date and Time:
-              </span>
-              <p className="text-gray-900 font-semibold ml-2">
-                {event?.eventStartDateTime}
-              </p>
-            </div>
-            <div className="mb-3 flex items-center">
-              <div style={{ padding: "15px" }}>
-                <FaMapMarkedAlt size={25}></FaMapMarkedAlt>
-              </div>
-              <span className="text-lg text-gray-700 font-bold">Location:</span>
-              <p className="text-gray-900 font-semibold ml-2">
-                {event?.details?.venue}
-              </p>
-            </div>
-
-            <h2 className="text-xl lg:text-2xl font-bold text-gray-900 mb-2">
-              About the Event
-            </h2>
-            <p className="text-gray-700 mb-3">{event?.details?.description}</p>
           </div>
+        </div>
 
-          <div className="w-full lg:w-1/3 px-4 mt-4 lg:mt-0">
-            <div className="border p-4 rounded-md">
-              <h3 className="text-xl lg:text-lg font-bold mb-4 text-center">
-                Get tickets
-              </h3>
-              <div className="mb-4 text-center">
-                <span className="text-lg font-bold">Price: </span>
-                <span className="text-lg font-bold">
-                  CA${event?.price?.toFixed(2)}
-                </span>
+        {/* after image section */}
+
+        <div>
+          <div className="grid grid-cols-3 md:grid-cols-3 gap-4 my-4">
+            <div className="md:col-span-2 p-4 bg-white rounded-lg shadow">
+              <div>
+                <div className="flex items-center ml-3 mt-6">
+                  <p className="text-2xl">
+                    <strong>Organized by</strong>
+                  </p>
+                  <FaUser size={25} className="mr-2 ml-2" />
+                </div>
+                <hr
+                  className="my-1 border-gray-300 ml-3 mb-4"
+                  style={{ width: "26%" }}
+                />
+                <p className="text-xl text-gray-900  ml-3 mb-4">
+                  {event?.organizer}
+                </p>
+
+                {/* Date and Time */}
+                <div className="flex items-center mx-3 mb-2">
+                  <p className="text-2xl">
+                    <strong>Date and Time</strong>
+                  </p>
+                  <FaCalendarAlt size={25} className="mr-2 ml-2" />
+                </div>
+
+                <hr
+                  className="my-1 border-gray-300 mx-l mb-4 ml-3"
+                  style={{ width: "29%" }}
+                />
+
+                <div className="flex flex-col ml-3">
+                  <div className="flex items-center mb-2">
+                    <span className="font-bold min-w-[80px]">From</span>
+                    <span className="mr-2 font-bold">:</span>
+                    <span className="">
+                      {formatDateTime(event?.eventStartDateTime || "")}
+                    </span>
+                  </div>
+                  <div className="flex items-center mb-4">
+                    <span className="font-bold min-w-[80px]">To</span>
+                    <span className="mr-2 font-bold">:</span>
+                    <span className="">
+                      {formatDateTime(event?.eventEndDateTime || "")}
+                    </span>
+                  </div>
+                </div>
+
+                <div className="flex items-center mx-3 mb-2">
+                  <p className="text-2xl mr-4">
+                    <strong>Venue</strong>
+                  </p>
+                  <FaMapMarkedAlt size={25} className="mr-2" />
+                </div>
+                <hr
+                  className="my-1 border-gray-300 mx-l ml-3 mb-4"
+                  style={{ width: "17%" }}
+                />
+
+                <p className="text-gray-900  ml-3 text-xl mb-4">
+                  {event?.details?.venue}
+                </p>
+
+                <div className="flex flex-col lg:flex-row -mx-4 mt-4"></div>
+
+                <div className="w-full  px-4">
+                  <div className="flex items-center mb-2">
+                    <h2 className="text-xl lg:text-2xl font-bold text-gray-900">
+                      About the Event
+                    </h2>
+                    <FcAbout size={25} className="ml-2" />
+                  </div>
+
+                  <hr
+                    className="flex-grow border-gray-300 mb-2"
+                    style={{ height: "1px" }}
+                  />
+                  <p className="text-gray-700 mb-3 text-justify">
+                    {event?.details?.description}
+                  </p>
+                </div>
               </div>
-              <Button
-                onClick={() => setShowTicketModal(true)}
-                className="bg-red-500 text-white px-4 py-2 rounded-md w-full"
-                color="error"
-              >
-                Register
-              </Button>
-              <TicketPurchaseModal
-                isOpen={showTicketModal}
-                onClose={() => setShowTicketModal(false)}
-                onCheckout={() => setShowTicketModal(false)}
-                event={event}
-              />
+            </div>
+
+            <div className="md:col-span-1 p-4 bg-gray-100 rounded-lg shadow">
+              <div className="w-full px-4 mt-4 ">
+                <div className="border p-4 rounded-md bg-white">
+                  <h3 className="text-xl lg:text-lg font-bold mb-4 text-center">
+                    Get tickets
+                  </h3>
+                  <div className="mb-4 text-center">
+                    <span className="text-lg font-bold">Price: </span>
+                    <span className="text-lg font-bold">
+                      CA${event?.price?.toFixed(2)}
+                    </span>
+                  </div>
+                  <Button
+                    onClick={() => setShowTicketModal(true)}
+                    className="bg-red-500 text-white px-4 py-2 rounded-md w-full"
+                    color="error"
+                  >
+                    Register
+                  </Button>
+                  <TicketPurchaseModal
+                    isOpen={showTicketModal}
+                    onClose={() => setShowTicketModal(false)}
+                    onCheckout={() => setShowTicketModal(false)}
+                    event={event}
+                  />
+                </div>
+              </div>
             </div>
           </div>
         </div>
@@ -198,7 +259,8 @@ export async function fetchEventById(eventId: string): Promise<any | null> {
     const response = await getEventsbyId(eventId);
     if (response?.data) {
       const data = response.data.data;
-      const price =!data.isPaidEvent || data.price === undefined ? 0 : data.price;
+      const price =
+        !data.isPaidEvent || data.price === undefined ? 0 : data.price;
       const event = {
         details: data.details,
         _id: data._id,

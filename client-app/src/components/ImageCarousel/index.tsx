@@ -30,7 +30,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
   }
 
   return (
-    <div className="relative flex items-center justify-center  mb-6 ">
+    <div className="relative flex items-center justify-center  mt-2 mb-6 ">
       {imageList.map((image, index) => (
         <div
           key={index}
@@ -41,7 +41,7 @@ const ImageCarousel: React.FC<ImageCarouselProps> = ({ images }) => {
               src={image}
               alt="Event Slide"
               className="w-full object-cover rounded-lg"
-              style={{ width: "1200px", height: "500px" }}
+              style={{ width: "1300px", height: "500px" }}
             />
           )}
         </div>
