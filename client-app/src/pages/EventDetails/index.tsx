@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React from 'react';
 import EventDetails from '../../components/EventDetails';
 import { useParams } from "react-router-dom";

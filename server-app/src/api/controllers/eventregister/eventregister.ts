@@ -1,9 +1,12 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import { Request, Response } from "express";
 import User from "../../../models/User";
 import Event from "../../../models/Event";
 import Registration from "../../../models/Registration";
 import sendResponse from "../../../utils/response";
-import mongoose from "mongoose";
 
 export const createEventRegistration = async (req: Request, res: Response) => {
     const { userId, eventId, participants } = req.body;
@@ -23,8 +26,8 @@ export const createEventRegistration = async (req: Request, res: Response) => {
         participants: participants,
         status: "PENDING",
         registrationDate: new Date(),
-        paymentStatus: "PENDING",
-        amountPaid: 0, // Update with actual amount after payment process
+        paymentStatus: "PENDING", 
+        amountPaid: 0, 
       });
 
       await registration.save();

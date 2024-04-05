@@ -1,3 +1,7 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import {TicketRegistration} from "../components/ParticipantForm";
 import { deleteData, postData } from "./utils";
 import { json } from "stream/consumers";
@@ -11,7 +15,6 @@ export async function createEventRegistration(eventData: TicketRegistration) {
         return null;
     }
 }
-
 
 export const deleteEventRegistration = async (registrationId: string) => {
     try {

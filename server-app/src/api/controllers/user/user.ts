@@ -1,6 +1,6 @@
 /**
- * Author: Bhavisha Oza
- * Banner ID: B00935827
+ * Author: Bhavisha Oza (B00935827)
+ * Author: Aharnish Solanki (B00933563)
  */
 import { Request, Response } from "express";
 import User from "../../../models/User";
@@ -83,6 +83,34 @@ export const sendEmail= async (
     return sendResponse(res, 500, {
       success: false,
       message: "Failed to send email",
+    });
+  }
+};
+
+export const getUserNameById = async (req: Request, res: Response) => {
+  const { userId } = req.params;
+  debugger;
+  try {
+    
+    const UserbyId = await User.findById(userId);
+
+    if (!UserbyId) {
+      return sendResponse(res, 404, {
+        success: false,
+        message: "User not found",
+      });
+    }
+    const UserName = UserbyId.firstName + " " + UserbyId.lastName;  
+    return sendResponse(res, 200, {
+      success: true,
+      message: "Event retrieved successfully",
+      data: UserName,
+    });
+  } catch (error) {
+    console.error("Get Event Error:", error);
+    return sendResponse(res, 500, {
+      success: false,
+      message: "Server error while getting the event",
     });
   }
 };

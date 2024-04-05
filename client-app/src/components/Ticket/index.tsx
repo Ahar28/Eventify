@@ -1,8 +1,11 @@
+/**
+ * Author: Aharnish Solanki (B00933563)
+ */
+
 import React, { useState, useEffect } from "react";
 import { FaPrint, FaRegTimesCircle } from "react-icons/fa";
 import Button from "../UI/Button";
 import Container from "../Container";
-import { error } from "console";
 import { Link } from "react-router-dom";
 import { FaArrowLeft } from "react-icons/fa";
 import QRCode from "qrcode.react";
@@ -15,13 +18,11 @@ import { Participant } from "../ParticipantForm";
 import { deleteEventRegistration } from "../../services/RegisterEventService";
 import './index.css';
 
-
 const TicketInfoComponent: React.FC = () => {
   const location = useLocation();
   const registration = location.state?.registration;
   const navigate = useNavigate();
   const [isCancellationModalOpen, setIsCancellationModalOpen] = useState(false);
-  const [showConfirmModal, setShowConfirmModal] = React.useState(false);
 
   const handlePrint = () => {
     window.print();
@@ -35,23 +36,44 @@ const TicketInfoComponent: React.FC = () => {
     console.log("Cancellation confirmed");
     setIsCancellationModalOpen(false);
     try {
-
       const response = await deleteEventRegistration(registration._id);
       navigate(`/mytickets`);
       console.log("Cancellation Response:", response);
-
     } catch (error) {
       console.error("Error canceling registration:", error);
-
     }
   };
-
 
   const handleCloseCancellationModal = () => {
     setIsCancellationModalOpen(false);
   };
 
   const qrCodeValue = `TicketID:${registration._id}`;
+
+  let venueLinkComponent;
+if (registration.event.details.venue) {
+  venueLinkComponent = (
+    <div className="flex items-center mb-2">
+      <span className="font-bold min-w-[80px]">Venue:</span>
+      <p>{registration.event.details.venue}</p>
+    </div>
+  );
+} else if (registration.event.details.link) {
+  venueLinkComponent = (
+    <div className="flex items-center mb-2">
+      <span className="font-bold min-w-[80px]">Link:</span>
+      <a
+        href={registration.event.details.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#007bff' }} 
+        className="hover:underline"
+      >
+        {registration.event.details.link}
+      </a>
+    </div>
+  );
+}
 
   return (
     <Container>
@@ -78,7 +100,7 @@ const TicketInfoComponent: React.FC = () => {
                 </div>
                 <div className="flex flex-col items-center space-y-4">
                   <QRCode value={qrCodeValue} size={128} level={"H"} />
-                  <span>Reg Id#: {registration._id}</span>
+                  <span>Reg ID#: {registration._id}</span>
                 </div>
               </div>
             </div>
@@ -149,11 +171,9 @@ const TicketInfoComponent: React.FC = () => {
                         {formatDateTime(registration.event.eventEndDateTime)}
                       </span>
                     </div>
-                    <div className="flex items-center mb-2">
-                      <span className="font-bold min-w-[80px]">Venue: </span>
-                      <p>{registration.event.details.venue}</p>
-                    </div>
-
+          
+                    <div>{venueLinkComponent}</div>
+                    
                     <div className="flex items-start mb-2">
                       {" "}
                       <span className="font-bold min-w-[80px]">About: </span>

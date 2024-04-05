@@ -2,7 +2,7 @@
  * Author: Bhavisha Oza
  * Banner ID: B00935827
  */
-import { postData, putData } from "./utils";
+import { postData, putData , getData} from "./utils";
 
 export async function loginUser(userData: any) {
   try {
@@ -73,5 +73,15 @@ export async function emailSend(emailData: any) {
   } catch (error) {
     console.error("Error Sending email: ", error);
     return null;
+  }
+}
+
+export async function getUserNamebyId(userId: string) {
+  try {
+      const response = await getData("/user/get-user-name/" + userId);
+      return response;
+  } catch (error) {
+      console.error("Error getting event:", error);
+      return null;
   }
 }
