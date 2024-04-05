@@ -295,7 +295,7 @@ User can user pre-defined credentials if they want:
 - Event creation page (Dashboard > Add Event)
 - Payment Gateway (Events > Register paid events > Payment Gateway)
 
-## List of files authored by Sushank Saini
+## List of files authored by Keyur Pradipbhai Khant
 
 ### Frontend
 
