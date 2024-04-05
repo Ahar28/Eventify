@@ -27,7 +27,7 @@ Eventify is a comprehensive event management system designed to simplify and enh
 
 Eventify application is deployed on Netlify.
 
-[remarkable-torte-09a5d1.netlify.app](https://remarkable-torte-09a5d1.netlify.app/)
+[eventify-csci5709.vercel.app/](https://eventify-csci5709.vercel.app/)
 
 ## GitLab URL
 
