@@ -50,6 +50,31 @@ const TicketInfoComponent: React.FC = () => {
 
   const qrCodeValue = `TicketID:${registration._id}`;
 
+  let venueLinkComponent;
+if (registration.event.details.venue) {
+  venueLinkComponent = (
+    <div className="flex items-center mb-2">
+      <span className="font-bold min-w-[80px]">Venue:</span>
+      <p>{registration.event.details.venue}</p>
+    </div>
+  );
+} else if (registration.event.details.link) {
+  venueLinkComponent = (
+    <div className="flex items-center mb-2">
+      <span className="font-bold min-w-[80px]">Link:</span>
+      <a
+        href={registration.event.details.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#007bff' }} 
+        className="hover:underline"
+      >
+        {registration.event.details.link}
+      </a>
+    </div>
+  );
+}
+
   return (
     <Container>
       <div className="container mx-auto p-6">
@@ -146,11 +171,9 @@ const TicketInfoComponent: React.FC = () => {
                         {formatDateTime(registration.event.eventEndDateTime)}
                       </span>
                     </div>
-                    <div className="flex items-center mb-2">
-                      <span className="font-bold min-w-[80px]">Venue: </span>
-                      <p>{registration.event.details.venue}</p>
-                    </div>
-
+          
+                    <div>{venueLinkComponent}</div>
+                    
                     <div className="flex items-start mb-2">
                       {" "}
                       <span className="font-bold min-w-[80px]">About: </span>

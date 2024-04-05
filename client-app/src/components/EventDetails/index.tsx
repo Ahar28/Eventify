@@ -100,6 +100,53 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
     };
   }, [showTicketModal]);
 
+  let venueLinkComponent;
+  if (event?.details.venue) {
+    venueLinkComponent = (
+      <div>
+      <div className="flex items-center mx-3 mb-2">
+        <p className="text-2xl mr-4">
+          <strong>Venue</strong>
+        </p>
+        <FaMapMarkedAlt size={25} className="mr-2" />
+      </div>
+      <hr
+        className="my-1 border-gray-300 mx-l ml-3 mb-4"
+        style={{ width: "17%" }}
+      />
+      <p className="text-gray-900 ml-3 text-xl mb-4">
+        {event?.details?.venue}
+      </p>
+    </div>
+    );
+  } else if (event?.details.link) {
+    venueLinkComponent = (
+      <div>
+      <div className="flex items-center mx-3 mb-2">
+        <p className="text-2xl mr-4">
+          <strong>Link</strong>
+        </p>
+        <FaLink size={20} className="mr-2" />
+      </div>
+      <hr
+        className="my-1 border-gray-300 mx-l ml-3 mb-4"
+        style={{ width: "17%" }}
+      />
+      <p className="text-gray-900 ml-3 text-xl mb-4">
+      <a
+        href={event.details.link}
+        target="_blank"
+        rel="noopener noreferrer"
+        style={{ color: '#007bff' }} 
+        className="hover:underline"
+      >
+          {event?.details?.link}
+        </a>
+      </p>
+    </div>
+    );
+  }
+
   return (
     <Container>
       <div className="relative bg-white shadow-lg rounded-lg p-6 my-5 mx-auto max-w-7xl">
@@ -193,46 +240,8 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                     </span>
                   </div>
                 </div>
-                {event?.details?.venue ? (
-                  <div>
-                    <div className="flex items-center mx-3 mb-2">
-                      <p className="text-2xl mr-4">
-                        <strong>Venue</strong>
-                      </p>
-                      <FaMapMarkedAlt size={25} className="mr-2" />
-                    </div>
-                    <hr
-                      className="my-1 border-gray-300 mx-l ml-3 mb-4"
-                      style={{ width: "17%" }}
-                    />
-                    <p className="text-gray-900 ml-3 text-xl mb-4">
-                      {event?.details?.venue}
-                    </p>
-                  </div>
-                ) : event?.details?.link ? (
-                  <div>
-                    <div className="flex items-center mx-3 mb-2">
-                      <p className="text-2xl mr-4">
-                        <strong>Link</strong>
-                      </p>
-                      <FaLink size={20} className="mr-2" />
-                    </div>
-                    <hr
-                      className="my-1 border-gray-300 mx-l ml-3 mb-4"
-                      style={{ width: "17%" }}
-                    />
-                    <p className="text-gray-900 ml-3 text-xl mb-4">
-                      <a
-                        href={event?.details?.link}
-                        target="_blank"
-                        rel="noopener noreferrer"
-                      >
-                        {event?.details?.link}
-                      </a>
-                    </p>
-                  </div>
-                ) : null}
-
+               <div> {venueLinkComponent} </div>
+               
                 <div className="flex flex-col lg:flex-row -mx-4 mt-4"></div>
 
                 <div className="w-full  px-4">

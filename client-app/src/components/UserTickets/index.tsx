@@ -23,6 +23,7 @@ interface TicketRegistration {
     details: {
       description: string;
       venue: string;
+      link?: string;
     };
   };
   participants: Participant[];
