@@ -22,6 +22,8 @@ import { getEventsbyId } from "../../services/EventService";
 import { getUserNamebyId } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import formatDateTime from "../../services/utils";
+import { selectUser } from "../../redux/userSlice";
+import { useSelector } from 'react-redux';
 
 interface EventDetails {
   details: {
@@ -54,6 +56,8 @@ interface EventDetailsProps {
 const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [event, setEvent] = useState<EventDetails | null>();
   const [userName, setuserName] = useState();
+  const user = useSelector(selectUser);
+  const LoggeduserId = user?.id;
   console.log("event", event);
 
   const navigate = useNavigate();
@@ -64,6 +68,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const urlToShare = window.location.href;
+  const isOrganizer = LoggeduserId === event?.organizer;
 
   const toggleWishlist = async (e: React.MouseEvent) => {
     e.stopPropagation();
@@ -164,7 +169,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
               <div className="flex-grow"></div>
 
               <div className="flex items-end lg:items-center space-x-2">
-                <button
+                {/* <button
                   onClick={toggleWishlist}
                   className="text-red-500 flex items-center"
                 >
@@ -173,7 +178,19 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                   ) : (
                     <FaRegHeart size={25} />
                   )}
-                </button>
+                </button> */}
+                {!isOrganizer && (
+            <button
+              onClick={toggleWishlist}
+              className="text-red-500 flex items-center"
+            >
+              {isWishlisted ? (
+                <FaHeart size={30} />
+              ) : (
+                <FaRegHeart size={25} />
+              )}
+            </button>
+          )}
                 <Button
                   onClick={() => setShowShareModal(true)}
                   className="text-blue-500 hover:text-blue-700 text-2xl lg:text-3xl"
