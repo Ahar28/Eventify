@@ -22,12 +22,24 @@ Eventify is a comprehensive event management system designed to simplify and enh
 - [TypeScript](https://www.typescriptlang.org/docs/)
 - [Taildwind CSS](https://tailwindcss.com/)
 - [Material UI](https://material-ui.com/)
+- [Node.js](https://nodejs.org/en)
+- [Express](https://expressjs.com/)
+- [Chart.js](https://www.chartjs.org/)
+- [MongoDB](https://www.mongodb.com/)
+- [Mongoose](https://mongoosejs.com/)
+- [Stripe](https://stripe.com/en-ca)
 
 ## Deployement
 
-Eventify application is deployed on Netlify.
+### Frontend
+Eventify application(Frontend) is deployed on Vercel.
 
 [eventify-csci5709.vercel.app/](https://eventify-csci5709.vercel.app/)
+
+### Backend
+Our Backend is deployed on Render.
+
+[https://eventify-2f9d.onrender.com](https://eventify-2f9d.onrender.com)
 
 ## GitLab URL
 
@@ -37,7 +49,7 @@ Eventify application is deployed on Netlify.
 
 Stripe Payment Gateway is running on testing mode. Hence, please use below Card details:
 
-* **Card Number:** 4242 4242 4242 4242
+- **Card Number:** 4242 4242 4242 4242
 
 User can use any future nearby expiry date and CVV.
 
@@ -51,10 +63,13 @@ To get started with Eventify, follow these simple steps:
 git clone https://git.cs.dal.ca/asolanki/csci-5709_grp-10
 ```
 
-2. Redirect into `client-app` directory.
+2. Redirect into `client-app` directory to start frontend / Redirect into `server-app` directory to start backend. 
 
 ```bash
 cd client-app
+```
+```bash
+cd server-app
 ```
 
 3.  Install dependencies
@@ -69,10 +84,26 @@ npm install
 npm start
 ```
 
-5. (Optional) You can build project as below
+## Deployment
 
-```bash
-npm run build
+### Frontend
+
+To deploy our project environment, We have used **Vercel**. The steps we followed for the deployment are as follows:
+
+1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
+2. Authenticated Netlify with Github to access repositories in our GitHub.
+3. Configured the deployement settings, such as root folder, build comand, environment variables
+   [[19]]https://vercel.com/
+
+### Backend
+
+To deploy the project environment, We have used **Render**. The steps for backend deployment are as mentioned:
+
+1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
+2. Authenticated Netlify with Github to access repositories in our GitHub.
+3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
+   [[20]]https://render.com/
+
 ```
 
 ## Code References
@@ -90,6 +121,7 @@ interface CustomButtonProps {
     className?: string;
     variant?: 'text' | 'contained' | 'outlined';
     color?: 'inherit' | 'primary' | 'secondary' | 'success' | 'error' | 'info' | 'warning';
+    disabled?: boolean;
 }
 
 const EButton: React.FC<CustomButtonProps> = ({
@@ -99,6 +131,7 @@ const EButton: React.FC<CustomButtonProps> = ({
     className,
     variant = 'contained',
     color = 'primary',
+    disabled = false,
 }) => {
     return (
         <Button
@@ -107,6 +140,7 @@ const EButton: React.FC<CustomButtonProps> = ({
             className={`py-2 px-4 rounded ${className}`}
             variant={variant}
             color={color}
+            disabled={!disabled ? false : true}
         >
             {children}
         </Button>
@@ -282,12 +316,6 @@ export default PageNotFound
 - Event Creation
 - Payment Gateway
 
-### Pre-defined Credentials:
-
-User can user pre-defined credentials if they want:
-
-* **Email:** keyur.khant@dal.ca
-* **Password:** pqr@123
 
 ### Related Tasks:
 
@@ -340,7 +368,7 @@ User can user pre-defined credentials if they want:
 
 ### server-app/src/models/Event.ts
 
-*Lines 21- 81*
+_Lines 21- 81_
 
 ```
 const eventSchema: Schema = new Schema(
@@ -400,7 +428,7 @@ const eventSchema: Schema = new Schema(
 const Event = mongoose.model<IEvent>('events', eventSchema);
 ```
 
-The code above was created by adapting the code in [[1]](https://mongoosejs.com/docs/guide.html) as shown below, respectively : 
+The code above was created by adapting the code in [[1]](https://mongoosejs.com/docs/guide.html) as shown below, respectively :
 
 ```
 import mongoose from 'mongoose';
@@ -422,7 +450,7 @@ const blogSchema = new Schema({
 
 ### server-app/src/api/controllers/payment/payment.ts
 
-*Lines 19- 26*
+_Lines 19- 26_
 
 ```
 const paymentIntent = await stripe.paymentIntents.create({
@@ -434,7 +462,8 @@ const paymentIntent = await stripe.paymentIntents.create({
       payment_method: paymentMethod,
     });
 ```
-The code above was created by adapting the code in [[2]](https://docs.stripe.com/api/payment_intents/create?lang=node) as shown below, respectively : 
+
+The code above was created by adapting the code in [[2]](https://docs.stripe.com/api/payment_intents/create?lang=node) as shown below, respectively :
 
 ```
 const paymentIntent = await stripe.paymentIntents.create({
@@ -448,7 +477,7 @@ const paymentIntent = await stripe.paymentIntents.create({
 
 ### client-app/src/redux/userSlice.ts
 
-*Lines 1- 25*
+_Lines 1- 25_
 
 ```
 import { createSlice } from "@reduxjs/toolkit";
@@ -478,7 +507,7 @@ export const selectUser = (state: any) => state.user;
 export default userSlice.reducer;
 ```
 
-The code above was created by adapting the code in [[3]](https://redux-toolkit.js.org/api/createslice) as shown below, respectively : 
+The code above was created by adapting the code in [[3]](https://redux-toolkit.js.org/api/createslice) as shown below, respectively :
 
 ```
 import { createSlice } from '@reduxjs/toolkit'
@@ -509,82 +538,90 @@ const counterSlice = createSlice({
 export const { increment, decrement, incrementByAmount } = counterSlice.actions
 export default counterSlice.reducer
 ```
+```
 
 ## Additional Notes
-* The design of Eventify is grounded in simplicity and elegance, drawing inspiration from modern web design principles while also paying homage to the clean, accessible aesthetic.
-* For event creation and discussions within Eventify, we've prioritized user-friendly interfaces. Event titles are optional, but event descriptions are mandatory to ensure meaningful engagement and information sharing. Custom error messages guide users for a smoother experience.
-* Accessing the details and responses to an event is straightforward—users need only hover over an event card and click to be taken to a page dedicated to in-depth information and discussions related to that event, enhancing navigability and user interaction.
+
+- The design of Eventify is grounded in simplicity and elegance, drawing inspiration from modern web design principles while also paying homage to the clean, accessible aesthetic.
+- For event creation and discussions within Eventify, we've prioritized user-friendly interfaces. Event titles are optional, but event descriptions are mandatory to ensure meaningful engagement and information sharing. Custom error messages guide users for a smoother experience.
+- Accessing the details and responses to an event is straightforward—users need only hover over an event card and click to be taken to a page dedicated to in-depth information and discussions related to that event, enhancing navigability and user interaction.
 
 ## Future Work
-* Looking ahead, Eventify plans to introduce features that allow users to edit their event details and discussion posts, empowering them with greater control over their content. This future functionality is aimed at enhancing user engagement and flexibility, further enriching the Eventify experience.
 
+- Looking ahead, Eventify plans to introduce features that allow users to edit their event details and discussion posts, empowering them with greater control over their content. This future functionality is aimed at enhancing user engagement and flexibility, further enriching the Eventify experience.
 
 # Authors - [Aharnish Maheshbhai Solanki](ah910744@dal.ca)
 
-# CSCI 5709 Assignment 3 
-
-* *Date Created*: April 2, 2024
-* *Last Modification Date*: April 04, 2024
-* *Assignment (Project) URL*: https://eventify-csci5709.vercel.app/
-* *GitLab individual URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Aharnish?ref_type=heads
-* *GitLab group URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
-
+- _Date Created_: April 2, 2024
+- _Last Modification Date_: April 04, 2024
+- _Assignment (Project) URL_: https://eventify-csci5709.vercel.app/
+- _GitLab individual URL for Assignment 3_: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Aharnish?ref_type=heads
+- _GitLab group URL for Assignment 3_: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
 
 ## Authors
-* [Aharnish Maheshbhai Solanki](ah910744@dal.ca) - *Full Stack Developer*
+
+- [Aharnish Maheshbhai Solanki](ah910744@dal.ca) - _Full Stack Developer_
 
 ## Built With
-* [NodeJS](https://nodejs.org/en) - A cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser
-* [ExpressJS](https://expressjs.com/) -  A back end web application framework for building RESTful APIs with Node.js
-* [ReactJS](https://react.dev/) - A free and open-source front-end JavaScript library for building user interfaces based on components
-* [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database program.
-* [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom user interfaces.
+
+- [NodeJS](https://nodejs.org/en) - A cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser
+- [ExpressJS](https://expressjs.com/) - A back end web application framework for building RESTful APIs with Node.js
+- [ReactJS](https://react.dev/) - A free and open-source front-end JavaScript library for building user interfaces based on components
+- [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database program.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom user interfaces.
 
 ## Feature and its related tasks developed by Aharnish Solanki
-### Feature: 
-* Event Details
-* Event Ticket Registration
+
+### Feature:
+
+- Event Details
+- Event Ticket Registration
+
 ### Related Tasks:
-* Display Event details when clicked on an event
-* Register for the event
-* Generate participant form based on number of tickets selected and order summary
-* Creating ticket registration at backend
-* Displaying registrations done by user
-* Displaying event registration info
-* Cancelling ticket registration by user
+
+- Display Event details when clicked on an event
+- Register for the event
+- Generate participant form based on number of tickets selected and order summary
+- Creating ticket registration at backend
+- Displaying registrations done by user
+- Displaying event registration info
+- Cancelling ticket registration by user
 
 ## List of files authored by Aharnish Maheshbhai Solanki
+
 ### Frontend
-* client-app\src\components\CancelModal\index.ts
-* client-app\src\components\EventDetails\index.ts
-* client-app\src\components\ImageCarousel\index.ts
-* client-app\src\components\ParticipantForm\index.ts
-* client-app\src\components\ShareModal\index.ts
-* client-app\src\components\SuccessModal\index.ts
-* client-app\src\components\Ticket\index.ts
-* client-app\src\components\TicketPurchaseModal\index.ts
-* client-app\src\components\UserTickets\index.ts
-* client-app\src\pages\EventDetials\index.ts
-* client-app\src\pages\CancelModal\index.ts
-* client-app\src\pages\EventDetails\index.ts
-* client-app\src\pages\ParticipantForm\index.ts
-* client-app\src\pages\Ticket\index.ts
-* client-app\src\pages\UserTickets\index.ts
+
+- client-app\src\components\CancelModal\index.ts
+- client-app\src\components\EventDetails\index.ts
+- client-app\src\components\ImageCarousel\index.ts
+- client-app\src\components\ParticipantForm\index.ts
+- client-app\src\components\ShareModal\index.ts
+- client-app\src\components\SuccessModal\index.ts
+- client-app\src\components\Ticket\index.ts
+- client-app\src\components\TicketPurchaseModal\index.ts
+- client-app\src\components\UserTickets\index.ts
+- client-app\src\pages\EventDetials\index.ts
+- client-app\src\pages\CancelModal\index.ts
+- client-app\src\pages\EventDetails\index.ts
+- client-app\src\pages\ParticipantForm\index.ts
+- client-app\src\pages\Ticket\index.ts
+- client-app\src\pages\UserTickets\index.ts
 
 ### Backend
-* backend\src\api\controllers\event\event.ts
-* backend\src\api\controllers\eventregister\eventregister.ts
-* backend\src\api\routes\event\index.ts
-* backend\src\api\routes\register\index.ts
-* backend\src\api\routes\index.ts
-* backend\src\api\models\Registration.ts
 
+- backend\src\api\controllers\event\event.ts
+- backend\src\api\controllers\eventregister\eventregister.ts
+- backend\src\api\routes\event\index.ts
+- backend\src\api\routes\register\index.ts
+- backend\src\api\routes\index.ts
+- backend\src\api\models\Registration.ts
 
 ## Backend function/api and its corresponding frontend functionality that is fulfilled
-* **/event/event/:eventId**: This api returns specific event details by its eventId.
-* **/register/create**: This api fulfills the functionality of creating a registeration for participants entered by the user for an event .
-* **/register/delete/:regId**: This api deletes the registration of a user for an event.
-* **/event/events-registered-byuser/:userId**: This api returns events registered by the user, to display on /mytickets page.
+
+- **/event/event/:eventId**: This api returns specific event details by its eventId.
+- **/register/create**: This api fulfills the functionality of creating a registeration for participants entered by the user for an event .
+- **/register/delete/:regId**: This api deletes the registration of a user for an event.
+- **/event/events-registered-byuser/:userId**: This api returns events registered by the user, to display on /mytickets page.
 
 ## Sources Used
 
@@ -617,11 +654,10 @@ export default counterSlice.reducer
     </div>
 ```
 
-The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/build-a-simple-modal-component-with-react-16decdc111a6), [[2]](https://tailwindcss.com/docs/installation) 
-
+The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/build-a-simple-modal-component-with-react-16decdc111a6), [[2]](https://tailwindcss.com/docs/installation)
 
 - <!---Why---> [1]st Code was taken as reference because I wanted to make a modal from scratch, achieved that by using the z index for elevating surface: z-10: Sets the z-index of the modal to 10.
-- <!---How---> [1]'s Code was modified  to have specific styling properties for Layout and Positioning: such as background color, Content Styling. 
+- <!---How---> [1]'s Code was modified  to have specific styling properties for Layout and Positioning: such as background color, Content Styling.
 
 - <!---Why---> [2]  was used because I wanted to customize the modal.
 - <!---How---> The code uses different styling options that are in tailwind by going over it's docs .
@@ -651,7 +687,7 @@ The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/
                     )}
                   </div>
                 </button>
-   
+
                 .........
             </div>
           </div>
@@ -659,12 +695,12 @@ The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/
       </div>
     </Container>
 ```
- the code above was created by using the component/container  [[3]](https://tailwindcss.com/docs/container),[[4]](https://react-icons.github.io/react-icons/) [[5]](https://tailwindcss.com/docs/flex)
 
+the code above was created by using the component/container [[3]](https://tailwindcss.com/docs/container),[[4]](https://react-icons.github.io/react-icons/) [[5]](https://tailwindcss.com/docs/flex)
 
 - <!---Why---> [3] & [5] reference was taken for Code because I wanted an container.
 - <!---How---> The code in [3] was implemented by using the Container and flex component of Material UI.
-- <!---How---> [3]'s Code was modified  to have specific styling properties such as Shadow, Border,Padding and Margin. 
+- <!---How---> [3]'s Code was modified  to have specific styling properties such as Shadow, Border,Padding and Margin.
 
 - <!---Why---> [4]'s reference was used as I wanted to use the icons before the text.
 - <!---How---> The code in [4] was implemented by using react-icons/fa package.
@@ -683,11 +719,12 @@ The code above was created by adapting the code in [[1]](https://blog.bitsrc.io/
       timeZoneName: 'short',
       hour12: true
     };
-  
+
     const date = new Date(dateTime);
     return date.toLocaleString('en-US', { ...defaultOptions, ...options });
 ```
-The code above was created by adapting the code in [[6]](https://stackoverflow.com/questions/22347521/change-time-format-to-24-hours-in-javascript) as shown below: 
+
+The code above was created by adapting the code in [[6]](https://stackoverflow.com/questions/22347521/change-time-format-to-24-hours-in-javascript) as shown below:
 
 ```
 new Date().toLocaleString('ru-RU', {
@@ -701,11 +738,12 @@ new Date().toLocaleString('ru-RU', {
     second: "numeric"
 });
 ```
+
 - <!---Why---> [6]'s Code was used because I wanted to have Date in the desired format along with the timestamp
-- <!---How---> The code in [6] was implemented by using in-built JavaScript library funcions i.e. Date() and .toLocaleString(). 
+- <!---How---> The code in [6] was implemented by using in-built JavaScript library funcions i.e. Date() and .toLocaleString().
 - <!---How---> [6]'s Code was modified by assigning different variables or properties to the options of the functions.
 
-### * client-app\src\components\ImageCarousel\index.ts
+### \* client-app\src\components\ImageCarousel\index.ts
 
 ```
  <div className="relative flex items-center justify-center  mb-6 ">
@@ -728,7 +766,8 @@ new Date().toLocaleString('ru-RU', {
     ...
       )}
     </div>
-``` 
+```
+
 [[7]] (https://scrimba.com/articles/react-list-array-with-map-function/)
 
 - <!---Why---> I wanted to have a component to display a single image/array of image depending on the situation
@@ -736,6 +775,7 @@ new Date().toLocaleString('ru-RU', {
 - <!---How---> understood and implemented [[7]]
 
 ### client-app\src\components\ShareModal\index.ts
+
 ```
   <div
       id="modal-backdrop"
@@ -770,6 +810,7 @@ new Date().toLocaleString('ru-RU', {
       </div>
     </div>
 ```
+
 The code above was created by taking the code in [[8]](https://medium.com/@dimterion/modals-with-html-dialog-element-in-javascript-and-react-fb23c885d62e) as reference. [[4]] for icons
 
 - <!---Why---> wanted to create a modal with HTML elements.
@@ -777,6 +818,7 @@ The code above was created by taking the code in [[8]](https://medium.com/@dimte
 - <!---How---> Used svg images by storing them in the /assests/brandicon folder
 
 ### client-app\src\components\TicketPurchaseModal\index.ts
+
 ### client-app\src\components\SuccessModal\index.ts
 
 ```
@@ -788,7 +830,7 @@ The code above was created by taking the code in [[8]](https://medium.com/@dimte
         >
           <button
             onClick={onClose}
-            className="absolute top-0 right-0 m-4" 
+            className="absolute top-0 right-0 m-4"
           >
             <FaTimes size={18} />
           </button>
@@ -836,12 +878,10 @@ The code above was created by taking the code in [[8]](https://medium.com/@dimte
     </Container>
 ```
 
-
 The code above was created by adapting the code in [[3]]((https://tailwindcss.com/docs/container)),[[1]](https://blog.bitsrc.io/build-a-simple-modal-component-with-react-16decdc111a6)
 
 - <!---Why---> wanted to create a modal from scratch and with container
 - <!---How---> adapted the code [[3]] and [[1]] to fit my requirements. I mapped the ticket options , and gave counters for + and -, calculating the price of the registratoin
-
 
 ### client-app\src\components\ParticipantForm\index.ts
 
@@ -875,13 +915,16 @@ The code above was created by adapting the code in [[3]]((https://tailwindcss.co
 </Container>
 
 ```
+
 The code above was created by adapting the code in [[3]](https://tailwindcss.com/docs/container),[[9]](https://tailwindcss.com/docs/grid-template-columns) [[10]](https://developer.mozilla.org/en-US/docs/Web/HTML/Element/input)[[11]](https://smcohen.medium.com/how-to-use-javascripts-map-method-to-create-lists-of-components-in-react-f4b62b51b0c7)
 
-- <!---Why---> I wanted to create a form for taking participant information based on the number of tickets generated 
+- <!---Why---> I wanted to create a form for taking participant information based on the number of tickets generated
 - <!---How---> took [[11]] as reference and mapped participant information in html input elements to take information and used tailwind to style the css
 
 ### client-app\src\components\Ticket\index.ts
+
 ### client-app\src\pages\UserTickets\index.ts
+
 ```
   <Container>
       <div className="container mx-auto p-6">
@@ -896,22 +939,30 @@ The code above was created by adapting the code in [[3]](https://tailwindcss.com
             </Link>
           </div>
 ```
+
 ```
  <div className="flex flex-col items-center space-y-4">
                 <QRCode value={qrCodeValue} size={128} level={"H"} />
                 <span>Reg Id#: {registration._id}</span>
               </div>
 ```
-[[12]](https://dev.to/onlyoneerin/creating-dynamic-qr-codes-using-reactjs-a-step-by-step-tutorial-341a) 
+
+[[12]](https://dev.to/onlyoneerin/creating-dynamic-qr-codes-using-reactjs-a-step-by-step-tutorial-341a)
+
 - <!---Why---> I wanted to display the ticket information of a registered event
 - <!---How---> used flex and different class of Tailwind CSS to display the information
 - <!---How---> used QR code from react packages and took code in 12 as reference
 
 ### backend\src\api\controllers\event\event.ts
+
 ### backend\src\api\controllers\event\event.ts
+
 ### backend\src\api\controllers\eventregister\eventregister.ts
+
 ### backend\src\api\routes\event\index.ts
+
 ### backend\src\api\routes\register\index.ts
+
 ### backend\src\api\routes\index.ts
 
 ```
@@ -937,6 +988,7 @@ const events = await Event.find({ organizer: organizerId });
       data: events,
     });
 ```
+
 ```
 Model.find()
 Model.save()
@@ -944,33 +996,15 @@ Model.findById()
 Model.findByIdAndDelete()
 Model.findByIdAndUpdate()
 ```
+
 The above files use the static helper functions for CRUD operations provided by the Mongoose model[[13]](https://mongoosejs.com/docs/queries.html) and the Mongoose document save() method [[14]](https://mongoosejs.com/docs/documents.html#updating-using-save). The methods used are highlighted below:
 
-The code above was created by adapting the code in [[16]](https://mongoosejs.com/docs/guide.html) as shown below: 
+The code above was created by adapting the code in [[16]](https://mongoosejs.com/docs/guide.html) as shown below:
 [[16]](https://stackoverflow.com/questions/64918147/delete-item-from-mongodb-using-react-redux-and-express)
 [[17]](https://www.mongodb.com/docs/manual/crud/) [[18]](https://stackoverflow.com/questions/38051977/what-does-populate-in-mongoose-mean)
 
 - <!---Why---> I wanted to get events by user and by eventid
 - <!---How---> All the references were used for reading documentation of crud application, and as reference to perform crud operations from MongoDB using React, Redux and Express.
-
-## Deployment
-
-### Frontend
-
-To deploy our project environment, We have used __Vercel__. The steps we followed for the deployment are as follows:
-
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables 
-[[19]]https://render.com/
-### Backend
-
-To deploy the project environment, We have used __Render__. The steps for backend deployment are as mentioned:
-
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
-[[20]]https://vercel.com/
 
 # Author - [Riyaben Pareshkumar Patel](ry470536@dal.ca)
 
@@ -1086,28 +1120,7 @@ The code is provided in https://www.npmjs.com/package/react-datepicker?activeTab
 
 ```
 
-## Deployment
-
-### Frontend
-
-To deploy our project environment, We have used **Vercel**. The steps we followed for the deployment are as follows:
-
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables
-   [[19]]https://render.com/
-
-### Backend
-
-To deploy the project environment, We have used **Render**. The steps for backend deployment are as mentioned:
-
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
-   [[20]]https://vercel.com/
-
-
-# Author - [Bhavisha Oza] (bhavisha.oza@dal.ca)
+# Author - [Bhavisha Oza](bhavisha.oza@dal.ca)
 
 # Assignment 3
 
@@ -1139,23 +1152,6 @@ Eventify is a comprehensive event management system designed to simplify and enh
 - [React](https://reactjs.org/docs/getting-started.html) - The web framework used
 - [npm](https://docs.npmjs.com/) - Dependency Management
 
-## Deployement
-
-Eventify application is deployed on Netlify.
-
-[https://eventify-csci5709.vercel.app/](https://eventify-csci5709.vercel.app/)
-
-Backend is deployed on Render
-
-[https://eventify-2f9d.onrender.com](https://eventify-2f9d.onrender.com)
-
-## GitLab individual branch URL for Assignment 3
-
-[https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Bhavisha](https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Bhavisha)
-
-## GitLab group URL for Assignment 3
-
-[git.cs.dal.ca/asolanki/csci-5709_grp-10](https://git.cs.dal.ca/asolanki/csci-5709_grp-10)
 
 Project Features URL:
 
@@ -1165,39 +1161,6 @@ Project Features URL:
 4. https://eventify-csci5709.vercel.app/auth/reset-password?id=660de09d2f67f953396f0099
 5. https://eventify-csci5709.vercel.app/profile
 
-## Getting Started
-
-To get started with Eventify, follow these simple steps:
-
-1. Clone the repository to your local machine:
-
-```bash
-git clone https://git.cs.dal.ca/asolanki/csci-5709_grp-10
-```
-
-2. Redirect into `client-app` directory.
-
-```bash
-cd client-app
-```
-
-3.  Install dependencies
-
-```bash
-npm install
-```
-
-4. Start project on localhost
-
-```bash
-npm start
-```
-
-5. (Optional) You can build project as below
-
-```bash
-npm run build
-```
 
 ## Feature and its related tasks developed by Bhavisha Oza
 
@@ -1774,271 +1737,268 @@ app.use(bodyParser.urlencoded({ extended: true })); // for parsing application/x
 * I have improved the code and enhanced the validation as per the feedback given by TA: Harsh Kathiria on my Assignment-1.
 * Limitation: The user profile modal keeps opened, so click once again to hide it. I will enhance it in future work.
 
-
-
-# Author  - [ Parth Mehta ](p.mehta20@dal.ca)
+# Author - [ Parth Mehta ](p.mehta20@dal.ca)
 
 # CSCI 5709 Advanced Topics in Web Development
 
 Welcome to the official course repository for CSCI 5709. This README provides organized links to the group project, individual tutorials, and assignments I've contributed to throughout the course.
 
-
-
 ## Author Details
+
 - **Name**: Parth Mehta
 - **Banner ID**: B00931931
 - **Email ID**: p.mehta20@dal.ca
 - **Date Created**: 3 Apr 2024
 - **Last Modification Date**: 3 Apr 2024
 
-
-
 ## Contents
-### Group Project
-- Assignment (Project) URL: [CSCI-5709 Group 10](https://eventify-csci5709.vercel.app/)
-
-- #### Main Repository
-  - [CSCI-5709 Group 10](https://git.cs.dal.ca/asolanki/csci-5709_grp-10)
-    - [My Personal Branch](https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Parth?ref_type=heads)
 
 - #### Project Description
-    - Eventify revolutionizes event management by offering an all-encompassing platform that simplifies the organization and participation of events. It seamlessly integrates registration, ticketing, and planning tools, making it an indispensable tool for organizers and a convenient hub for attendees. Designed with cutting-edge technology, Eventify ensures a user-centric experience, fostering enhanced engagement and interaction at every event phase.
+
+  - Eventify revolutionizes event management by offering an all-encompassing platform that simplifies the organization and participation of events. It seamlessly integrates registration, ticketing, and planning tools, making it an indispensable tool for organizers and a convenient hub for attendees. Designed with cutting-edge technology, Eventify ensures a user-centric experience, fostering enhanced engagement and interaction at every event phase.
 
 - #### Project Features
-    - Eventify stands out with its robust features designed to streamline the event management process. Key functionalities include comprehensive user profile management, event creation, and scheduling, alongside a dynamic event feed with advanced filtering capabilities. The platform also boasts an innovative ticketing and registration system, a secure payment module, and engagement-enhancing tools such as feedback and surveys, analytics, and badge or certificate generation. These features collectively ensure a seamless, efficient, and engaging event management experience for all users.
+
+  - Eventify stands out with its robust features designed to streamline the event management process. Key functionalities include comprehensive user profile management, event creation, and scheduling, alongside a dynamic event feed with advanced filtering capabilities. The platform also boasts an innovative ticketing and registration system, a secure payment module, and engagement-enhancing tools such as feedback and surveys, analytics, and badge or certificate generation. These features collectively ensure a seamless, efficient, and engaging event management experience for all users.
 
 - #### Project Structure
-    - The project is divided into two main parts: the client-side and the server-side. The client-side is built using React and includes components, pages, and services for the user interface. The server-side is built using Express and includes routes, controllers, models, and services for handling requests, interacting with the database, and managing business logic.
+
+  - The project is divided into two main parts: the client-side and the server-side. The client-side is built using React and includes components, pages, and services for the user interface. The server-side is built using Express and includes routes, controllers, models, and services for handling requests, interacting with the database, and managing business logic.
 
 - #### My Features
-    - Badge Generation
-    - Certificate Generation
+
+  - Badge Generation
+  - Certificate Generation
 
 - #### My Contributions
-    - ##### Badge Generation
-        - **Description**: The badge generation feature gives different tyoes of badges for attendees. Attendees can see them in their Profile, which enhancing their event experience and fostering a sense of community. If attendees have earned multiple badges, they can view them all in their Profile.
 
-    - ##### Certificate Generation
-        - **Description**: The certificate generation feature allows organizers to create and distribute certificates to attendees. This feature adds value to the event by recognizing attendees' participation and achievements. THe attendees can view and download their certificates from their Profile.
+  - ##### Badge Generation
+
+    - **Description**: The badge generation feature gives different tyoes of badges for attendees. Attendees can see them in their Profile, which enhancing their event experience and fostering a sense of community. If attendees have earned multiple badges, they can view them all in their Profile.
+
+  - ##### Certificate Generation
+    - **Description**: The certificate generation feature allows organizers to create and distribute certificates to attendees. This feature adds value to the event by recognizing attendees' participation and achievements. THe attendees can view and download their certificates from their Profile.
 
 - #### List of Files Authored by me
-    - ##### Client Side
-        - `client-app/src/pages/UserProfile/index.tsx`
-        - `client-app/src/services/EventService.ts`
-        - `client-app/src/services/BadgeService.ts`
 
-    - ##### Server Side
-        - `server-app/src/api/controllers/eventregister/eventregister.ts`
-        - `server-app/src/api/routes/event/index.ts`
-        - `server-app/src/api/controllers/eventregister/index.ts`
-        - `server-app/src/api/routes/register/index.ts`
-        - `server-app/src/api/routes/index.ts`
-        - `server-app/src/utils/certificate.ts`
-        - `server-app/src/models/Badge.ts`
-        - `server-app/src/api/services/badge.ts`
-        - `server-app/src/api/routes/badge/index.ts`
-        - `server-app/src/api/controllers/badge/badge.ts`
-        - `server-app/src/api/controllers/badge/index.ts`
+  - ##### Client Side
+
+    - `client-app/src/pages/UserProfile/index.tsx`
+    - `client-app/src/services/EventService.ts`
+    - `client-app/src/services/BadgeService.ts`
+
+  - ##### Server Side
+    - `server-app/src/api/controllers/eventregister/eventregister.ts`
+    - `server-app/src/api/routes/event/index.ts`
+    - `server-app/src/api/controllers/eventregister/index.ts`
+    - `server-app/src/api/routes/register/index.ts`
+    - `server-app/src/api/routes/index.ts`
+    - `server-app/src/utils/certificate.ts`
+    - `server-app/src/models/Badge.ts`
+    - `server-app/src/api/services/badge.ts`
+    - `server-app/src/api/routes/badge/index.ts`
+    - `server-app/src/api/controllers/badge/badge.ts`
+    - `server-app/src/api/controllers/badge/index.ts`
 
 - #### Backend Functionality
-    - ##### Badge Generation
-        - **Description**: The badge generation feature allows organizers to create and distribute badges to attendees. There are different types of badges based on their participation or achievements. Attendees can view their badges in their Profile, which enhances their event experience and fosters a sense of community.
 
-        - **API Endpoints**:
-            - `GET /generate/:userId`: It'll validate and then will generate a badge for the user with the given `userId`.
+  - ##### Badge Generation
 
-    - ##### Certificate Generation
-        - **Description**: The certificate generation feature allows organizers to create and distribute certificates to attendees. Attendees can view and download their certificates in their Profile, which adds value to the event by recognizing attendees' participation and achievements.
+    - **Description**: The badge generation feature allows organizers to create and distribute badges to attendees. There are different types of badges based on their participation or achievements. Attendees can view their badges in their Profile, which enhances their event experience and fosters a sense of community.
 
-        - **API Endpoints**:
-            - `GET /certificate/:userId/:eventId`: It'll generate a certificate for the user with the given `userId` for the event with the given `eventId`.
-            - `GET /participation/:userId`: It'll return the list of events the user with the given `userId` has participated in.
+    - **API Endpoints**:
+      - `GET /generate/:userId`: It'll validate and then will generate a badge for the user with the given `userId`.
+
+  - ##### Certificate Generation
+
+    - **Description**: The certificate generation feature allows organizers to create and distribute certificates to attendees. Attendees can view and download their certificates in their Profile, which adds value to the event by recognizing attendees' participation and achievements.
+
+    - **API Endpoints**:
+      - `GET /certificate/:userId/:eventId`: It'll generate a certificate for the user with the given `userId` for the event with the given `eventId`.
+      - `GET /participation/:userId`: It'll return the list of events the user with the given `userId` has participated in.
 
 - #### Dependencies
-    - ##### Client Side Dependencies
-        - React - [https://reactjs.org/](https://reactjs.org/)
-        - Material-UI (@mui/material) - [https://mui.com/](https://mui.com/)
-        - Redux Toolkit (@reduxjs/toolkit) - [https://redux-toolkit.js.org/](https://redux-toolkit.js.org/)
-        - React Router (@react-router-dom) - [https://reactrouter.com/](https://reactrouter.com/)
-        - Axios - [https://axios-http.com/](https://axios-http.com/)
-        - Formik - [https://formik.org/](https://formik.org/)
-        - Chart.js - [https://www.chartjs.org/](https://www.chartjs.org/)
-        - Date-fns - [https://date-fns.org/](https://date-fns.org/)
-        - Moment - [https://momentjs.com/](https://momentjs.com/)
-        - TypeScript - [https://www.typescriptlang.org/](https://www.typescriptlang.org/)
-        - Emotion - [https://emotion.sh/docs/introduction](https://emotion.sh/docs/introduction)
-        - Font Awesome - [https://fontawesome.com/](https://fontawesome.com/)
-        - Stripe JS Libraries (@stripe/react-stripe-js & @stripe/stripe-js) - [https://stripe.com/docs/js](https://stripe.com/docs/js)
-        - React Testing Library - [https://testing-library.com/docs/react-testing-library/intro/](https://testing-library.com/docs/react-testing-library/intro/)
-        - Yup - [https://github.com/jquense/yup](https://github.com/jquense/yup)
 
-    - ##### Server Side Dependencies
-        - Express - [https://expressjs.com/](https://expressjs.com/)
-        - Mongoose - [https://mongoosejs.com/](https://mongoosejs.com/)
-        - bcrypt - [https://github.com/kelektiv/node.bcrypt.js](https://github.com/kelektiv/node.bcrypt.js)
-        - jsonwebtoken - [https://github.com/auth0/node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
-        - Nodemailer - [https://nodemailer.com/about/](https://nodemailer.com/about/)
-        - dotenv - [https://github.com/motdotla/dotenv](https://github.com/motdotla/dotenv)
-        - cors - [https://github.com/expressjs/cors](https://github.com/expressjs/cors)
-        - PDFKit - [http://pdfkit.org/](http://pdfkit.org/)
-        - Stripe - [https://stripe.com/docs/api](https://stripe.com/docs/api)
-        - UUID - [https://github.com/uuidjs/uuid](https://github.com/uuidjs/uuid)
+  - ##### Client Side Dependencies
 
+    - React - [https://reactjs.org/](https://reactjs.org/)
+    - Material-UI (@mui/material) - [https://mui.com/](https://mui.com/)
+    - Redux Toolkit (@reduxjs/toolkit) - [https://redux-toolkit.js.org/](https://redux-toolkit.js.org/)
+    - React Router (@react-router-dom) - [https://reactrouter.com/](https://reactrouter.com/)
+    - Axios - [https://axios-http.com/](https://axios-http.com/)
+    - Formik - [https://formik.org/](https://formik.org/)
+    - Chart.js - [https://www.chartjs.org/](https://www.chartjs.org/)
+    - Date-fns - [https://date-fns.org/](https://date-fns.org/)
+    - Moment - [https://momentjs.com/](https://momentjs.com/)
+    - TypeScript - [https://www.typescriptlang.org/](https://www.typescriptlang.org/)
+    - Emotion - [https://emotion.sh/docs/introduction](https://emotion.sh/docs/introduction)
+    - Font Awesome - [https://fontawesome.com/](https://fontawesome.com/)
+    - Stripe JS Libraries (@stripe/react-stripe-js & @stripe/stripe-js) - [https://stripe.com/docs/js](https://stripe.com/docs/js)
+    - React Testing Library - [https://testing-library.com/docs/react-testing-library/intro/](https://testing-library.com/docs/react-testing-library/intro/)
+    - Yup - [https://github.com/jquense/yup](https://github.com/jquense/yup)
+
+  - ##### Server Side Dependencies
+    - Express - [https://expressjs.com/](https://expressjs.com/)
+    - Mongoose - [https://mongoosejs.com/](https://mongoosejs.com/)
+    - bcrypt - [https://github.com/kelektiv/node.bcrypt.js](https://github.com/kelektiv/node.bcrypt.js)
+    - jsonwebtoken - [https://github.com/auth0/node-jsonwebtoken](https://github.com/auth0/node-jsonwebtoken)
+    - Nodemailer - [https://nodemailer.com/about/](https://nodemailer.com/about/)
+    - dotenv - [https://github.com/motdotla/dotenv](https://github.com/motdotla/dotenv)
+    - cors - [https://github.com/expressjs/cors](https://github.com/expressjs/cors)
+    - PDFKit - [http://pdfkit.org/](http://pdfkit.org/)
+    - Stripe - [https://stripe.com/docs/api](https://stripe.com/docs/api)
+    - UUID - [https://github.com/uuidjs/uuid](https://github.com/uuidjs/uuid)
 
 - ### References
-    - #### Backend
-        - ##### utils/certificate.ts
-            ```
-            doc.pipe(res);
-            doc.rect(50, 50, doc.page.width - 100, doc.page.height - 100).stroke();
 
-            doc.opacity(1);
+  - #### Backend
 
-            doc.font('Helvetica-Bold')
-                .fontSize(40)
-                .fillColor('black')
-                .text('CERTIFICATE OF COMPLETION', 0, 100, { align: 'center', width: doc.page.width });
+    - ##### utils/certificate.ts
 
-            doc.moveTo(100, 150)
-                .lineTo(doc.page.width - 100, 150)
-                .lineWidth(2)
-                .stroke();
+      ```
+      doc.pipe(res);
+      doc.rect(50, 50, doc.page.width - 100, doc.page.height - 100).stroke();
 
-            doc.font('Helvetica-Oblique')
-                .fontSize(14)
-                .fillColor('#444444')
-                .text(`This is to certify that`, 0, 210, { align: 'center', width: doc.page.width })
-                .moveDown(0.5)
+      doc.opacity(1);
 
-            doc.font('Times-Roman')
-                .fontSize(35)
-                .fillColor('black')
-                .text(`${user.firstName} ${user.lastName}`, 0, 245, { align: 'center', width: doc.page.width })
-                .moveDown(0.5)
+      doc.font('Helvetica-Bold')
+          .fontSize(40)
+          .fillColor('black')
+          .text('CERTIFICATE OF COMPLETION', 0, 100, { align: 'center', width: doc.page.width });
 
-            doc.font('Helvetica-Oblique')
-                .fontSize(14)
-                .fillColor('#444444')
-                .text(`Has successfully participated in`, 0, 300, { align: 'center', width: doc.page.width })
-                .moveDown(0.5)
+      doc.moveTo(100, 150)
+          .lineTo(doc.page.width - 100, 150)
+          .lineWidth(2)
+          .stroke();
 
-            doc.font('Times-Roman')
-                .fontSize(24)
-                .fillColor('black')
-                .text(`${event.eventName}`, 0, 340, { align: 'center', width: doc.page.width })
-                .moveDown(0.5)
+      doc.font('Helvetica-Oblique')
+          .fontSize(14)
+          .fillColor('#444444')
+          .text(`This is to certify that`, 0, 210, { align: 'center', width: doc.page.width })
+          .moveDown(0.5)
 
-            doc.font('Helvetica-Oblique')
-                .fontSize(18)
-                .fillColor('#444444')
-                .text(`held on ${event.eventStartDateTime.toDateString()}.`, 0, 390, { align: 'center', width: doc.page.width })
-                .moveDown(0.5)
-            ```
-            - This code snippet is used to generate a certificate for the user with the given `userId` for the event with the given `eventId`. It uses the PDFKit library to create a PDF document and add text, lines, and shapes to it. References for PDFKit can be found at [[1]][http://pdfkit.org/](http://pdfkit.org/).
-            - There are other references as well:
-                - [[2]](https://stackabuse.com/generating-pdf-files-in-node-js-with-pdfkit)
-                - [[3]](https://medium.com/@eduardoqgomes/creating-a-certificate-template-with-pdfkit-in-node-js-dd843e09e6cf)
-            - <!--- Why ---> I wanted to create a visually appealing certificate that attendees could download and keep as a memento of their participation in the event.
-            - <!-- How ---> I used the PDFKit library to create a PDF document and added text, lines, and shapes to it to create a certificate template. I then filled in the user's name and the event details dynamically based on the user and event data from the database.
+      doc.font('Times-Roman')
+          .fontSize(35)
+          .fillColor('black')
+          .text(`${user.firstName} ${user.lastName}`, 0, 245, { align: 'center', width: doc.page.width })
+          .moveDown(0.5)
 
-        - ##### api/controllers/eventregister/eventregister.ts
-            ```
-            const query = {
-                participants: {
-                    $elemMatch: { email: user.email }
-                }
-            };
-            const registrations = await Registration.find(query).exec();
+      doc.font('Helvetica-Oblique')
+          .fontSize(14)
+          .fillColor('#444444')
+          .text(`Has successfully participated in`, 0, 300, { align: 'center', width: doc.page.width })
+          .moveDown(0.5)
 
-            const eventIds = registrations.map(registration => registration.event);
-            const events = await Event.find({ '_id': { $in: eventIds } });
-            ```
-            - This code snippet is used to get the list of events the user with the given `userId` has participated in. It first finds all the registration records in the EventRegister collection that match the user's email address. It then extracts the event IDs from these registration records and finds the corresponding events in the Event collection. If successful, it returns the registration data with a status code of 200 (Created). If there is an error, it returns an error message with a status code of 500 (Internal Server Error).
-            - The references are taken from the official documentation of Mongoose:
-                - [[4]](https://mongoosejs.com/docs/queries.html)
-                - [[5]](https://mongoosejs.com/docs/api.html#model_Model.find)
-                - [[6]](https://mongoosejs.com/docs/api.html#model_Model-exec)
-                - [[7]](https://mongoosejs.com/docs/api.html#model_Model-map)
-            - <!--- Why ---> I wanted to provide users with a list of events they have participated in so that they could keep track of their engagement and achievements.
-            - <!-- How ---> I used Mongoose queries to find all the registration records that match the user's email address and extract the event IDs from these records. I then used these event IDs to find the corresponding events in the Event collection and return the list of events to the user.
+      doc.font('Times-Roman')
+          .fontSize(24)
+          .fillColor('black')
+          .text(`${event.eventName}`, 0, 340, { align: 'center', width: doc.page.width })
+          .moveDown(0.5)
 
+      doc.font('Helvetica-Oblique')
+          .fontSize(18)
+          .fillColor('#444444')
+          .text(`held on ${event.eventStartDateTime.toDateString()}.`, 0, 390, { align: 'center', width: doc.page.width })
+          .moveDown(0.5)
+      ```
+
+      - This code snippet is used to generate a certificate for the user with the given `userId` for the event with the given `eventId`. It uses the PDFKit library to create a PDF document and add text, lines, and shapes to it. References for PDFKit can be found at [[1]][http://pdfkit.org/](http://pdfkit.org/).
+      - There are other references as well:
+        - [[2]](https://stackabuse.com/generating-pdf-files-in-node-js-with-pdfkit)
+        - [[3]](https://medium.com/@eduardoqgomes/creating-a-certificate-template-with-pdfkit-in-node-js-dd843e09e6cf)
+      - <!--- Why ---> I wanted to create a visually appealing certificate that attendees could download and keep as a memento of their participation in the event.
+      - <!-- How ---> I used the PDFKit library to create a PDF document and added text, lines, and shapes to it to create a certificate template. I then filled in the user's name and the event details dynamically based on the user and event data from the database.
+
+    - ##### api/controllers/eventregister/eventregister.ts
+
+      ```
+      const query = {
+          participants: {
+              $elemMatch: { email: user.email }
+          }
+      };
+      const registrations = await Registration.find(query).exec();
+
+      const eventIds = registrations.map(registration => registration.event);
+      const events = await Event.find({ '_id': { $in: eventIds } });
+      ```
+
+      - This code snippet is used to get the list of events the user with the given `userId` has participated in. It first finds all the registration records in the EventRegister collection that match the user's email address. It then extracts the event IDs from these registration records and finds the corresponding events in the Event collection. If successful, it returns the registration data with a status code of 200 (Created). If there is an error, it returns an error message with a status code of 500 (Internal Server Error).
+      - The references are taken from the official documentation of Mongoose:
+        - [[4]](https://mongoosejs.com/docs/queries.html)
+        - [[5]](https://mongoosejs.com/docs/api.html#model_Model.find)
+        - [[6]](https://mongoosejs.com/docs/api.html#model_Model-exec)
+        - [[7]](https://mongoosejs.com/docs/api.html#model_Model-map)
+      - <!--- Why ---> I wanted to provide users with a list of events they have participated in so that they could keep track of their engagement and achievements.
+      - <!-- How ---> I used Mongoose queries to find all the registration records that match the user's email address and extract the event IDs from these records. I then used these event IDs to find the corresponding events in the Event collection and return the list of events to the user.
 
 - ### Deployment
-    - #### Frontend
-        - To deploy our project environment, We have used __Vercel__. The steps we followed for the deployment are as follows:
 
-        1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
-        2. Authenticated Netlify with Github to access repositories in our GitHub.
-        3. Configured the deployement settings, such as root folder, build comand, environment variables
-        [[19]]https://render.com/
+  - #### Frontend
 
-    - #### Backend
-        - To deploy the project environment, We have used __Render__. The steps for backend deployment are as mentioned:
+    - To deploy our project environment, We have used **Vercel**. The steps we followed for the deployment are as follows:
 
-        1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
-        2. Authenticated Netlify with Github to access repositories in our GitHub.
-        3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
-        [[20]]https://vercel.com/
+    1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
+    2. Authenticated Netlify with Github to access repositories in our GitHub.
+    3. Configured the deployement settings, such as root folder, build comand, environment variables
+       [[19]]https://render.com/
 
-# Author - [ Dharven Dosi ]
+  - #### Backend
+
+    - To deploy the project environment, We have used **Render**. The steps for backend deployment are as mentioned:
+
+    1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
+    2. Authenticated Netlify with Github to access repositories in our GitHub.
+    3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
+       [[20]]https://vercel.com/
+
+# Author - [Dharven Doshi](dharven.doshi@dal.ca)
 
 # CSCI 5709 Assignment 3
 
-* *Date Created*: April 3, 2024
-* *Last Modification Date*: April 03, 2024
-* *Assignment (Project) URL*: https://eventify-csci5709.vercel.app/
-* *GitLab individual URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Aharnish?ref_type=heads
-* *GitLab group URL for Assignment 3*: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
-
+- _Date Created_: April 3, 2024
+- _Last Modification Date_: April 03, 2024
+- _Assignment (Project) URL_: https://eventify-csci5709.vercel.app/
+- _GitLab individual URL for Assignment 3_: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/Dharven?ref_type=heads
+- _GitLab group URL for Assignment 3_: https://git.cs.dal.ca/asolanki/csci-5709_grp-10/-/tree/main?ref_type=heads
 
 ## Authors
-* [Dharven Doshi]
+
+- [Dharven Doshi]
 
 ## Built With
-* [NodeJS](https://nodejs.org/en) - A cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser
-* [ExpressJS](https://expressjs.com/) -  A back end web application framework for building RESTful APIs with Node.js
-* [ReactJS](https://react.dev/) - A free and open-source front-end JavaScript library for building user interfaces based on components
-* [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database program.
-* [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom user interfaces.
+
+- [NodeJS](https://nodejs.org/en) - A cross-platform, open-source JavaScript runtime environment that executes JavaScript code outside a web browser
+- [ExpressJS](https://expressjs.com/) - A back end web application framework for building RESTful APIs with Node.js
+- [ReactJS](https://react.dev/) - A free and open-source front-end JavaScript library for building user interfaces based on components
+- [MongoDB](https://www.mongodb.com/) - A document-oriented NoSQL database program.
+- [Tailwind CSS](https://tailwindcss.com/) - A utility-first CSS framework for rapidly building custom user interfaces.
 
 ## Feature and its related tasks developed by Dharven Doshi
+
 ### Feature:
-* Event Dashboard
-* Analytics
+
+- Event Dashboard
+- Analytics
+
 ### Related Tasks:
-* Display Event details on dashboard
-* Displaying event analytics
-* Event Analytics are graphs based on database
+
+- Display Event details on dashboard
+- Displaying event analytics
+- Event Analytics are graphs based on database
 
 ## List of files authored by Dharven Doshi
-### Frontend
-* client-app\src\components\Analytics\Analytics.tsx
-* client-app\src\components\Analytics\index.ts
-* client-app\src\pages\Analytics\index.tsx
-* client-app\src\routes.tsx
-* client-app\src\services\EventService.ts
-
-### Backend
-* server-app\src\api\routes\event\index.ts
-* server-app\src\api\controllers\analytics\analytics.ts
-* server-app\src\api\controllers\analytics\index.ts
-
-
-## Deployment
 
 ### Frontend
 
-To deploy our project environment, We have used __Vercel__. The steps we followed for the deployment are as follows:
+- client-app\src\components\Analytics\Analytics.tsx
+- client-app\src\components\Analytics\index.ts
+- client-app\src\pages\Analytics\index.tsx
+- client-app\src\routes.tsx
+- client-app\src\services\EventService.ts
 
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables
-[[19]]https://render.com/
 ### Backend
 
-To deploy the project environment, We have used __Render__. The steps for backend deployment are as mentioned:
-
-1. Mirrored our gitlab repo to a GitHub repository by generating a token from Github.(same step as in frontend)
-2. Authenticated Netlify with Github to access repositories in our GitHub.
-3. Configured the deployement settings, such as root folder, build comand, environment variables,deployment branch etc.
-[[20]]https://vercel.com/
+- server-app\src\api\routes\event\index.ts
+- server-app\src\api\controllers\analytics\analytics.ts
+- server-app\src\api\controllers\analytics\index.ts

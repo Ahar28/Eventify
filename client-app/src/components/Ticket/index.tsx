@@ -17,6 +17,7 @@ import { formatDateTime } from "../../services/utils";
 import { Participant } from "../ParticipantForm";
 import { deleteEventRegistration } from "../../services/RegisterEventService";
 import './index.css';
+import { toast } from 'react-toastify';
 
 const TicketInfoComponent: React.FC = () => {
   const location = useLocation();
@@ -37,6 +38,7 @@ const TicketInfoComponent: React.FC = () => {
     setIsCancellationModalOpen(false);
     try {
       const response = await deleteEventRegistration(registration._id);
+      toast.success("Registration Cancelled Successfully");
       navigate(`/mytickets`);
       console.log("Cancellation Response:", response);
     } catch (error) {

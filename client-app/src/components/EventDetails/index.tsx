@@ -11,7 +11,7 @@ import {
   FaMapMarkedAlt,
   FaLink,
 } from "react-icons/fa";
-import { FcAbout,FcCalendar } from "react-icons/fc";
+import { FcAbout, FcCalendar } from "react-icons/fc";
 import { useWishlist } from "../../context/WishlistContext";
 import Container from "../Container";
 import Button from "../UI/Button";
@@ -22,6 +22,9 @@ import { getEventsbyId } from "../../services/EventService";
 import { getUserNamebyId } from "../../services/UserService";
 import { useNavigate } from "react-router-dom";
 import formatDateTime from "../../services/utils";
+import { selectUser } from "../../redux/userSlice";
+import { useSelector } from "react-redux";
+import { toast } from "react-toastify";
 
 interface EventDetails {
   details: {
@@ -54,7 +57,10 @@ interface EventDetailsProps {
 const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [event, setEvent] = useState<EventDetails | null>();
   const [userName, setuserName] = useState();
+  const user = useSelector(selectUser);
+  const LoggeduserId = user?.id;
   console.log("event", event);
+  const [isEventPast, setIsEventPast] = useState(false);
 
   const navigate = useNavigate();
 
@@ -64,11 +70,13 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   const [showTicketModal, setShowTicketModal] = useState(false);
   const [showShareModal, setShowShareModal] = useState(false);
   const urlToShare = window.location.href;
+  const isOrganizer = LoggeduserId === event?.organizer;
 
   const toggleWishlist = async (e: React.MouseEvent) => {
     e.stopPropagation();
     if (isWishlisted) {
       removeFromWishlist(eventId as string);
+      toast.success("Event removed from wishlist");
     } else {
       addToWishlist({
         id: event?._id as string,
@@ -78,6 +86,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
         description: event?.details.description as string,
         image: event?.titlePicture as string,
       });
+      toast.success("Event added to wishlist");
     }
   };
 
@@ -89,7 +98,9 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
   }, [eventId]);
 
   useEffect(() => {
-      const username = fetchUserNameById(event?.organizer ?? '').then(setuserName);
+    const username = fetchUserNameById(event?.organizer ?? "").then(
+      setuserName
+    );
   });
 
   useEffect(() => {
@@ -104,50 +115,63 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
     };
   }, [showTicketModal]);
 
+  useEffect(() => {
+    if (eventId) {
+      fetchEventById(eventId).then((fetchedEvent) => {
+        setEvent(fetchedEvent);
+        if (fetchedEvent) {
+          const now = new Date();
+          const endDate = new Date(fetchedEvent.eventEndDateTime);
+          setIsEventPast(now > endDate);
+        }
+      });
+    }
+  }, [eventId]);
+
   let venueLinkComponent;
   if (event?.details.venue) {
     venueLinkComponent = (
       <div>
-      <div className="flex items-center mx-3 mb-2">
-        <p className="text-2xl mr-4">
-          <strong>Venue</strong>
+        <div className="flex items-center mx-3 mb-2">
+          <p className="text-2xl mr-4">
+            <strong>Venue</strong>
+          </p>
+          <FaMapMarkedAlt size={25} className="mr-2" />
+        </div>
+        <hr
+          className="my-1 border-gray-300 mx-l ml-3 mb-4"
+          style={{ width: "17%" }}
+        />
+        <p className="text-gray-900 ml-3 text-xl mb-4">
+          {event?.details?.venue}
         </p>
-        <FaMapMarkedAlt size={25} className="mr-2" />
       </div>
-      <hr
-        className="my-1 border-gray-300 mx-l ml-3 mb-4"
-        style={{ width: "17%" }}
-      />
-      <p className="text-gray-900 ml-3 text-xl mb-4">
-        {event?.details?.venue}
-      </p>
-    </div>
     );
   } else if (event?.details.link) {
     venueLinkComponent = (
       <div>
-      <div className="flex items-center mx-3 mb-2">
-        <p className="text-2xl mr-4">
-          <strong>Link</strong>
+        <div className="flex items-center mx-3 mb-2">
+          <p className="text-2xl mr-4">
+            <strong>Link</strong>
+          </p>
+          <FaLink size={20} className="mr-2" />
+        </div>
+        <hr
+          className="my-1 border-gray-300 mx-l ml-3 mb-4"
+          style={{ width: "17%" }}
+        />
+        <p className="text-gray-900 ml-3 text-xl mb-4">
+          <a
+            href={event.details.link}
+            target="_blank"
+            rel="noopener noreferrer"
+            style={{ color: "#007bff" }}
+            className="hover:underline"
+          >
+            {event?.details?.link}
+          </a>
         </p>
-        <FaLink size={20} className="mr-2" />
       </div>
-      <hr
-        className="my-1 border-gray-300 mx-l ml-3 mb-4"
-        style={{ width: "17%" }}
-      />
-      <p className="text-gray-900 ml-3 text-xl mb-4">
-      <a
-        href={event.details.link}
-        target="_blank"
-        rel="noopener noreferrer"
-        style={{ color: '#007bff' }} 
-        className="hover:underline"
-      >
-          {event?.details?.link}
-        </a>
-      </p>
-    </div>
     );
   }
 
@@ -164,16 +188,18 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
               <div className="flex-grow"></div>
 
               <div className="flex items-end lg:items-center space-x-2">
-                <button
-                  onClick={toggleWishlist}
-                  className="text-red-500 flex items-center"
-                >
-                  {isWishlisted ? (
-                    <FaHeart size={30} />
-                  ) : (
-                    <FaRegHeart size={25} />
-                  )}
-                </button>
+                {!isOrganizer && (
+                  <button
+                    onClick={toggleWishlist}
+                    className="text-red-500 flex items-center"
+                  >
+                    {isWishlisted ? (
+                      <FaHeart size={30} />
+                    ) : (
+                      <FaRegHeart size={25} />
+                    )}
+                  </button>
+                )}
                 <Button
                   onClick={() => setShowShareModal(true)}
                   className="text-blue-500 hover:text-blue-700 text-2xl lg:text-3xl"
@@ -211,9 +237,7 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                   className="my-1 border-gray-300 ml-3 mb-4"
                   style={{ width: "26%" }}
                 />
-                <p className="text-xl text-gray-900  ml-3 mb-4">
-                 {userName}
-                </p>
+                <p className="text-xl text-gray-900  ml-3 mb-4">{userName}</p>
 
                 {/* Date and Time */}
                 <div className="flex items-center mx-3 mb-2">
@@ -244,8 +268,8 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                     </span>
                   </div>
                 </div>
-               <div> {venueLinkComponent} </div>
-               
+                <div> {venueLinkComponent} </div>
+
                 <div className="flex flex-col lg:flex-row -mx-4 mt-4"></div>
 
                 <div className="w-full  px-4">
@@ -279,12 +303,16 @@ const EventDetails: React.FC<EventDetailsProps> = ({ eventId }) => {
                       CA${event?.price?.toFixed(2)}
                     </span>
                   </div>
+                  
                   <Button
                     onClick={() => setShowTicketModal(true)}
-                    className="bg-red-500 text-white px-4 py-2 rounded-md w-full"
+                    disabled={isEventPast}
+                    className={`${
+                      isEventPast ? "bg-gray-500" : "bg-red-500"
+                    } text-white px-4 py-2 rounded-md w-full`}
                     color="error"
                   >
-                    Register
+                    {isEventPast ? "Registration Closed" : "Register"}
                   </Button>
                   <TicketPurchaseModal
                     isOpen={showTicketModal}
@@ -338,13 +366,13 @@ export async function fetchEventById(eventId: string): Promise<any | null> {
   }
 }
 
-export async function fetchUserNameById(userId: string ): Promise<any | null> {
+export async function fetchUserNameById(userId: string): Promise<any | null> {
   try {
     const response = await getUserNamebyId(userId);
     console.log("user name response", response);
     if (response?.data) {
       const UserName = response.data.data;
-    
+
       return UserName;
     } else {
       console.error("Failed to fetch username:", response.message);
@@ -355,6 +383,5 @@ export async function fetchUserNameById(userId: string ): Promise<any | null> {
     return null;
   }
 }
-
 
 export default EventDetails;
