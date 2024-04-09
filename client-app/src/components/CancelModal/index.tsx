@@ -37,8 +37,9 @@ const CancellationModal: React.FC<CancellationModalProps> = ({
               <div className="mt-3 sm:mt-0 sm:ml-4 sm:text-left">
                 <h3 className="text-lg font-bold">Cancel Tickets</h3>
                 <div className="mt-2">
-                  <p className="">
-                    Are you sure you want to cancel your tickets?
+                  <p>
+                   <div> Are you sure you want to cancel your tickets? </div>
+                    <span className="text-rose-600">This action cannot be reverted.</span>
                   </p>
                 </div>
               </div>
