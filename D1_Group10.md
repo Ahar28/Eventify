@@ -316,12 +316,6 @@ export default PageNotFound
 - Event Creation
 - Payment Gateway
 
-### Pre-defined Credentials:
-
-User can user pre-defined credentials if they want:
-
-- **Email:** keyur.khant@dal.ca
-- **Password:** pqr@123
 
 ### Related Tasks:
 
